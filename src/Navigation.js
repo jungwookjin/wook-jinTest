@@ -8,7 +8,7 @@ import Layout from './constants/Layout';
 import Colors from './constants/Colors';
 
 import Login from './screens/Login';
-import Canvas from './screens/Canvas';
+import Main from './screens/Main';
 
 
 const CustomHeader = () => {
@@ -48,12 +48,9 @@ function Navigator() {
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
                 />
                 <Stack.Screen
-                    name="Canvas"
-                    component={Canvas}
-                    options={{
-                        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                        header: props => <CustomHeader {...props} />
-                    }}
+                    name="Main"
+                    component={Main}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
                 />
             </Stack.Navigator>
         </NavigationContainer>

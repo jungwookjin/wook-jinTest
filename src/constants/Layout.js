@@ -8,7 +8,7 @@ const mainBannerHeight = (width-30) * (3 / 4);
 const mainAdBannerHeight = width * (1 / 5);
 const widthFix = width - 30;
 
-const baseFs = 8;
+const baseFs = 9;
 const fsXXS = baseFs;
 const fsXS = baseFs + 2;
 const fsXMS = baseFs + 3;
