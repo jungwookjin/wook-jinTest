@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 import Layout from './constants/Layout';
 import Colors from './constants/Colors';
 
-import CanvasMenu from './screens/CanvasMenu';
+import Login from './screens/Login';
 import Canvas from './screens/Canvas';
 
 
@@ -43,8 +43,8 @@ function Navigator() {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen
-                    name="CanvasMenu"
-                    component={CanvasMenu}
+                    name="Login"
+                    component={Login}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
                 />
                 <Stack.Screen
@@ -61,8 +61,8 @@ function Navigator() {
 }
 
 // function Navigator = createStackNavigator({
-//     CanvasMenu: {
-//       screen: CanvasMenu,
+//     Login: {
+//       screen: Login,
 //       navigationOptions: ({ navigation, loginInfo }) => ({
 //         headerShown: false
 //       }),
