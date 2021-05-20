@@ -8,6 +8,8 @@ export default {
   mainBlue:'#4F8DFC',
   skyBlue:'#4EBAFF',
   pastelBlue:'#66b5ff',
+  pastelPurple:'#A5A2FF',
+  bgNavy:'#171F38',
 
   baseTextGray: '#7A7A7A',
   baseTextMidGray: '#B1B1B1',

@@ -53,7 +53,7 @@ const Main = () => {
                                         source={require('../img/btn_noti.png')} resizeMode='contain' />
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{ marginRight: 15 }}>
+                                <TouchableOpacity style={{ marginRight: 15 }} onPress={() => { navigation.navigate({ name: 'MenuPage', params: {} }); }}>
                                     <Image style={{ width: 32, height: 32 }}
                                         source={require('../img/btn_menu.png')} resizeMode='contain' />
                                 </TouchableOpacity>

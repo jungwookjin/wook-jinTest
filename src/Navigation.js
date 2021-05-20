@@ -9,6 +9,8 @@ import Colors from './constants/Colors';
 
 import Login from './screens/Login';
 import Main from './screens/Main';
+import MenuPage from './screens/MenuPage';
+
 
 
 const CustomHeader = () => {
@@ -45,12 +47,17 @@ function Navigator() {
                 <Stack.Screen
                     name="Login"
                     component={Login}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false , gestureEnabled: false }}
                 />
                 <Stack.Screen
                     name="Main"
                     component={Main}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false , gestureEnabled: false }}
+                />
+                <Stack.Screen
+                    name="MenuPage"
+                    component={MenuPage}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, headerShown: false, gestureEnabled: false  }}
                 />
             </Stack.Navigator>
         </NavigationContainer>
