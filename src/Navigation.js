@@ -10,6 +10,7 @@ import Colors from './constants/Colors';
 import Login from './screens/Login';
 import Main from './screens/Main';
 import MenuPage from './screens/MenuPage';
+import CramList from './screens/CramList';
 
 
 
@@ -59,34 +60,15 @@ function Navigator() {
                     component={MenuPage}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, headerShown: false, gestureEnabled: false  }}
                 />
+                <Stack.Screen
+                    name="CramList"
+                    component={CramList}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                />
             </Stack.Navigator>
         </NavigationContainer>
     );
 }
-
-// function Navigator = createStackNavigator({
-//     Login: {
-//       screen: Login,
-//       navigationOptions: ({ navigation, loginInfo }) => ({
-//         headerShown: false
-//       }),
-//     },
-//     Canvas: {
-//       screen: Canvas,
-//       navigationOptions: ({ navigation, loginInfo }) => ({
-//         headerShown: false
-//       }),
-//     },
-//     // Login: {
-//     //     screen: Login,
-//     //     navigationOptions: ({ navigation }) => ({
-//     //         headerBackTitle: null,
-//     //         header: <CustomHeader navigation={navigation} />,
-//     //     })
-//     // },
-// });
-
-
 
 const styles = StyleSheet.create({
     viewTopBar: {

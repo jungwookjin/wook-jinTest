@@ -3,5 +3,6 @@
 export type httpReq = Promise<{ IS_SUCCESS: boolean; DATA_RESULT: any; }> 
 export type HeaderParams = {
     navigation: any,
-    isBackBtn: boolean
+    isBackBtn: boolean,
+    title: string
 };

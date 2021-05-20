@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, Image, TouchableOpacity, StatusBar, Text,Platform } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, View, Image, TouchableOpacity, StatusBar, Text, Platform } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux'
 import { RootState } from '../components/redux/rootReducer'
@@ -12,8 +12,7 @@ import Layout from "../constants/Layout";
 
 const MenuPage = () => {
     const navigation = useNavigation();
-    const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; }
-    )
+    const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -64,7 +63,7 @@ const MenuPage = () => {
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
-                                <TouchableOpacity style={styles.mainBtnWrap}>
+                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'CramList', params: {} }); }}>
                                     <Image style={styles.mainBtnImg} source={require('../img/ic_cram.png')} resizeMode='contain' />
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>학원 관리</Text>
                                 </TouchableOpacity>
@@ -110,8 +109,8 @@ const MenuPage = () => {
 
                                                 <View style={{ flex: 1, paddingLeft: 7 }}>
                                                     <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.pastelPurple }}>2021-05-11 to 모두</Text>
-                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText ,marginTop:2}}>5월 12일 부처님 오신날은 휴원 합니다.</Text>
-                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.baseTextGray }}>5월은 유독 쉬는 날이 많은 것 같습니다. :) 잘 쉬시고 5월 …</Text>
+                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 4 }}>5월 12일 부처님 오신날은 휴원 합니다.</Text>
+                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.baseTextGray, marginTop: 2 }}>5월은 유독 쉬는 날이 많은 것 같습니다. :) 잘 쉬시고 5월 …</Text>
                                                 </View>
                                             </View>
                                         ))
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         marginTop: 25,
         alignItems: 'center',
-        marginBottom:20,
+        marginBottom: 20,
         ...Platform.select({
             ios: {
                 shadowColor: "rgb(50, 50, 50)",
