@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { BlurView } from "@react-native-community/blur";
 import { useSelector } from 'react-redux'
 import { RootState } from '../components/redux/rootReducer'
 import * as ITF from '../constants/Interface'
@@ -34,14 +35,14 @@ const Main = () => {
         <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
             {
                 loading ? (<Loader />) : (
-                    <ImageBackground source={require('../img/bg_blue.png')} resizeMode='cover'
-                        style={{ width: Layout.window.width, flex: 1 }}>
+                    <ImageBackground source={require('../img/bg_blue_blur.png')} resizeMode='cover'
+                        style={{ width: Layout.window.width, flex: 1 }}
+                        imageStyle={{ ...Platform.select({ ios: { opacity: 0.7 }, android: { opacity: 0.6 } }) }}
+                    >
+
                         <View style={{ width: Layout.window.width, flex: 1 }}>
                             {/* <CustomHeader navigation={navigation} isBackBtn={false} /> */}
-                            <View style={{
-                                width: Layout.window.width, height: 44, backgroundColor: '#ffffff', flexDirection: 'row', alignItems: 'center', zIndex: 99,
-                                ...Platform.select({ android: { elevation: 0 } })
-                            }}>
+                            <View style={{ width: Layout.window.width, height: 44, backgroundColor: '#ffffff', flexDirection: 'row', alignItems: 'center', zIndex: 99, ...Platform.select({ android: { elevation: 0 } }) }}>
                                 <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsL, color: Colors.defaultText, marginLeft: 15, fontWeight: 'bold' }}>김정훈</Text>
                                 <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsSM, color: Colors.skyBlue, marginLeft: 3 }}>학생</Text>
 
@@ -77,15 +78,10 @@ const Main = () => {
                             }}>
                                 <View style={{ width: Layout.window.width - 20 }}>
                                     <Calendar
-                                        // current={'2012-03-01'}
                                         monthFormat={'yyyy-MM'}
-                                        // minDate={'2012-05-10'}
-                                        // maxDate={'2012-05-30'}
-                                        // markedDates={selectDay}
                                         onDayPress={(day) => { setSelectDay(day.dateString) }}
                                         onDayLongPress={(day) => { console.log('selected day', day) }}
                                         onMonthChange={(month) => { console.log('month changed', month) }}
-                                        // renderArrow={(direction) => (<Arrow />)}
                                         hideExtraDays={true}
                                         firstDay={1}
                                         onPressArrowLeft={subtractMonth => subtractMonth()}
@@ -98,13 +94,6 @@ const Main = () => {
                                                 selectedTextColor: '#ffffff'
                                             }
                                         }}
-                                    // hideArrows={true}
-                                    // disableMonthChange={true}
-                                    // disableArrowLeft={true}
-                                    // disableArrowRight={true}
-                                    // disableAllTouchEventsForDisabledDays={true}
-                                    // renderHeader={(date) => {/*Return JSX*/ }}
-                                    // enableSwipeMonths={true}
                                     />
                                 </View>
 
@@ -114,6 +103,57 @@ const Main = () => {
 
                             <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', width: Layout.window.width, paddingBottom: 40 }} keyboardShouldPersistTaps='handled'>
 
+                                {/* <BlurView
+                                    style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0 }}
+                                    blurType="light"
+                                    blurAmount={10}
+                                    reducedTransparencyFallbackColor="white"
+                                /> */}
+
+
+                                <View style={styles.blurShadowWrap}>
+                                    <Image style={styles.miniIcon}
+                                        source={require('../img/ic_circle_check.png')}
+                                        resizeMode='contain' />
+
+                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.miniText}>09</Text>
+
+                                    <View style={{ width: 9, height: 1 }}></View>
+
+                                    <Image style={styles.miniIcon}
+                                        source={require('../img/ic_warning.png')}
+                                        resizeMode='contain' />
+
+                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.miniText}>09</Text>
+
+                                    <View style={{ width: 9, height: 1 }}></View>
+
+                                    <Image style={styles.miniIcon}
+                                        source={require('../img/ic_circle_x.png')}
+                                        resizeMode='contain' />
+
+                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.miniText}>09</Text>
+                                </View>
+
+
+                                {
+                                    ['', '', '', ''].map((item, idx) => (
+                                        <View key={idx} style={{ marginTop: 15, width: Layout.window.widthFix, height: 70, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 13 }}>
+                                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.mainBlue, fontWeight: 'bold' }}>15:00 ~ 16:20</Text>
+                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.baseTextGray, marginLeft: 7 }}>One 코딩 아카데미</Text>
+                                                </View>
+
+                                                <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 3 }}>(깁정훈) HTML 코딩 기초</Text>
+                                            </View>
+
+                                            <Image style={{ width: 32, height: 32 }}
+                                                source={require('../img/ic_qrcode.png')}
+                                                resizeMode='contain' />
+                                        </View>
+                                    ))
+                                }
                             </ScrollView>
                         </View>
                     </ImageBackground>
@@ -125,6 +165,16 @@ const Main = () => {
 }
 
 const styles = StyleSheet.create({
+    blurShadowWrap: {
+        marginTop: 15, paddingHorizontal: 10, height: 38,
+        justifyContent: 'center', alignItems: 'center', borderRadius: 30, flexDirection: 'row', backgroundColor: 'rgba(255,255,255,0.6)',
+    },
+    miniText: {
+        fontSize: Layout.fsSM, color: Colors.baseTextGray, marginLeft: 1, fontWeight: 'bold', marginBottom: 1
+    },
+    miniIcon: {
+        width: 17, height: 17, marginRight: 5
+    }
 });
 
 export default Main;

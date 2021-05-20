@@ -5,6 +5,7 @@ export default {
   defaultBg: '#ffffff',
   bgLightBlue: '#EFF2F5',
   mainColor:'#5bd9d9',
+  mainBlue:'#4F8DFC',
   skyBlue:'#4EBAFF',
   pastelBlue:'#66b5ff',
 
