@@ -49,7 +49,7 @@ const MenuPage = () => {
                             </View>
 
                             <View style={{ width: Layout.window.widthFix, alignItems: 'center', flexDirection: 'row', marginTop: 15 }}>
-                                <TouchableOpacity style={styles.mainBtnWrap}>
+                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'MyInfo', params: {} }); }}>
                                     <Image style={styles.mainBtnImg} source={require('../img/ic_my.png')} resizeMode='contain' />
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>내 정보</Text>
                                 </TouchableOpacity>
