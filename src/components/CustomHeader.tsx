@@ -8,7 +8,7 @@ import * as MyUtil from "../constants/MyUtil";
 import * as SG from '../constants/Signature'
 
 
-const CustomHeader = ({ navigation, isBackBtn, title }: SG.HeaderParams) => {
+const CustomHeader = ({ navigation, isBackBtn, title, themeColor }: SG.HeaderParams) => {
 
 
     return (
@@ -20,7 +20,7 @@ const CustomHeader = ({ navigation, isBackBtn, title }: SG.HeaderParams) => {
                             <TouchableOpacity onPress={() => { navigation.goBack(); }} style={{ padding: 5, marginLeft: 1 }}>
                                 <Image
                                     source={require('../img/btn_back_arrow2.png')}
-                                    style={{ width: 26, height: 26, tintColor: "#ffffff" }}
+                                    style={{ width: 26, height: 26, tintColor: themeColor }}
                                     resizeMode='contain' />
                             </TouchableOpacity>
                         )
@@ -28,7 +28,7 @@ const CustomHeader = ({ navigation, isBackBtn, title }: SG.HeaderParams) => {
 
                     {
                         title && (
-                            <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: "#ffffff", marginLeft: 0 }}>{title}</Text>
+                            <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: themeColor, marginLeft: 0 }}>{title}</Text>
                         )
                     }
                 </View>

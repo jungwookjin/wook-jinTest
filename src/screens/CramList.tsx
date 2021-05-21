@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, Alert } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, Alert,TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux'
 import { RootState } from '../components/redux/rootReducer'
@@ -8,7 +8,6 @@ import Loader from "../components/Loader"
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import CustomHeader from "../components/CustomHeader";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 
@@ -31,15 +30,15 @@ const CramList = () => {
             {
                 loading ? (<Loader />) : (
                     <View style={{ flex: 1, width: Layout.window.width }}>
-                        <CustomHeader navigation={navigation} isBackBtn={true} title={'학원 관리'} />
+                        <CustomHeader navigation={navigation} isBackBtn={true} title={'학원 관리'} themeColor={'#ffffff'}/>
 
                         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} keyboardShouldPersistTaps='handled'>
                             {
                                 ['', '', '', '', '', '', ''].map((item, idx) => (
                                     <ImageBackground key={idx} source={require('../img/temp_cram_img.png')} resizeMode='cover'
                                         style={{ width: Layout.window.widthFix, height: 160, borderRadius: 20, overflow: 'hidden', marginVertical: 12, flexDirection: 'column' }}>
-                                        
-                                        <TouchableOpacity style={{ height: 124, width: Layout.window.widthFix }} onPress={() => { Alert.alert('', '') }}></TouchableOpacity>
+
+                                        <TouchableOpacity style={{ height: 124, width: Layout.window.widthFix }} onPress={() => { navigation.navigate({ name: 'CramDetail', params: {} }); }}></TouchableOpacity>
 
                                         <View style={{ width: '100%', height: 36, paddingHorizontal: 15, backgroundColor: 'rgba(0,0,0,0.6)', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                             <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsM }}>S 코딩 아카데미</Text>

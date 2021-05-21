@@ -47,7 +47,7 @@ const Main = () => {
 
                                 <View style={{ flex: 1 }}></View>
 
-                                <TouchableOpacity style={{ marginRight: 10 }}>
+                                <TouchableOpacity style={{ marginRight: 10 }} onPress={() => { navigation.navigate({ name: 'AlarmList', params: {} }); }}>
                                     <Image style={{ width: 25, height: 25 }}
                                         source={require('../img/btn_noti.png')} resizeMode='contain' />
                                 </TouchableOpacity>
