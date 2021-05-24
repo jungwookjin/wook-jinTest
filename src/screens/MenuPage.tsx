@@ -56,7 +56,7 @@ const MenuPage = () => {
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
-                                <TouchableOpacity style={styles.mainBtnWrap}>
+                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'AttendChart', params: {} }); }}>
                                     <Image style={styles.mainBtnImg} source={require('../img/ic_graph.png')} resizeMode='contain' />
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>출석률</Text>
                                 </TouchableOpacity>

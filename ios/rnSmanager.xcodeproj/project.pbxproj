@@ -14,6 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1B2538583DE780DCBC4566F6 /* libPods-rnSmanager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB01E6080B958FFC5AF82836 /* libPods-rnSmanager.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		AF4DC1C6265B770C000341A2 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF4DC1C5265B770C000341A2 /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = rnSmanager/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8F9C6D62D0509B89D823B0C5 /* Pods-rnSmanager-rnSmanagerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSmanager-rnSmanagerTests.debug.xcconfig"; path = "Target Support Files/Pods-rnSmanager-rnSmanagerTests/Pods-rnSmanager-rnSmanagerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AB01E6080B958FFC5AF82836 /* libPods-rnSmanager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnSmanager.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF4DC1C4265B770C000341A2 /* rnSmanager-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rnSmanager-Bridging-Header.h"; sourceTree = "<group>"; };
+		AF4DC1C5265B770C000341A2 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		CE2F02A1BB0C9CFD6F509ED8 /* libPods-rnSmanager-rnSmanagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnSmanager-rnSmanagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE924444E85F8F751669414 /* Pods-rnSmanager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSmanager.release.xcconfig"; path = "Target Support Files/Pods-rnSmanager/Pods-rnSmanager.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -92,6 +95,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				AF4DC1C5265B770C000341A2 /* File.swift */,
+				AF4DC1C4265B770C000341A2 /* rnSmanager-Bridging-Header.h */,
 			);
 			name = rnSmanager;
 			sourceTree = "<group>";
@@ -205,7 +210,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1240;
 					};
 				};
 			};
@@ -375,6 +380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				AF4DC1C6265B770C000341A2 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -394,6 +400,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8F9C6D62D0509B89D823B0C5 /* Pods-rnSmanager-rnSmanagerTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -421,6 +428,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0C985350D33C8F53ACFDD302 /* Pods-rnSmanager-rnSmanagerTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = rnSmanagerTests/Info.plist;
@@ -462,6 +470,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rnsmanager;
 				PRODUCT_NAME = rnSmanager;
+				SWIFT_OBJC_BRIDGING_HEADER = "rnSmanager-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -488,6 +497,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.rnsmanager;
 				PRODUCT_NAME = rnSmanager;
+				SWIFT_OBJC_BRIDGING_HEADER = "rnSmanager-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

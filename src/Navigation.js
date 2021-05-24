@@ -14,6 +14,7 @@ import CramList from './screens/CramList';
 import CramDetail from './screens/CramDetail';
 import AlarmList from './screens/AlarmList';
 import MyInfo from './screens/MyInfo';
+import AttendChart from './screens/AttendChart';
 
 
 
@@ -81,6 +82,11 @@ function Navigator() {
                 <Stack.Screen
                     name="MyInfo"
                     component={MyInfo}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                />
+                <Stack.Screen
+                    name="AttendChart"
+                    component={AttendChart}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
                 />
             </Stack.Navigator>
