@@ -62,7 +62,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	 <dict>
+	 <key>CFBundleURLTypes</key>
+ <array>
+ <dict>
    <key>CFBundleTypeRole</key>
    <string>Editor</string>
    <key>CFBundleURLSchemes</key>
@@ -70,5 +72,6 @@
      <string>kakaoac48273ca475d976ab11d8da0227bc99</string>
    </array>
  </dict>
+ </array>
 </dict>
 </plist>
