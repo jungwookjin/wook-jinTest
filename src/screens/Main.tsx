@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { BlurView } from "@react-native-community/blur";
 import { useSelector } from 'react-redux'
 import { RootState } from '../components/redux/rootReducer'
 import * as ITF from '../constants/Interface'
-import CustomHeader from "../components/CustomHeader";
 import Loader from "../components/Loader"
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";

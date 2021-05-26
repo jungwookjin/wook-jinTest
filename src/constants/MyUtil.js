@@ -237,3 +237,11 @@ export function _consoleError(text) {
         console.error("** (myLog) ** \n" + text);
     }
 }
+
+export function _alertMsg(apiNm, dataResult) {
+    if (parseInt(dataResult.RSP_CODE) < 800) {
+        Alert.alert('', JSON.stringify(dataResult.MSG))
+    } else {
+        Alert.alert('', `네트워크 환경이 불안정 합니다!\n${apiNm}:${dataResult.RSP_CODE}`)
+    }
+}

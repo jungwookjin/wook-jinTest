@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "30231111987",
+    "project_id": "scamanager-ca4fb",
+    "storage_bucket": "scamanager-ca4fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30231111987:android:53f0f5d0f83bf23c09f646",
+        "android_client_info": {
+          "package_name": "com.rnsmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30231111987-97qrne9r24epqm6jrd628eehg051eksr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rnsmanager",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "30231111987-teh1i5t13nosc7coqmurhla7etp2kep4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr90ePtRTvz2JA6XyWOronpSqrV_7o6zc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30231111987-teh1i5t13nosc7coqmurhla7etp2kep4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

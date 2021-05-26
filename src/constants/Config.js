@@ -1,13 +1,12 @@
-const SERVER_URL = 'http://222.96.239.85:9184/'; // 정훈 PC
-// const SERVER_URL = 'http://127.0.0.1:9184/'; // 로컬호스트
-// const SERVER_URL = 'http://15.164.167.216:80/'; // AWS
+// const SERVER_URL = 'http://222.96.239.85:9184/'; // 정훈 PC
+const SERVER_URL = 'http://15.165.156.218:3909/'; // AWS
 
 
 export default {
 
   // ***************** 서버 호출
   SERVER_URL: SERVER_URL,
-  API_URL: SERVER_URL + 'drpet/',
+  API_URL: SERVER_URL + '',
 
   IMG_URL: SERVER_URL+'img/',   // 이미지 폴더
   PD_IMG_URL: SERVER_URL+'pd/',   // 상품 이미지 폴더

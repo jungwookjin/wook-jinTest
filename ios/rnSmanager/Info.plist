@@ -22,6 +22,19 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	 <key>KAKAO_APP_KEY</key>
+ <string>ac48273ca475d976ab11d8da0227bc99</string>
+ <key>LSApplicationQueriesSchemes</key>
+ <array>
+		<string>nmap</string>
+		<string>kakaomap</string>
+		<string>kakaoac48273ca475d976ab11d8da0227bc99</string>
+		<string>kakaokompassauth</string>
+		<string>storykompassauth</string>
+		<string>kakaolink</string>
+		<string>kakaotalk-5.9.7</string>
+		<string>storylink</string>
+ </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -49,5 +62,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	 <dict>
+   <key>CFBundleTypeRole</key>
+   <string>Editor</string>
+   <key>CFBundleURLSchemes</key>
+   <array>
+     <string>kakaoac48273ca475d976ab11d8da0227bc99</string>
+   </array>
+ </dict>
 </dict>
 </plist>

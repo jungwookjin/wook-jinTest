@@ -3,8 +3,8 @@ import * as SG from "./Signature";
 import Config from "./Config";
 import { Alert } from "react-native";
 
-export async function _login(login_corp: string, uniq_key: string, nick: string, profile_img: string, latitude: string, longitude: string): SG.httpReq {
-    const REQ_METHODS = "member/login";
+export async function _login(easy_type: string, uniq_key: string): SG.httpReq {
+    const REQ_METHODS = "users/login";
     let fcmToken = ""
 
     try {
@@ -23,7 +23,7 @@ export async function _login(login_corp: string, uniq_key: string, nick: string,
 
     const data =
     {
-        login_corp, uniq_key, nick, profile_img, latitude, longitude, token: fcmToken
+        easy_type, uniq_key
     };
 
     return await MyUtil._httpReq(REQ_METHODS, data);
