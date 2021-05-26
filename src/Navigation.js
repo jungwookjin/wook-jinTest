@@ -15,6 +15,7 @@ import CramDetail from './screens/CramDetail';
 import AlarmList from './screens/AlarmList';
 import MyInfo from './screens/MyInfo';
 import AttendChart from './screens/AttendChart';
+import InfoUpdate from './screens/InfoUpdate';
 
 
 
@@ -52,17 +53,23 @@ function Navigator() {
                 <Stack.Screen
                     name="Login"
                     component={Login}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false , gestureEnabled: false }}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
                 />
                 <Stack.Screen
                     name="Main"
                     component={Main}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false , gestureEnabled: false }}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
                 />
                 <Stack.Screen
                     name="MenuPage"
                     component={MenuPage}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, headerShown: false, gestureEnabled: false  }}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, headerShown: false, gestureEnabled: false }}
+                />
+                <Stack.Screen
+                    name="InfoUpdate"
+                    component={InfoUpdate}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                    initialParams={{ isJoin: false }}
                 />
                 <Stack.Screen
                     name="CramList"

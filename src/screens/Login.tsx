@@ -5,12 +5,10 @@ import { useDispatch } from 'react-redux'
 import { BlurView } from "@react-native-community/blur";
 import { RootState } from '../components/redux/rootReducer'
 import {
-    KakaoOAuthToken,
-    KakaoProfile,
+    KakaoOAuthToken, KakaoProfile, unlink,
+    logout as kakaoLogout,
     getProfile as getKakaoProfile,
-    login as kakaLogin,
-    logout,
-    unlink,
+    login as kakaLogin
 } from '@react-native-seoul/kakao-login';
 import Loader from "../components/Loader"
 import Colors from "../constants/Colors";
@@ -39,11 +37,21 @@ const Login = () => {
 
 
     const KakaoLoginStart = useCallback(async () => {
-        kakaLogin().then((token: KakaoOAuthToken) => {
-            getKakaoProfile().then((profile: KakaoProfile) => {
+        kakaLogin()
+            .then((token: KakaoOAuthToken) => {
+                if (!MyUtil._isNull(token.accessToken)) {
+                    return getKakaoProfile()
+                } else {
+                    throw '카카오 로그인 토큰 정보가 없습니다.';
+                }
+            })
+            .then(async (profile: any) => {
+                await kakaoLogout();
                 LoginStart("k", profile.id)
             })
-        });
+            .catch((errData) => { // reject에 에러 정보 존재
+                Alert.alert('KakaoLoginStart', JSON.stringify(errData))
+            });
     }, [])
 
 
@@ -55,7 +63,7 @@ const Login = () => {
             navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] });
 
         } else if (Number(result.DATA_RESULT.RSP_CODE) === CST.DB_USER_NONE) {
-            navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] });
+            navigation.navigate({ name: 'InfoUpdate', params: { isJoin: true } });
 
         } else {
             MyUtil._alertMsg('LoginStart', result.DATA_RESULT)
@@ -95,7 +103,7 @@ const Login = () => {
                                     </TouchableOpacity> */}
 
                                     <TouchableOpacity style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6, marginVertical: 5 }}
-                                        onPress={() => { }}>
+                                        onPress={() => { navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] }); }}>
                                         <Image style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6 }}
                                             source={require('../img/btn_login_apple.png')}
                                             resizeMode='contain' />

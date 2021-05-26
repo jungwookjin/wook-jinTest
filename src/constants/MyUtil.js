@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Alert, Platform, StatusBar } from "react-native";
+import { Alert, Platform, StatusBar,PermissionsAndroid } from "react-native";
 import Config from "./Config";
 import Layout from "./Layout";
 
@@ -243,5 +243,44 @@ export function _alertMsg(apiNm, dataResult) {
         Alert.alert('', JSON.stringify(dataResult.MSG))
     } else {
         Alert.alert('', `네트워크 환경이 불안정 합니다!\n${apiNm}:${dataResult.RSP_CODE}`)
+    }
+}
+
+
+
+export async function _checkCameraPermission() {
+    if (Platform.OS === 'android') {
+        let status = "";
+
+        status = await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            // PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+        ]);
+
+        const cameraGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA);
+        const readGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+        const writeGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)
+        // const recordGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO)
+
+        if (cameraGranted && readGranted && writeGranted) {
+            return true
+        } else {
+            return false;
+        }
+
+    } else {
+        return true;
+        // const statuses = await requestMultiple([PERMISSIONS.IOS.CAMERA, PERMISSIONS.IOS.MICROPHONE, PERMISSIONS.IOS.PHOTO_LIBRARY]);
+        // const cameraGranted = statuses[PERMISSIONS.IOS.CAMERA];
+        // const microphoneGranted = statuses[PERMISSIONS.IOS.MICROPHONE];
+        // const photoGranted = statuses[PERMISSIONS.IOS.PHOTO_LIBRARY];
+
+        // if ((cameraGranted === RESULTS.GRANTED) && (photoGranted === RESULTS.GRANTED) && (microphoneGranted === RESULTS.GRANTED)) {
+        //     return true
+        // } else {
+        //     return false;
+        // }
     }
 }
