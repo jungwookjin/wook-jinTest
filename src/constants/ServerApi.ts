@@ -28,3 +28,10 @@ export async function _login(easy_type: string, uniq_key: string): SG.httpReq {
 
     return await MyUtil._httpReq(REQ_METHODS, data);
 }
+
+export async function _join(formData: any) {
+    const REQ_METHODS = "users/join";
+
+    return await MyUtil._multiPartReq(REQ_METHODS, formData);
+}
+

@@ -2,11 +2,13 @@
 export type StackParams = {
     A: undefined;
     InfoUpdate: {
-        isJoin: boolean
+        isJoin: boolean,
+        uniq_key: string,
+        easy_type: string
     }
 }
 
-export type httpReq = Promise<{ IS_SUCCESS: boolean; DATA_RESULT: any; }> 
+export type httpReq = Promise<{ IS_SUCCESS: boolean; DATA_RESULT: any; }>
 export type HeaderParams = {
     navigation: any,
     isBackBtn: boolean,

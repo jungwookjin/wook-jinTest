@@ -17,6 +17,8 @@ export default {
     DB_USER_NONE: 211,    // 회원 정보 없음
     DB_TXT_USER_NONE: "회원 정보가 없습니다.",  
 
+    MALE: '1',    // 남자
+    FEMALE: '2',    // 여자
 
 
     // ### 이미지 경로

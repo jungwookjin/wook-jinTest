@@ -69,7 +69,7 @@ function Navigator() {
                     name="InfoUpdate"
                     component={InfoUpdate}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                    initialParams={{ isJoin: false }}
+                    initialParams={{ isJoin: false, uniq_key: "", easy_type: "" }}
                 />
                 <Stack.Screen
                     name="CramList"

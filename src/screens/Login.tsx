@@ -63,7 +63,7 @@ const Login = () => {
             navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] });
 
         } else if (Number(result.DATA_RESULT.RSP_CODE) === CST.DB_USER_NONE) {
-            navigation.navigate({ name: 'InfoUpdate', params: { isJoin: true } });
+            navigation.navigate({ name: 'InfoUpdate', params: { isJoin: true, easy_type: easy_type, uniq_key: uniq_key } });
 
         } else {
             MyUtil._alertMsg('LoginStart', result.DATA_RESULT)

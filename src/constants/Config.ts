@@ -1,4 +1,4 @@
-// const SERVER_URL = 'http://222.96.239.85:9184/'; // 정훈 PC
+// const SERVER_URL = 'http://211.221.7.127:9184/'; // 정훈 PC
 const SERVER_URL = 'http://15.165.156.218:3909/'; // AWS
 
 

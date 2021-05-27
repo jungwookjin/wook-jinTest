@@ -5,7 +5,7 @@ import * as MyUtil from "./MyUtil";
 
 
 // **** 어싱크 스토리지에서 데이터 가져옴 **** //
-export async function _getAsyncStorage(key) {
+export async function _getAsyncStorage(key:any) {
     MyUtil._consoleLog(`################ >>>>>> _getAsyncStorage () 요청 - key : ` + key);
 
     let item = null;
@@ -27,7 +27,7 @@ export async function _getAsyncStorage(key) {
 
 
 // **** 어싱크 스토리지에서 데이터 저장 **** //
-export async function _writeAsyncStorage(key, data) {
+export async function _writeAsyncStorage(key:any, data:any) {
     MyUtil._consoleLog(`################ >>>>>> _writeAsyncStorage () 요청 - key : ` + key);
 
     let result = null;

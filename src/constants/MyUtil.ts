@@ -1,16 +1,16 @@
 import axios from "axios";
-import { Alert, Platform, StatusBar,PermissionsAndroid } from "react-native";
+import { Alert, Platform, StatusBar, PermissionsAndroid } from "react-native";
 import Config from "./Config";
 import Layout from "./Layout";
 
-export async function _httpReq(methodName, data) {
+export async function _httpReq(methodName: string, data: any) {
     let result = "";
     let url = Config.API_URL + methodName;
 
     _consoleLog("============ >>>>>> " + url + " () 요청 - " + JSON.stringify(data));
 
     try {
-        let response = await axios({
+        let response: any = await axios({
             method: 'post',
             url: url,
             headers: { 'Content-Type': 'application/json' },
@@ -52,13 +52,13 @@ export async function _httpReq(methodName, data) {
 
 
 
-export async function _httpGetReq(reqURL) {
+export async function _httpGetReq(reqURL: string) {
     let result = "";
 
     _consoleLog("============ >>>>>> " + reqURL + " () 요청 - ");
 
     try {
-        let response = await axios({
+        let response: any = await axios({
             method: 'get',
             url: reqURL,
         });
@@ -100,13 +100,13 @@ export async function _httpGetReq(reqURL) {
 
 
 
-export async function _multiPartReq(methodName, formData) {
-    let result = { "result": true };
+export async function _multiPartReq(methodName: string, formData: any) {
+    let result: any = '';
     let url = Config.API_URL + methodName;
 
     _consoleLog("============ >>>>>> " + methodName + " () 요청 - " + JSON.stringify(formData));
 
-    let response = await axios({
+    let response: any = await axios({
         method: 'post',
         url: url,
         headers: { 'content-type': 'multipart/form-data' },
@@ -135,7 +135,7 @@ export async function _multiPartReq(methodName, formData) {
 
 
 // 천단위 콤마
-export function _toThousandsCommas(num) {
+export function _toThousandsCommas(num: any) {
     if (typeof (num) === 'undefined') {
         return "0"
     } else if (num === null) {
@@ -147,7 +147,7 @@ export function _toThousandsCommas(num) {
     }
 }
 
-export function _dateFormat(date) {
+export function _dateFormat(date: Date) {
     let hour = date.getHours() < 10 ? ("0" + date.getHours()) : date.getHours()
     let min = date.getMinutes() < 10 ? ("0" + date.getMinutes()) : date.getMinutes()
     let result = hour + ":" + min;
@@ -156,29 +156,29 @@ export function _dateFormat(date) {
 }
 
 
-export function getNotchHight() {
-    let notchHeight = 0;
-    if (Platform.OS == 'ios') {
-        if (StatusBar.currentHeight() == 20) {
-            notchHeight = 25;
-        }
-        else if (StatusBar.currentHeight() > 20) {
-            notchHeight = StatusBar.currentHeight() + 34;
-        }
-    }
-    else if (Platform.OS == 'android') {
-        if (StatusBar.currentHeight() > 25) {
-            notchHeight = 0;
-        }
-        else {
-            notchHeight = StatusBar.currentHeight();
-        }
-    }
-    return notchHeight;
-}
+// export function getNotchHight() {
+//     let notchHeight = 0;
+//     if (Platform.OS == 'ios') {
+//         if (StatusBar.currentHeight() == 20) {
+//             notchHeight = 25;
+//         }
+//         else if (StatusBar.currentHeight() > 20) {
+//             notchHeight = StatusBar.currentHeight() + 34;
+//         }
+//     }
+//     else if (Platform.OS == 'android') {
+//         if (StatusBar.currentHeight() > 25) {
+//             notchHeight = 0;
+//         }
+//         else {
+//             notchHeight = StatusBar.currentHeight();
+//         }
+//     }
+//     return notchHeight;
+// }
 
 
-export function _isNull(obj) {
+export function _isNull(obj: any) {
     if (typeof (obj) === 'undefined') {
         return true
     } else if (obj === "undefined") {
@@ -206,11 +206,20 @@ export function _isNull(obj) {
     }
 }
 
+export function _isNum(obj:string) {
+    var regType1 = /^[0-9]*$/;
+    if (!regType1.test(obj)) {
+        return false
+    } else {
+        return true
+    }
+}
+
 // URL 쿼리 스트링 파서
-export function _queryStringParse(url) {
+export function _queryStringParse(url: string) {
     if (_isNull(url)) { return "" }
     var regex = /[?&]([^=#]+)=([^&#]*)/g,
-        params = {},
+        params: any = {},
         match;
     while (match = regex.exec(url)) {
         params[match[1]] = match[2];
@@ -219,26 +228,26 @@ export function _queryStringParse(url) {
 }
 
 // 도메인 파서
-export function _getDomain(url) {
+export function _getDomain(url: string) {
     if (_isNull(url)) { return "" }
     console.log("url : " + JSON.stringify(url))
     let domain = url.split('?')
     return domain.length > 0 ? domain[0] : "";
 }
 
-export function _consoleLog(text) {
+export function _consoleLog(text: string) {
     if (Config.IS_LOG) {
         console.log("** (myLog) ** \n" + text);
     }
 }
 
-export function _consoleError(text) {
+export function _consoleError(text: string) {
     if (Config.IS_LOG) {
         console.error("** (myLog) ** \n" + text);
     }
 }
 
-export function _alertMsg(apiNm, dataResult) {
+export function _alertMsg(apiNm: string, dataResult: any) {
     if (parseInt(dataResult.RSP_CODE) < 800) {
         Alert.alert('', JSON.stringify(dataResult.MSG))
     } else {
@@ -250,9 +259,8 @@ export function _alertMsg(apiNm, dataResult) {
 
 export async function _checkCameraPermission() {
     if (Platform.OS === 'android') {
-        let status = "";
 
-        status = await PermissionsAndroid.requestMultiple([
+        await PermissionsAndroid.requestMultiple([
             PermissionsAndroid.PERMISSIONS.CAMERA,
             // PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,

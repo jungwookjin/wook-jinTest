@@ -370,6 +370,8 @@ PODS:
     - SwiftyJSON (= 5.0)
   - RNCMaskedView (0.1.11):
     - React
+  - RNDateTimePicker (3.5.0):
+    - React-Core
   - RNFBApp (12.0.0):
     - Firebase/CoreOnly (= 8.0.0)
     - React-Core
@@ -432,6 +434,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNCharts (from `../node_modules/react-native-charts-wrapper`)
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -533,6 +536,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-charts-wrapper"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
@@ -603,6 +608,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCharts: d364ca2085e24edb9ee0390d3fb7209257daa44c
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
+  RNDateTimePicker: d4f276aabaf26386bb4dca86e8c92087e7151ba0
   RNFBApp: cc2ff3f925840c53f0117d92e0f5e269b356d0f7
   RNFBAuth: 6853dd2d92ed8635831679b695a6690151ae6b77
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
