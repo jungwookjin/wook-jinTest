@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform } from "react-native";
+import { ExpandableCalendar, CalendarProvider, Calendar } from 'react-native-calendars';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux'
 import { RootState } from '../components/redux/rootReducer'
@@ -21,66 +22,18 @@ const Main = () => {
     const [selectDay, setSelectDay] = useState('');
     const [calendarHeight, setCalendarHeight] = useState(400);
     const [isWeekCal, setIsWeekCal] = useState(true);
-    const [arrCalData, setArrCalData] = useState<any>([]);
-    const calWidth = Layout.window.width - 16;
+
 
     useEffect(() => {
         async function fetchData() {
-
-            initCalendar(new Date('2021-06-01'))
-
-            // setSelectDay(sprintf("%04d-%02d-%02d", today.getFullYear(), today.getMonth() + 1, today.getDate()))
-            // setLoading(false)
+            console.log("rxLoginInfo : " + JSON.stringify(rxLoginInfo))
+            let today = new Date();
+            setSelectDay(sprintf("%04d-%02d-%02d", today.getFullYear(), today.getMonth() + 1, today.getDate()))
+            setLoading(false)
         }
         fetchData();
     }, []);
 
-
-
-    const initCalendar = (getDate: any) => {
-        const lastDate = new Date(getDate.getFullYear(), getDate.getMonth() + 1, 0);
-        const nowDayOfWeek = getDate.getDay();
-        const nowDay = getDate.getDate();
-        const nowMonth = getDate.getMonth() + 1;
-        const nowYear = getDate.getFullYear();
-
-        const weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
-        const weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek));
-
-        // 선택 날짜가 몇주차인지 확인
-        const selectedDayOfMonth = getDate.getDate();
-        const first = new Date(getDate.getFullYear() + '/' + (getDate.getMonth() + 1) + '/01');
-        const monthFirstDateDay = first.getDay();
-
-        console.log("첫날 요일 : " + monthFirstDateDay);  // 0: 일  ~ 6: 토
-        console.log("마지막 일자 : " + lastDate.getDate());
-
-        console.log("오늘 일자 : " + getDate.getDate() / 7);
-        console.log("오늘 일자의 주차 : " + Math.ceil((selectedDayOfMonth + monthFirstDateDay) / 7));
-
-        console.log("이번주의 시작 (이월 주의) : " + weekStartDate.getDate());
-        console.log("이번주의 마지막 (이월 주의) : " + weekEndDate.getDate());
-
-
-        const calData = [];
-
-        // 첫달 시작 요일에 따라서 빈값 넣어줍니다.
-        for (let i = 0; i < monthFirstDateDay; i++) {
-            console.log("empty")
-            calData.push({ date: '', fullDay: '' })
-        }
-
-        // 실제 달력 구성 요일
-        for (let i = 1; i < lastDate.getDate() + 1; i++) {
-            const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, i);
-            console.log("day : " + i + " / fullDay : " + fullDay)
-            calData.push({ day: i + '', fullDay: fullDay })
-        }
-
-        console.log('arrCalData.length : ' + calData.length)
-        setArrCalData(calData);
-        setLoading(false)
-    }
 
 
     return (
@@ -129,23 +82,76 @@ const Main = () => {
                             }}>
                                 {
                                     isWeekCal ? (
-                                        <View style={{ width: calWidth + 10, marginLeft: 5, position: 'relative', height: 115 }}>
-
+                                        <View style={{ width: Layout.window.width, position: 'relative', height: 115 }}>
+                                            <CalendarProvider
+                                                style={{ width: Layout.window.width }}
+                                                onDayPress={(day: any) => { setSelectDay(day.dateString) }}
+                                                onDateChanged={(date: any) => {
+                                                    MyUtil._consoleLog("onDateChanged : " + JSON.stringify(date))
+                                                    setSelectDay(date)
+                                                }}
+                                                // onMonthChange={this.onMonthChange}
+                                                disabledOpacity={0.6}
+                                                date={selectDay}
+                                            >
+                                                <ExpandableCalendar
+                                                    style={{
+                                                        ...Platform.select({
+                                                            ios: {
+                                                                shadowColor: "rgb(255, 255, 255)",
+                                                                shadowOpacity: 1,
+                                                                shadowRadius: 0,
+                                                                shadowOffset: {
+                                                                    height: 0,
+                                                                    width: 0
+                                                                }
+                                                            },
+                                                            android: {
+                                                                elevation: 0
+                                                            }
+                                                        })
+                                                    }}
+                                                    monthFormat={'yyyy-MM'}
+                                                    disablePan
+                                                    hideKnob
+                                                    disableWeekScroll
+                                                    disableAllTouchEventsForDisabledDays
+                                                    hideExtraDays={true}
+                                                // firstDay={1}
+                                                // scrollEnabled={false}
+                                                // hideArrows
+                                                // horizontal={false}
+                                                // markedDates={{ "2021-05-28": { "marked": true }, "2021-05-31": { "marked": true }, "2021-06-01": { "marked": true }, "2021-06-02": { "marked": true }, "2021-06-03": { "disabled": true }, "2021-06-04": { "marked": true }, "2021-06-05": { "marked": true }, "2021-06-06": { "disabled": true }, "2021-06-07": { "marked": true }, "2021-06-08": { "marked": true }, "2021-06-09": { "marked": true } }}
+                                                />
+                                            </CalendarProvider>
                                         </View>
                                     ) : (
-                                        <View style={{ width: calWidth + 10, marginLeft: 5, position: 'relative', height: 400, flexWrap: 'wrap', flexDirection: 'row', alignItems: 'center', }}>
-                                            {
-                                                arrCalData.map((item: any, idx: number) => (
-                                                    <View key={idx} style={{ width: calWidth / 7, height: calWidth / 7, justifyContent: 'center', alignItems: 'center' }}>
-                                                        <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: 'blue' }}>{item.day}</Text>
-                                                    </View>
-                                                ))
-                                            }
+                                        <View style={{ width: Layout.window.width - 20, position: 'relative' }}>
+                                            <Calendar
+                                                current={selectDay}
+                                                date={selectDay}
+                                                monthFormat={'yyyy-MM'}
+                                                onDayPress={(day) => { setSelectDay(day.dateString) }}
+                                                onDayLongPress={(day) => { console.log('selected day', day) }}
+                                                onMonthChange={(month) => { console.log('month changed', month) }}
+                                                hideExtraDays={true}
+                                                // firstDay={1}
+                                                onPressArrowLeft={subtractMonth => subtractMonth()}
+                                                onPressArrowRight={addMonth => addMonth()}
+                                                markedDates={{
+                                                    [selectDay]: {
+                                                        selected: true,
+                                                        disableTouchEvent: true,
+                                                        selectedColor: Colors.pastelBlue,
+                                                        selectedTextColor: '#ffffff'
+                                                    }
+                                                }}
+                                            />
                                         </View>
                                     )
                                 }
 
-                                <TouchableOpacity style={{ padding: 10, position: 'absolute', bottom: 5, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}
+                                <TouchableOpacity style={{ padding: 10, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}
                                     onPress={() => { isWeekCal ? setIsWeekCal(false) : setIsWeekCal(true) }}>
                                     <View style={{ width: 58, height: 10, borderRadius: 5, backgroundColor: '#e0e0e0' }}></View>
                                 </TouchableOpacity>
