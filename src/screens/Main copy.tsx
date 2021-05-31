@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform } from "react-native";
-import { ExpandableCalendar, CalendarProvider, Calendar } from 'react-native-calendars';
 import { useNavigation } from '@react-navigation/native';
+import { Calendar, CalendarList, WeekCalendar } from 'react-native-calendars';
 import { useSelector } from 'react-redux'
 import { RootState } from '../components/redux/rootReducer'
 import * as ITF from '../constants/Interface'
-import * as MyUtil from '../constants/MyUtil'
 import Loader from "../components/Loader"
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
@@ -15,21 +14,17 @@ const sprintf = Sprintf.sprintf;
 
 
 const Main = () => {
-    const refScrollView = useRef(null);
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [selectDay, setSelectDay] = useState('');
-    const [calendarHeight, setCalendarHeight] = useState(400);
-    const [isWeekCal, setIsWeekCal] = useState(true);
-
 
     useEffect(() => {
         async function fetchData() {
             console.log("rxLoginInfo : " + JSON.stringify(rxLoginInfo))
             let today = new Date();
             setSelectDay(sprintf("%04d-%02d-%02d", today.getFullYear(), today.getMonth() + 1, today.getDate()))
-            setLoading(false)
+
         }
         fetchData();
     }, []);
@@ -44,8 +39,8 @@ const Main = () => {
                         style={{ width: Layout.window.width, flex: 1 }}
                         imageStyle={{ ...Platform.select({ ios: { opacity: 0.7 }, android: { opacity: 0.6 } }) }}
                     >
-                        <View style={{ width: Layout.window.width, flex: 1 }}>
 
+                        <View style={{ width: Layout.window.width, flex: 1 }}>
                             <View style={{ width: Layout.window.width, height: 44, backgroundColor: '#ffffff', flexDirection: 'row', alignItems: 'center', zIndex: 99, ...Platform.select({ android: { elevation: 0 } }) }}>
                                 <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsL, color: Colors.defaultText, marginLeft: 15, fontWeight: 'bold' }}>김정훈</Text>
                                 <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsSM, color: Colors.skyBlue, marginLeft: 3 }}>학생</Text>
@@ -64,7 +59,7 @@ const Main = () => {
                             </View>
 
                             <View style={{
-                                width: Layout.window.width, paddingBottom: 0, backgroundColor: '#ffffff', zIndex: 90, alignItems: 'center', justifyContent: 'center',
+                                width: Layout.window.width, paddingBottom: 15, backgroundColor: '#ffffff', zIndex: 90, justifyContent: 'center', alignItems: 'center',
                                 ...Platform.select({
                                     ios: {
                                         shadowColor: "rgb(50, 50, 50)",
@@ -80,92 +75,33 @@ const Main = () => {
                                     }
                                 })
                             }}>
-                                {
-                                    isWeekCal ? (
-                                        <View style={{ width: Layout.window.width, position: 'relative', height: 115 }}>
-                                            <CalendarProvider
-                                                style={{ width: Layout.window.width }}
-                                                onDayPress={(day: any) => { setSelectDay(day.dateString) }}
-                                                onDateChanged={(date: any) => {
-                                                    MyUtil._consoleLog("onDateChanged : " + JSON.stringify(date))
-                                                    setSelectDay(date)
-                                                }}
-                                                // onMonthChange={this.onMonthChange}
-                                                disabledOpacity={0.6}
-                                                date={selectDay}
-                                            >
-                                                <ExpandableCalendar
-                                                    style={{
-                                                        ...Platform.select({
-                                                            ios: {
-                                                                shadowColor: "rgb(255, 255, 255)",
-                                                                shadowOpacity: 1,
-                                                                shadowRadius: 0,
-                                                                shadowOffset: {
-                                                                    height: 0,
-                                                                    width: 0
-                                                                }
-                                                            },
-                                                            android: {
-                                                                elevation: 0
-                                                            }
-                                                        })
-                                                    }}
-                                                    monthFormat={'yyyy-MM'}
-                                                    disablePan
-                                                    hideKnob
-                                                    disableWeekScroll
-                                                    disableAllTouchEventsForDisabledDays
-                                                    hideExtraDays={true}
-                                                // firstDay={1}
-                                                // scrollEnabled={false}
-                                                // hideArrows
-                                                // horizontal={false}
-                                                // markedDates={{ "2021-05-28": { "marked": true }, "2021-05-31": { "marked": true }, "2021-06-01": { "marked": true }, "2021-06-02": { "marked": true }, "2021-06-03": { "disabled": true }, "2021-06-04": { "marked": true }, "2021-06-05": { "marked": true }, "2021-06-06": { "disabled": true }, "2021-06-07": { "marked": true }, "2021-06-08": { "marked": true }, "2021-06-09": { "marked": true } }}
-                                                />
-                                            </CalendarProvider>
-                                        </View>
-                                    ) : (
-                                        <View style={{ width: Layout.window.width - 20, position: 'relative' }}>
-                                            <Calendar
-                                                current={selectDay}
-                                                date={selectDay}
-                                                monthFormat={'yyyy-MM'}
-                                                onDayPress={(day) => { setSelectDay(day.dateString) }}
-                                                onDayLongPress={(day) => { console.log('selected day', day) }}
-                                                onMonthChange={(month) => { console.log('month changed', month) }}
-                                                hideExtraDays={true}
-                                                // firstDay={1}
-                                                onPressArrowLeft={subtractMonth => subtractMonth()}
-                                                onPressArrowRight={addMonth => addMonth()}
-                                                markedDates={{
-                                                    [selectDay]: {
-                                                        selected: true,
-                                                        disableTouchEvent: true,
-                                                        selectedColor: Colors.pastelBlue,
-                                                        selectedTextColor: '#ffffff'
-                                                    }
-                                                }}
-                                            />
-                                        </View>
-                                    )
-                                }
+                                <View style={{ width: Layout.window.width - 20 }}>
+                                    {/* <WeekCalendar  style={{ width: Layout.window.width - 20 }}/> */}
+                                    <Calendar
+                                        monthFormat={'yyyy-MM'}
+                                        onDayPress={(day) => { setSelectDay(day.dateString) }}
+                                        onDayLongPress={(day) => { console.log('selected day', day) }}
+                                        onMonthChange={(month) => { console.log('month changed', month) }}
+                                        hideExtraDays={true}
+                                        firstDay={1}
+                                        onPressArrowLeft={subtractMonth => subtractMonth()}
+                                        onPressArrowRight={addMonth => addMonth()}
+                                        markedDates={{
+                                            [selectDay]: {
+                                                selected: true,
+                                                disableTouchEvent: true,
+                                                selectedColor: Colors.pastelBlue,
+                                                selectedTextColor: '#ffffff'
+                                            }
+                                        }}
+                                    />
+                                </View>
 
-                                <TouchableOpacity style={{ padding: 10, justifyContent: 'center', alignItems: 'center', marginTop: 10 }}
-                                    onPress={() => { isWeekCal ? setIsWeekCal(false) : setIsWeekCal(true) }}>
-                                    <View style={{ width: 58, height: 10, borderRadius: 5, backgroundColor: '#e0e0e0' }}></View>
-                                </TouchableOpacity>
+                                <View style={{ position: 'absolute', top: -5, width: Layout.window.width, height: 10, backgroundColor: '#ffffff' }}></View>
                             </View>
 
-                            <ScrollView ref={refScrollView}
-                                contentContainerStyle={{ flexGrow: 1, alignItems: 'center', width: Layout.window.width, paddingBottom: 40 }} keyboardShouldPersistTaps='handled'
-                            // onScroll={({ nativeEvent }) => {
-                            //     console.log("nativeEvent.contentOffset.y : " + (nativeEvent.contentOffset.y))
-                            //     if(nativeEvent.contentOffset.y >= 0){
-                            //         setsScrollY(nativeEvent.contentOffset.y)
-                            //     }
-                            // }}
-                            >
+
+                            <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', width: Layout.window.width, paddingBottom: 40 }} keyboardShouldPersistTaps='handled'>
                                 <View style={styles.blurShadowWrap}>
                                     <Image style={styles.miniIcon}
                                         source={require('../img/ic_circle_check.png')}

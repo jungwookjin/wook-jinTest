@@ -1,15 +1,16 @@
-// const SERVER_URL = 'http://211.221.7.127:9184/'; // 정훈 PC
-const SERVER_URL = 'http://15.165.156.218:3909/'; // AWS
+// const BASE_URL = 'http://211.221.7.127:9184/'; // test (정훈 PC)
+// const BASE_URL = 'http://59.20.45.204:8091/';  // test (이사님 pc)
+const BASE_URL = 'http://15.165.156.218:3909/'; // AWS
 
 
 export default {
 
   // ***************** 서버 호출
-  SERVER_URL: SERVER_URL,
-  API_URL: SERVER_URL + '',
+  SERVER_URL: BASE_URL,
+  API_URL: BASE_URL + '',
 
-  IMG_URL: SERVER_URL+'img/',   // 이미지 폴더
-  PD_IMG_URL: SERVER_URL+'pd/',   // 상품 이미지 폴더
+  IMG_URL: BASE_URL+'img/',   // 이미지 폴더
+  PD_IMG_URL: BASE_URL+'pd/',   // 상품 이미지 폴더
 
   // ***************** 어싱크 키
   AS_KEY_LOGIN_INFO: 'as_key_login_info', 

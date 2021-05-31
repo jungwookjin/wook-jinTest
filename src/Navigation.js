@@ -13,7 +13,7 @@ import MenuPage from './screens/MenuPage';
 import CramList from './screens/CramList';
 import CramDetail from './screens/CramDetail';
 import AlarmList from './screens/AlarmList';
-import MyInfo from './screens/MyInfo';
+import MyInfo from './screens/del';
 import AttendChart from './screens/AttendChart';
 import InfoUpdate from './screens/InfoUpdate';
 

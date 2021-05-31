@@ -60,7 +60,7 @@ const InfoUpdate = () => {
         if (MyUtil._isNull(getName)) { return Alert.alert('', '이름을 입력해주세요!') }
         if (MyUtil._isNull(getBirth)) { return Alert.alert('', '생년월일을 입력해주세요!') }
         if (MyUtil._isNull(getGender)) { return Alert.alert('', '성별을 입력해주세요!') }
-        if (!MyUtil._isNum(getPhone)) { return Alert.alert("", "핸드폰번호는 숫자만 입력해주세요.") }
+        if (!MyUtil._isNum(getPhone)) { return Alert.alert('', '핸드폰번호는 숫자만 입력해주세요.') }
 
         const TimeStamp = Date.now();
         const formData = new FormData();
@@ -357,6 +357,7 @@ const InfoUpdate = () => {
 const styles = StyleSheet.create({
     ipWrap: {
         width: 280,
+        height: 48,
         backgroundColor: '#ffffff',
         borderRadius: 15,
         marginTop: 15,
@@ -364,13 +365,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     menuTitle: {
-        width: 76, marginLeft: 15, fontWeight: 'bold', flexDirection: 'row', alignItems: 'center'
+        width: 76, marginLeft: 20, fontWeight: 'bold', flexDirection: 'row', alignItems: 'center'
     },
     menuTitleText: {
         fontSize: Layout.fsSM, color: '#000000', fontWeight: 'bold'
     },
     tiBox: {
-        flex: 1, fontSize: Layout.fsSM, color: '#000000'
+        flex: 1, fontSize: Layout.fsSM, color: '#000000', paddingTop: 0,paddingBottom:0, marginTop: 0
     }
 });
 
