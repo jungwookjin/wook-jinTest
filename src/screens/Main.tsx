@@ -18,7 +18,7 @@ const Main = () => {
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(true);
-    const [selectDay, setSelectDay] = useState('');
+    const [selectDay, setSelectDay] = useState<any>({ date: '', fullDay: '' });
     const [calendarHeight, setCalendarHeight] = useState(400);
     const [isWeekCal, setIsWeekCal] = useState(true);
     const [arrCalData, setArrCalData] = useState<any>([]);
@@ -136,9 +136,10 @@ const Main = () => {
                                         <View style={{ width: calWidth + 10, marginLeft: 5, position: 'relative', height: 400, flexWrap: 'wrap', flexDirection: 'row', alignItems: 'center', }}>
                                             {
                                                 arrCalData.map((item: any, idx: number) => (
-                                                    <View key={idx} style={{ width: calWidth / 7, height: calWidth / 7, justifyContent: 'center', alignItems: 'center' }}>
-                                                        <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: 'blue' }}>{item.day}</Text>
-                                                    </View>
+                                                    <TouchableOpacity key={idx} style={{ width: calWidth / 7, height: calWidth / 7, justifyContent: 'center', alignItems: 'center' }}
+                                                        onPress={() => { !MyUtil._isNull(item.day) && setSelectDay({ day: item.day, fullDay: item.fullDay }) }}>
+                                                        <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? 'blue' : '#000000' }}>{item.day}</Text>
+                                                    </TouchableOpacity>
                                                 ))
                                             }
                                         </View>
