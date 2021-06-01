@@ -19,7 +19,6 @@ const Main = () => {
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(true);
-    const [calendarHeight, setCalendarHeight] = useState(400);
     const [isWeekCal, setIsWeekCal] = useState(true);
     const [arrCalData, setArrCalData] = useState<any>([]);
     const [selectDay, setSelectDay] = useState<any>({ date: null, fullDay: null, weekNo: 0 });
@@ -29,7 +28,7 @@ const Main = () => {
     useEffect(() => {
         async function fetchData() {
             const today = new Date();
-            initCalendar(today);
+            initCalendar(today, true);
 
             // setSelectDay(sprintf("%04d-%02d-%02d", today.getFullYear(), today.getMonth() + 1, today.getDate()))
             // setLoading(false)
@@ -47,7 +46,8 @@ const Main = () => {
 
     }, [isWeekCal]);
 
-    const initCalendar = useCallback((getDate: any) => {
+
+    const initCalendar = useCallback((getDate: any, isWeekStart: boolean) => {
         setViewDate(getDate)
         const lastDate = new Date(getDate.getFullYear(), getDate.getMonth() + 1, 0);
         const nowDayOfWeek = getDate.getDay();
@@ -88,7 +88,11 @@ const Main = () => {
             calData.push({ day: i + '', fullDay: fullDay })
         }
 
-        // 최초 세팅
+        MyUtil._consoleLog('max : ' + (Math.floor((calData.length - 1) / 7) + 1))
+
+        const maxWeekNo = (Math.floor((calData.length - 1) / 7) + 1);
+
+        // 최초 세팅 , 뷰 변경
         if (viewWeekNo.weekNo === -1) {
             const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, getDate.getDate())
             setSelectDay({ date: getDate.getDate(), fullDay: fullDay })
@@ -96,9 +100,17 @@ const Main = () => {
             const weekNo = Math.floor((monthFirstDateDay + getDate.getDate() - 1) / 7) + 1;
             const startNo = (weekNo - 1) * 7;
             const endNo = startNo + 6;
-            setViewWeekNo({ weekNo, startNo, endNo })
+            setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo })
         } else {
-            setViewWeekNo({ weekNo: 1, startNo: 0, endNo: 6 })
+
+            if (isWeekStart) {
+                setViewWeekNo({ weekNo: 1, startNo: 0, endNo: 6, maxWeekNo })
+            } else {
+                const weekNo = maxWeekNo;
+                const startNo = (weekNo - 1) * 7;
+                const endNo = startNo + 6;
+                setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo })
+            }
         }
 
         setArrCalData(calData);
@@ -107,19 +119,71 @@ const Main = () => {
 
 
 
+    const WeekPrev = useCallback(async (getViewDate) => {
+        const weekNo = viewWeekNo.weekNo - 1;
+        if (weekNo <= 0) {
+            getViewDate.setMonth(getViewDate.getMonth() - 1);
+            const newDate = new Date(getViewDate)
+            setViewDate(newDate);
+            initCalendar(newDate, false);
+
+        } else {
+            const startNo = (weekNo - 1) * 7;
+            const endNo = startNo + 6;
+            setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo: viewWeekNo.maxWeekNo });
+        }
+    }, [viewWeekNo])
+
+
+    const WeekNext = useCallback(async (getViewDate) => {
+        const weekNo = viewWeekNo.weekNo + 1;
+        if (weekNo > viewWeekNo.maxWeekNo) {
+            getViewDate.setMonth(getViewDate.getMonth() + 1);
+            const newDate = new Date(getViewDate)
+            setViewDate(newDate);
+            initCalendar(newDate, true);
+
+        } else {
+            const startNo = (weekNo - 1) * 7;
+            const endNo = startNo + 6;
+            setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo: viewWeekNo.maxWeekNo });
+        }
+    }, [viewWeekNo])
+
+
     const CalPrev = useCallback(async (getViewDate) => {
         getViewDate.setMonth(getViewDate.getMonth() - 1);
         const newDate = new Date(getViewDate)
         setViewDate(newDate);
-        initCalendar(newDate);
+        initCalendar(newDate, true);
     }, [viewWeekNo]);
+
 
     const CalNext = useCallback(async (getViewDate) => {
         getViewDate.setMonth(getViewDate.getMonth() + 1);
         const newDate = new Date(getViewDate)
         setViewDate(newDate);
-        initCalendar(newDate);
+        initCalendar(newDate, true);
     }, [viewWeekNo]);
+
+
+    const SelectCalDay = useCallback(async (item, idx) => {
+        const weekNo = Math.floor(idx / 7) + 1;
+        const startNo = (weekNo - 1) * 7;
+        const endNo = startNo + 6;
+
+        MyUtil._consoleLog('weekNo : ' + weekNo)
+        setViewWeekNo({ weekNo, startNo, endNo })
+        setSelectDay({ day: item.day, fullDay: item.fullDay });
+    }, []);
+
+
+
+
+
+
+
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
@@ -167,16 +231,16 @@ const Main = () => {
                             }}>
 
                                 <View style={{ width: Layout.window.width, justifyContent: 'center', alignItems: 'center', marginVertical: 15, flexDirection: 'row' }}>
-                                    <TouchableOpacity style={{ marginRight: 8, padding: 5 }} onPress={() => { CalPrev(viewDate) }}>
+                                    <TouchableOpacity style={{ marginRight: 8, padding: 5 }} onPress={() => { isWeekCal ? WeekPrev(viewDate) : CalPrev(viewDate) }}>
                                         <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
                                             source={require('../img/btn_previous.png')} />
                                     </TouchableOpacity>
 
                                     <View style={{ width: 120, justifyContent: 'center', alignItems: 'center' }}>
-                                        <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: '#000000' }}>{viewDate.getFullYear()}년 {viewDate.getMonth() + 1}월 ({viewWeekNo.weekNo}주)</Text>
+                                        <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: '#000000' }}>{viewDate.getFullYear()}년 {viewDate.getMonth() + 1}월{isWeekCal && ` (${viewWeekNo.weekNo}주)`}</Text>
                                     </View>
 
-                                    <TouchableOpacity style={{ marginLeft: 8, padding: 5 }} onPress={() => { CalNext(viewDate) }}>
+                                    <TouchableOpacity style={{ marginLeft: 8, padding: 5 }} onPress={() => { isWeekCal ? WeekNext(viewDate) : CalNext(viewDate) }}>
                                         <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
                                             source={require('../img/btn_next.png')} />
                                     </TouchableOpacity>
@@ -198,15 +262,7 @@ const Main = () => {
                                             {
                                                 arrCalData.map((item: any, idx: number) => (
                                                     (idx >= viewWeekNo.startNo && idx <= viewWeekNo.endNo) && <TouchableOpacity key={idx} style={styles.calItemBox}
-                                                        onPress={() => {
-                                                            if (!MyUtil._isNull(item.day)) {
-                                                                const weekNo = Math.floor(idx / 7) + 1;
-                                                                const startNo = (weekNo - 1) * 7;
-                                                                const endNo = startNo + 6;
-                                                                setViewWeekNo({ weekNo, startNo, endNo })
-                                                                setSelectDay({ day: item.day, fullDay: item.fullDay });
-                                                            }
-                                                        }}>
+                                                        onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx); } }}>
                                                         <View style={{ width: '60%', height: '60%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
                                                             <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
                                                         </View>
@@ -219,15 +275,7 @@ const Main = () => {
                                             {
                                                 arrCalData.map((item: any, idx: number) => (
                                                     <TouchableOpacity key={idx} style={styles.calItemBox}
-                                                        onPress={() => {
-                                                            if (!MyUtil._isNull(item.day)) {
-                                                                const weekNo = Math.floor(idx / 7) + 1;
-                                                                const startNo = (weekNo - 1) * 7;
-                                                                const endNo = startNo + 6;
-                                                                setViewWeekNo({ weekNo, startNo, endNo })
-                                                                setSelectDay({ day: item.day, fullDay: item.fullDay });
-                                                            }
-                                                        }}>
+                                                        onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx); } }}>
                                                         <View style={{ width: '60%', height: '60%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
                                                             <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
                                                         </View>
