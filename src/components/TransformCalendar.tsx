@@ -24,11 +24,22 @@ const TransformCalendar = () => {
     const [selectDay, setSelectDay] = useState<any>({ date: null, fullDay: null, weekNo: 0 });
     const [viewDate, setViewDate] = useState<Date>(new Date());
     const [viewWeekNo, setViewWeekNo] = useState<any>({ weekNo: -1, startNo: 0, endNo: 0, maxWeekNo: 0 });
+    const animHeight = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         const today = new Date();
         initCalendar(today, true);
     }, []);
+
+
+    useEffect(() => {
+        Animated.timing(animHeight, {
+            toValue: !isWeekCal ? 84 + (((calWidth / 7) - 2) * viewWeekNo.maxWeekNo) : 84 + ((calWidth / 7) - 2),
+            duration: 200,
+            useNativeDriver: false,
+        }).start();
+    }, [isWeekCal]);
+
 
 
 
@@ -100,9 +111,17 @@ const TransformCalendar = () => {
             }
         }
 
+        if (!isWeekCal) { // 변경됐을때만 실행하면 더 좋을듯
+            Animated.timing(animHeight, {
+                toValue: 84 + (((calWidth / 7) - 2) * maxWeekNo),
+                duration: 300,
+                useNativeDriver: false,
+            }).start();
+        }
+
         setArrCalData(calData);
         setLoading(false)
-    }, [viewWeekNo]);
+    }, [viewWeekNo, isWeekCal]);
 
 
 
@@ -172,7 +191,7 @@ const TransformCalendar = () => {
         <View>
             {
                 loading ? (<Loader />) : (
-                    <Animated.View style={[{ width: Layout.window.width, paddingBottom: 0, backgroundColor: '#ffffff', zIndex: 90, alignItems: 'center', justifyContent: 'center' }, {}]}>
+                    <Animated.View style={[{ width: Layout.window.width, height: animHeight, paddingBottom: 0, backgroundColor: '#ffffff', zIndex: 90, alignItems: 'center', overflow: 'hidden' }, {}]}>
                         <View style={{ width: Layout.window.width, justifyContent: 'center', alignItems: 'center', marginTop: 2, marginBottom: 15, flexDirection: 'row' }}>
                             <TouchableOpacity style={{ marginRight: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekPrev(viewDate) : CalPrev(viewDate) }}>
                                 <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
