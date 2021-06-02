@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, Animated, View, Text, Image, TouchableOpacity } from "react-native";
-import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux'
 import { RootState } from '../components/redux/rootReducer'
-import * as ITF from '../constants/Interface'
 import * as MyUtil from '../constants/MyUtil'
 import Loader from "../components/Loader"
 import Colors from "../constants/Colors";
@@ -11,19 +9,16 @@ import Layout from "../constants/Layout";
 import Sprintf from 'sprintf-js';
 const sprintf = Sprintf.sprintf;
 const calWidth = Layout.window.width - 16;
-let flag = true;
-
 
 
 const TransformCalendar = () => {
-    const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(true);
     const [isWeekCal, setIsWeekCal] = useState(true);
     const [arrCalData, setArrCalData] = useState<any>([]);
-    const [selectDay, setSelectDay] = useState<any>({ date: null, fullDay: null, weekNo: 0 });
+    const [selectDay, setSelectDay] = useState<any>({ date: null, fullDay: null });
     const [viewDate, setViewDate] = useState<Date>(new Date());
-    const [viewWeekNo, setViewWeekNo] = useState<any>({ weekNo: -1, startNo: 0, endNo: 0, maxWeekNo: 0 });
+    const [viewWeekNo, setViewWeekNo] = useState<any>({ weekNo: -1, startNo: 0, endNo: 0, maxWeekNo: 0 }); // #미니캘린더용 @뷰의 주차 @한주의 시작일 @한주의 끝일 @달의 최대주차
     const animHeight = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -39,8 +34,6 @@ const TransformCalendar = () => {
             useNativeDriver: false,
         }).start();
     }, [isWeekCal]);
-
-
 
 
 
@@ -74,21 +67,22 @@ const TransformCalendar = () => {
         const calData = [];
 
         // 첫달 시작 요일에 따라서 빈값 넣어줍니다.
-        for (let i = 0; i < monthFirstDateDay; i++) {
+        for (let emptyCnt = 0; emptyCnt < monthFirstDateDay; emptyCnt++) {
             MyUtil._consoleLog("empty")
             calData.push({ date: '', fullDay: '' })
         }
 
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 달력에 뭔가 표시하려면 여기서 데이터 삽입 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         // 실제 달력 구성 요일
-        for (let i = 1; i < lastDate.getDate() + 1; i++) {
-            const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, i);
-            MyUtil._consoleLog("day : " + i + " / fullDay : " + fullDay)
-            calData.push({ day: i + '', fullDay: fullDay })
+        for (let dayCnt = 1; dayCnt < lastDate.getDate() + 1; dayCnt++) {
+            const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, dayCnt);
+            MyUtil._consoleLog("day : " + dayCnt + " / fullDay : " + fullDay)
+            calData.push({ day: dayCnt + '', fullDay: fullDay })
         }
 
-        MyUtil._consoleLog('max : ' + (Math.floor((calData.length - 1) / 7) + 1))
-
         const maxWeekNo = (Math.floor((calData.length - 1) / 7) + 1);
+        MyUtil._consoleLog('maxWeekNo : ' + maxWeekNo);
+
 
         // 최초 세팅 , 뷰 변경
         if (viewWeekNo.weekNo === -1) {
@@ -160,7 +154,7 @@ const TransformCalendar = () => {
     }, [viewWeekNo])
 
 
-    const CalPrev = useCallback(async (getViewDate) => {
+    const MonthPrev = useCallback(async (getViewDate) => {
         getViewDate.setMonth(getViewDate.getMonth() - 1);
         const newDate = new Date(getViewDate)
         setViewDate(newDate);
@@ -168,7 +162,7 @@ const TransformCalendar = () => {
     }, [viewWeekNo]);
 
 
-    const CalNext = useCallback(async (getViewDate) => {
+    const MonthNext = useCallback(async (getViewDate) => {
         getViewDate.setMonth(getViewDate.getMonth() + 1);
         const newDate = new Date(getViewDate)
         setViewDate(newDate);
@@ -187,13 +181,24 @@ const TransformCalendar = () => {
     }, []);
 
 
+    // ** 전역 터치 이벤트
+    const onGlobalTouchEvent = ({ nativeEvent }: any) => {
+        console.log("nativeEvent.pageY : " + nativeEvent.pageY)
+    }
+
+    // ** 전역 터치 종료 이벤트
+    const onGlobalTouchRelease = (evt:any) => {
+
+
+    }
+
     return (
         <View>
             {
                 loading ? (<Loader />) : (
                     <Animated.View style={[{ width: Layout.window.width, height: animHeight, paddingBottom: 0, backgroundColor: '#ffffff', zIndex: 90, alignItems: 'center', overflow: 'hidden' }, {}]}>
                         <View style={{ width: Layout.window.width, justifyContent: 'center', alignItems: 'center', marginTop: 2, marginBottom: 15, flexDirection: 'row' }}>
-                            <TouchableOpacity style={{ marginRight: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekPrev(viewDate) : CalPrev(viewDate) }}>
+                            <TouchableOpacity style={{ marginRight: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekPrev(viewDate) : MonthPrev(viewDate) }}>
                                 <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
                                     source={require('../img/btn_previous.png')} />
                             </TouchableOpacity>
@@ -202,7 +207,7 @@ const TransformCalendar = () => {
                                 <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: '#000000' }}>{viewDate.getFullYear()}년 {viewDate.getMonth() + 1}월{isWeekCal && ` (${viewWeekNo.weekNo}주)`}</Text>
                             </View>
 
-                            <TouchableOpacity style={{ marginLeft: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekNext(viewDate) : CalNext(viewDate) }}>
+                            <TouchableOpacity style={{ marginLeft: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekNext(viewDate) : MonthNext(viewDate) }}>
                                 <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
                                     source={require('../img/btn_next.png')} />
                             </TouchableOpacity>
@@ -221,14 +226,14 @@ const TransformCalendar = () => {
                         <View style={[styles.calContainer, { paddingBottom: 20 }]}>
                             {
                                 isWeekCal ? (
-                                    arrCalData.map((item: any, idx: number) => (
-                                        (idx >= viewWeekNo.startNo && idx <= viewWeekNo.endNo) && <TouchableOpacity key={idx} style={styles.calItemBox}
+                                    arrCalData.map((item: any, idx: number) => ((idx >= viewWeekNo.startNo && idx <= viewWeekNo.endNo) && (
+                                        <TouchableOpacity key={idx} style={styles.calItemBox}
                                             onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
                                             <View style={{ width: '60%', height: '60%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
                                                 <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
                                             </View>
                                         </TouchableOpacity>
-                                    ))
+                                    )))
 
                                 ) : (
                                     arrCalData.map((item: any, idx: number) => (
