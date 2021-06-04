@@ -42,7 +42,7 @@ const TransformCalendar = () => {
 
 
     const initCalendar = useCallback((getDate: any, isWeekStart: boolean) => {
-        setViewDate(getDate)
+        setViewDate(getDate);
         const lastDate = new Date(getDate.getFullYear(), getDate.getMonth() + 1, 0);
         const nowDayOfWeek = getDate.getDay();
         const nowDay = getDate.getDate();
@@ -89,22 +89,22 @@ const TransformCalendar = () => {
 
         // 최초 세팅 , 뷰 변경
         if (viewWeekNo.weekNo === -1) {
-            const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, getDate.getDate())
-            setSelectDay({ date: getDate.getDate(), fullDay: fullDay })
+            const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, getDate.getDate());
+            setSelectDay({ date: getDate.getDate(), fullDay: fullDay });
 
             const weekNo = Math.floor((monthFirstDateDay + getDate.getDate() - 1) / 7) + 1;
             const startNo = (weekNo - 1) * 7;
             const endNo = startNo + 6;
-            setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo })
+            setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo });
         } else {
 
             if (isWeekStart) {
-                setViewWeekNo({ weekNo: 1, startNo: 0, endNo: 6, maxWeekNo })
+                setViewWeekNo({ weekNo: 1, startNo: 0, endNo: 6, maxWeekNo });
             } else {
                 const weekNo = maxWeekNo;
                 const startNo = (weekNo - 1) * 7;
                 const endNo = startNo + 6;
-                setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo })
+                setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo });
             }
         }
 
@@ -117,7 +117,7 @@ const TransformCalendar = () => {
         }
 
         setArrCalData(calData);
-        setLoading(false)
+        setLoading(false);
     }, [viewWeekNo, isWeekCal]);
 
 
@@ -126,7 +126,7 @@ const TransformCalendar = () => {
         const weekNo = viewWeekNo.weekNo - 1;
         if (weekNo <= 0) {
             getViewDate.setMonth(getViewDate.getMonth() - 1);
-            const newDate = new Date(getViewDate)
+            const newDate = new Date(getViewDate);
             setViewDate(newDate);
             initCalendar(newDate, false);
 
@@ -140,12 +140,11 @@ const TransformCalendar = () => {
 
     const WeekNext = useCallback(async (getViewDate) => {
         const weekNo = viewWeekNo.weekNo + 1;
-
-        MyUtil._consoleLog("weekNo : " + weekNo + " / viewWeekNo.maxWeekNo : " + (viewWeekNo.maxWeekNo))
+        MyUtil._consoleLog("weekNo : " + weekNo + " / viewWeekNo.maxWeekNo : " + (viewWeekNo.maxWeekNo));
 
         if (weekNo > viewWeekNo.maxWeekNo) {
             getViewDate.setMonth(getViewDate.getMonth() + 1);
-            const newDate = new Date(getViewDate)
+            const newDate = new Date(getViewDate);
             setViewDate(newDate);
             initCalendar(newDate, true);
 
@@ -159,7 +158,7 @@ const TransformCalendar = () => {
 
     const MonthPrev = useCallback(async (getViewDate) => {
         getViewDate.setMonth(getViewDate.getMonth() - 1);
-        const newDate = new Date(getViewDate)
+        const newDate = new Date(getViewDate);
         setViewDate(newDate);
         initCalendar(newDate, true);
     }, [viewWeekNo]);
@@ -167,7 +166,7 @@ const TransformCalendar = () => {
 
     const MonthNext = useCallback(async (getViewDate) => {
         getViewDate.setMonth(getViewDate.getMonth() + 1);
-        const newDate = new Date(getViewDate)
+        const newDate = new Date(getViewDate);
         setViewDate(newDate);
         initCalendar(newDate, true);
     }, [viewWeekNo]);
@@ -178,8 +177,8 @@ const TransformCalendar = () => {
         const startNo = (weekNo - 1) * 7;
         const endNo = startNo + 6;
 
-        MyUtil._consoleLog('weekNo : ' + weekNo)
-        setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo: getViewWeelNo.maxWeekNo })
+        MyUtil._consoleLog('weekNo : ' + weekNo);
+        setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo: getViewWeelNo.maxWeekNo });
         setSelectDay({ day: item.day, fullDay: item.fullDay });
     }, []);
 
@@ -268,7 +267,6 @@ const TransformCalendar = () => {
                             </TouchableOpacity>
                         </Animated.View >
                     </PanGestureHandler>
-
                 )
             }
         </View >

@@ -101,7 +101,7 @@ const Main = () => {
 
 
                                 {
-                                    ['', '', '', ''].map((item, idx) => (
+                                    ['', '', '', '', '', '', '', '', '', ''].map((item, idx) => (
                                         <View key={idx} style={{ marginTop: 15, width: Layout.window.widthFix, height: 70, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 13 }}>
                                             <View style={{ flex: 1, justifyContent: 'center' }}>
                                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>

@@ -66,7 +66,7 @@ const Login = () => {
             navigation.navigate({ name: 'InfoUpdate', params: { isJoin: true, easy_type: easy_type, uniq_key: uniq_key } });
 
         } else {
-            MyUtil._alertMsg('LoginStart', result.DATA_RESULT)
+            MyUtil._alertMsg('LoginStart', result.DATA_RESULT);
         }
     }, [])
 
