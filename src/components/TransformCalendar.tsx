@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, Animated, View, Text, Image, TouchableOpacity } from "react-native";
-import { useSelector } from 'react-redux'
-import { RootState } from '../components/redux/rootReducer'
-import * as MyUtil from '../constants/MyUtil'
-import Loader from "../components/Loader"
+import { useSelector } from 'react-redux';
+import { PanGestureHandler } from 'react-native-gesture-handler';
+import { RootState } from '../components/redux/rootReducer';
+import * as MyUtil from '../constants/MyUtil';
+import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import Sprintf from 'sprintf-js';
@@ -20,6 +21,8 @@ const TransformCalendar = () => {
     const [viewDate, setViewDate] = useState<Date>(new Date());
     const [viewWeekNo, setViewWeekNo] = useState<any>({ weekNo: -1, startNo: 0, endNo: 0, maxWeekNo: 0 }); // #미니캘린더용 @뷰의 주차 @한주의 시작일 @한주의 끝일 @달의 최대주차
     const animHeight = useRef(new Animated.Value(0)).current;
+    let sXGesture: any = 0;
+    let sYGesture: any = 0;
 
     useEffect(() => {
         const today = new Date();
@@ -181,82 +184,94 @@ const TransformCalendar = () => {
     }, []);
 
 
-    // ** 전역 터치 이벤트
-    const onGlobalTouchEvent = ({ nativeEvent }: any) => {
-        console.log("nativeEvent.pageY : " + nativeEvent.pageY)
-    }
-
-    // ** 전역 터치 종료 이벤트
-    const onGlobalTouchRelease = (evt:any) => {
-
-
-    }
-
     return (
         <View>
             {
                 loading ? (<Loader />) : (
-                    <Animated.View style={[{ width: Layout.window.width, height: animHeight, paddingBottom: 0, backgroundColor: '#ffffff', zIndex: 90, alignItems: 'center', overflow: 'hidden' }, {}]}>
-                        <View style={{ width: Layout.window.width, justifyContent: 'center', alignItems: 'center', marginTop: 2, marginBottom: 15, flexDirection: 'row' }}>
-                            <TouchableOpacity style={{ marginRight: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekPrev(viewDate) : MonthPrev(viewDate) }}>
-                                <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
-                                    source={require('../img/btn_previous.png')} />
-                            </TouchableOpacity>
+                    <PanGestureHandler
+                        // onGestureEvent={(event) => { console.log('event : ', event.nativeEvent.translationY); }}
+                        onBegan={(event) => {
+                            sYGesture = MyUtil._isNull(event.nativeEvent.translationY) ? 0 : event.nativeEvent.translationY;
+                            sXGesture = MyUtil._isNull(event.nativeEvent.translationX) ? 0 : event.nativeEvent.translationX;
+                        }}
+                        onEnded={(event) => {
+                            const eYGesture: any = MyUtil._isNull(event.nativeEvent.translationY) ? 0 : event.nativeEvent.translationY;
+                            const eXGesture: any = MyUtil._isNull(event.nativeEvent.translationX) ? 0 : event.nativeEvent.translationX;
+                            const gYResult = eYGesture - sYGesture;
+                            const gXResult = eXGesture - sXGesture;
 
-                            <View style={{ width: 120, justifyContent: 'center', alignItems: 'center' }}>
-                                <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: '#000000' }}>{viewDate.getFullYear()}년 {viewDate.getMonth() + 1}월{isWeekCal && ` (${viewWeekNo.weekNo}주)`}</Text>
+                            if (gYResult > 60) {
+                                setIsWeekCal(false)
+                            } else if (gYResult < -60) {
+                                setIsWeekCal(true)
+                            } else if (gXResult > 80) {
+                                isWeekCal ? WeekPrev(viewDate) : MonthPrev(viewDate)
+                            } else if (gXResult < -80) {
+                                isWeekCal ? WeekNext(viewDate) : MonthNext(viewDate)
+                            }
+                        }}
+                    >
+                        <Animated.View style={[{ width: Layout.window.width, height: animHeight, paddingBottom: 0, backgroundColor: '#ffffff', zIndex: 90, alignItems: 'center', overflow: 'hidden' }, {}]}>
+                            <View style={{ width: Layout.window.width, justifyContent: 'center', alignItems: 'center', marginTop: 2, marginBottom: 15, flexDirection: 'row' }}>
+                                <TouchableOpacity style={{ marginRight: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekPrev(viewDate) : MonthPrev(viewDate) }}>
+                                    <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
+                                        source={require('../img/btn_previous.png')} />
+                                </TouchableOpacity>
+
+                                <View style={{ width: 120, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: '#000000' }}>{viewDate.getFullYear()}년 {viewDate.getMonth() + 1}월{isWeekCal && ` (${viewWeekNo.weekNo}주)`}</Text>
+                                </View>
+
+                                <TouchableOpacity style={{ marginLeft: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekNext(viewDate) : MonthNext(viewDate) }}>
+                                    <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
+                                        source={require('../img/btn_next.png')} />
+                                </TouchableOpacity>
                             </View>
 
-                            <TouchableOpacity style={{ marginLeft: 3, padding: 10 }} onPress={() => { isWeekCal ? WeekNext(viewDate) : MonthNext(viewDate) }}>
-                                <Image style={{ width: 10, height: 10, tintColor: Colors.mainBlue }} resizeMode='contain'
-                                    source={require('../img/btn_next.png')} />
+                            <View style={styles.calContainer}>
+                                <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#ff5c5c' }]}>일</Text></View>
+                                <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>월</Text></View>
+                                <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>화</Text></View>
+                                <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>수</Text></View>
+                                <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>목</Text></View>
+                                <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>금</Text></View>
+                                <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#5c87ff' }]}>토</Text></View>
+                            </View>
+
+                            <View style={[styles.calContainer, { paddingBottom: 20 }]}>
+                                {
+                                    isWeekCal ? (
+                                        arrCalData.map((item: any, idx: number) => ((idx >= viewWeekNo.startNo && idx <= viewWeekNo.endNo) && (
+                                            <TouchableOpacity key={idx} style={styles.calItemBox}
+                                                onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
+                                                <View style={{ width: '60%', height: '61%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
+                                                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        )))
+
+                                    ) : (
+                                        arrCalData.map((item: any, idx: number) => (
+                                            <TouchableOpacity key={idx} style={styles.calItemBox}
+                                                onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
+                                                <View style={{ width: '60%', height: '61%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
+                                                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        ))
+                                    )
+                                }
+                            </View>
+
+                            <TouchableOpacity style={{ padding: 10, position: 'absolute', bottom: 0, justifyContent: 'center', alignItems: 'center', marginTop: 10 }} onPress={() => { setIsWeekCal(!isWeekCal) }}>
+                                <View style={{ width: 58, height: 6, borderRadius: 3, backgroundColor: '#ebebeb' }}></View>
                             </TouchableOpacity>
-                        </View>
-
-                        <View style={styles.calContainer}>
-                            <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#ff5c5c' }]}>일</Text></View>
-                            <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>월</Text></View>
-                            <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>화</Text></View>
-                            <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>수</Text></View>
-                            <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>목</Text></View>
-                            <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#9c9c9c' }]}>금</Text></View>
-                            <View style={styles.calHeaderItemBox}><Text allowFontScaling={false} style={[styles.calHeaderFont, { color: '#5c87ff' }]}>토</Text></View>
-                        </View>
-
-                        <View style={[styles.calContainer, { paddingBottom: 20 }]}>
-                            {
-                                isWeekCal ? (
-                                    arrCalData.map((item: any, idx: number) => ((idx >= viewWeekNo.startNo && idx <= viewWeekNo.endNo) && (
-                                        <TouchableOpacity key={idx} style={styles.calItemBox}
-                                            onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
-                                            <View style={{ width: '60%', height: '60%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
-                                                <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    )))
-
-                                ) : (
-                                    arrCalData.map((item: any, idx: number) => (
-                                        <TouchableOpacity key={idx} style={styles.calItemBox}
-                                            onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
-                                            <View style={{ width: '60%', height: '61%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
-                                                <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    ))
-
-                                )
-                            }
-                        </View>
-
-                        <TouchableOpacity style={{ padding: 10, position: 'absolute', bottom: 0, justifyContent: 'center', alignItems: 'center', marginTop: 10 }} onPress={() => { setIsWeekCal(!isWeekCal) }}>
-                            <View style={{ width: 58, height: 6, borderRadius: 3, backgroundColor: '#ebebeb' }}></View>
-                        </TouchableOpacity>
-                    </Animated.View >
+                        </Animated.View >
+                    </PanGestureHandler>
 
                 )
             }
-        </View>
+        </View >
     );
 
 }
