@@ -29,6 +29,18 @@ export async function _login(easy_type: string, uniq_key: string): SG.httpReq {
     return await MyUtil._httpReq(REQ_METHODS, data);
 }
 
+
+export async function m_app_alarm(u_id: string,row_no:string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_alarm";
+ 
+    const data =
+    {
+        u_id,row_no
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
 export async function _join(formData: any) {
     const REQ_METHODS = "users/join";
 

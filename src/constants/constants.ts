@@ -7,7 +7,7 @@ export default {
 
 
     // ### DB 에러 코드
-    DB_SUCSESS: 200,    // 정상 응답
+    DB_SUCSESS: 100,    // 정상 응답
     DB_ERR_SERVER: 500,     // 서버 에러
     DB_ERR_SERVER_L: 501,     // 서버 로직 에러
     DB_ERR_WRONG_REQ: 400,  // 잘못된 요청

@@ -1,6 +1,6 @@
 // const BASE_URL = 'http://211.221.7.127:9184/'; // test (정훈 PC)
-// const BASE_URL = 'http://59.20.45.204:8091/';  // test (이사님 pc)
-const BASE_URL = 'http://15.165.156.218:3909/'; // AWS
+const BASE_URL = 'http://59.20.45.204:8091/';  // test (이사님 pc)
+// const BASE_URL = 'http://15.165.156.218:3909/'; // AWS
 
 
 export default {

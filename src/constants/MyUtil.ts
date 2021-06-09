@@ -249,15 +249,15 @@ export function _consoleError(text: string) {
 
 export function _alertMsg(apiNm: any, dataResult: any) {
     if (!_isNull(dataResult.MSG)) {
-        Alert.alert("", "네트워크 환경이 불안정 합니다!\n:" + dataResult.MSG)
+        Alert.alert("", "" + dataResult.MSG)
+    } else if (!_isNull(dataResult.ERROR)) {
+        Alert.alert("", `네트워크 환경이 불안정 합니다!\n${apiNm}:${dataResult.ERROR}`)
     } else if (!_isNull(dataResult.RSP_CODE)) {
         Alert.alert("", `네트워크 환경이 불안정 합니다!\n${apiNm}:${dataResult.RSP_CODE}`)
     } else {
         Alert.alert("", `네트워크 환경이 불안정 합니다!\n${apiNm}`)
     }
 }
-
-
 
 
 export async function _checkCameraPermission() {

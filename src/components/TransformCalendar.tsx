@@ -199,13 +199,13 @@ const TransformCalendar = () => {
                             const gYResult = eYGesture - sYGesture;
                             const gXResult = eXGesture - sXGesture;
 
-                            if (gYResult > 60) {
+                            if (gYResult > 30) {
                                 setIsWeekCal(false)
-                            } else if (gYResult < -60) {
+                            } else if (gYResult < -30) {
                                 setIsWeekCal(true)
-                            } else if (gXResult > 80) {
+                            } else if (gXResult > 50) {
                                 isWeekCal ? WeekPrev(viewDate) : MonthPrev(viewDate)
-                            } else if (gXResult < -80) {
+                            } else if (gXResult < -50) {
                                 isWeekCal ? WeekNext(viewDate) : MonthNext(viewDate)
                             }
                         }}
