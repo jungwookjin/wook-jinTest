@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, Image, TouchableOpacity, StatusBar, Text, Platform } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { StyleSheet, ScrollView, SafeAreaView, View, Image, TouchableOpacity, StatusBar, Text, Platform, FlatList, ActivityIndicator } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux'
-import { RootState } from '../components/redux/rootReducer'
-import * as ITF from '../constants/Interface'
-import Loader from "../components/Loader"
+import { useSelector } from 'react-redux';
+import { RootState } from '../components/redux/rootReducer';
+import * as ServerApi from "../constants/ServerApi";
+import * as MyUtil from "../constants/MyUtil";
+import CST from '../constants/constants';
+import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
+import NoticeItem from "../components/NoticeItem";
 
 
 
@@ -14,13 +17,51 @@ const MenuPage = () => {
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
+    const [loadingFlag, setLoadingFlag] = useState<boolean>(false);
+    const [pageNo, setPageNo] = useState<number>(1);
+    const [arrData, setArrData] = useState<any>([]);
+    const [loadingList, setLoadingList] = useState<boolean>(false);
+
 
     useEffect(() => {
-        async function fetchData() {
-            console.log("rxLoginInfo : " + JSON.stringify(rxLoginInfo))
-        }
-        fetchData();
+        m_app_noti(true);
     }, []);
+
+
+    const m_app_noti = useCallback(async (isReset: boolean) => {
+        setLoadingFlag(true);
+        let rowNo = pageNo + 1;
+        let getLoadingFalg = false;
+        let arrPrev = arrData;
+        let newArray: any = [];
+
+        if (isReset) {
+            rowNo = 1;
+            arrPrev = [];
+        }
+
+        const result = await ServerApi.m_app_noti(rxLoginInfo.u_id, String(rowNo));
+        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+            if (result.DATA_RESULT.QUERY_DATA.length > 0) {
+                newArray = [...arrPrev, ...result.DATA_RESULT.QUERY_DATA];
+            } else {
+                if (isReset) {
+                    newArray = [];
+                } else {
+                    getLoadingFalg = true;
+                    newArray = [...arrPrev, ...result.DATA_RESULT.QUERY_DATA];
+                }
+            }
+        } else {
+            MyUtil._alertMsg('m_app_alarm', result.DATA_RESULT);
+        }
+
+        setPageNo(rowNo);
+        setLoadingFlag(getLoadingFalg);
+        setArrData(newArray);
+        setLoading(false);
+        setLoadingList(false);
+    }, [rxLoginInfo, pageNo, arrData]);
 
 
     return (
@@ -78,45 +119,60 @@ const MenuPage = () => {
 
                             <View style={{ marginVertical: 20, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
 
-                            <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }}
-                                keyboardShouldPersistTaps='handled'>
+                            <FlatList
+                            
+                                style={{ width: '100%' }}
+                                data={arrData}
+                                keyExtractor={(item, index) => String(index)}
+                                onEndReached={() => { if (loadingFlag === false) { m_app_noti(false) } }}
+                                onEndReachedThreshold={0.8}
+                                initialNumToRender={15} // 필수 * 없으면 데이터 많을시 앱 죽음(IOS)
+                                ListHeaderComponent={() => {
+                                    return (
+                                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 0 }}>
+                                            <View style={{ flexDirection: 'row', width: Layout.window.widthFix, alignItems: 'center', justifyContent: 'space-between', marginTop: 5 }}>
+                                                <TouchableOpacity style={styles.midBtnWrap}>
+                                                    <Image style={styles.midBtnImg} source={require('../img/ic_share.png')} resizeMode='contain' />
 
-                                <View style={{ flexDirection: 'row', width: Layout.window.widthFix, alignItems: 'center', justifyContent: 'space-between', marginTop: 5 }}>
-                                    <TouchableOpacity style={styles.midBtnWrap}>
-                                        <Image style={styles.midBtnImg} source={require('../img/ic_share.png')} resizeMode='contain' />
+                                                    <View style={styles.midBtnTextWrap}>
+                                                        <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
+                                                        <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>코드 공유</Text>
+                                                    </View>
+                                                </TouchableOpacity>
 
-                                        <View style={styles.midBtnTextWrap}>
-                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
-                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>코드 공유</Text>
-                                        </View>
-                                    </TouchableOpacity>
+                                                <TouchableOpacity style={styles.midBtnWrap}>
+                                                    <Image style={styles.midBtnImg} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
 
-                                    <TouchableOpacity style={styles.midBtnWrap}>
-                                        <Image style={styles.midBtnImg} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
-
-                                        <View style={styles.midBtnTextWrap}>
-                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
-                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>QR 이미지</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <View style={styles.notiWrap}>
-                                    {
-                                        ['', '', '', '', ''].map((item, idx) => (
-                                            <View key={idx} style={{ width: '90%', paddingVertical: 15, flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: Colors.grayLine }}>
-                                                <Image style={{ width: 20, height: 20 }} source={require('../img/ic_noti2.png')} resizeMode='contain' />
-
-                                                <View style={{ flex: 1, paddingLeft: 7 }}>
-                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.pastelPurple }}>2021-05-11 to 모두</Text>
-                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 4 }}>5월 12일 부처님 오신날은 휴원 합니다.</Text>
-                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.baseTextGray, marginTop: 2 }}>5월은 유독 쉬는 날이 많은 것 같습니다. :) 잘 쉬시고 5월 …</Text>
-                                                </View>
+                                                    <View style={styles.midBtnTextWrap}>
+                                                        <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
+                                                        <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>QR 이미지</Text>
+                                                    </View>
+                                                </TouchableOpacity>
                                             </View>
-                                        ))
-                                    }
-                                </View>
-                            </ScrollView>
+
+                                            {
+                                                MyUtil._isNull(arrData) && (
+                                                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+                                                        <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
+                                                    </View>
+                                                )
+                                            }
+                                        </View>
+                                    )
+                                }}
+                                ListFooterComponent={() => {
+                                    if (loadingList) {
+                                        return (
+                                            <View style={{ width: Layout.window.width, height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
+                                                <ActivityIndicator color='#0000ff' />
+                                            </View>
+                                        )
+                                    } else { return <></>; }
+                                }}
+                                renderItem={({ item }) => {
+                                    return <NoticeItem />
+                                }}
+                            />
                         </View>
                     )
                 }

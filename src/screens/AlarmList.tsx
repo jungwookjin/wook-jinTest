@@ -93,26 +93,25 @@ const AlarmList = () => {
                                     ListHeaderComponent={() => {
                                         if (MyUtil._isNull(arrData)) {
                                             return (
-                                                <View style={{width:'100%',justifyContent:'center',alignItems:'center',marginTop:30}}>
+                                                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
                                                     <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
                                                 </View>
                                             )
-                                        } else {
-                                            return <></>
-                                        }
+                                        } else { return <></>; }
+                                    }}
+                                    ListFooterComponent={() => {
+                                        if (loadingList) {
+                                            return (
+                                                <View style={{ width: Layout.window.width, height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
+                                                    <ActivityIndicator color='#0000ff' />
+                                                </View>
+                                            )
+                                        } else { return <></>; }
                                     }}
                                     renderItem={({ item }) => {
                                         return <NoticeItem />
                                     }}
                                 />
-
-                                {
-                                    loadingList && (
-                                        <View style={{ width: Layout.window.width, height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
-                                            <ActivityIndicator color='#0000ff' />
-                                        </View>
-                                    )
-                                }
                             </View>
                             {/* </ScrollView> */}
                         </View>
