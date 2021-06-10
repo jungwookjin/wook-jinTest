@@ -14,7 +14,7 @@ const sprintf = Sprintf.sprintf;
 const calWidth = Layout.window.width - 16;
 
 
-const TransformCalendar = () => {
+const TransformCalendar = ({ GetDayItems }: any) => {
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(true);
     const [isWeekCal, setIsWeekCal] = useState(true);
@@ -118,12 +118,8 @@ const TransformCalendar = () => {
         // 최초 세팅 , 뷰 변경
         if (viewWeekNo.weekNo === -1) {
             const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, getDate.getDate());
-            setSelectDay({ date: getDate.getDate(), fullDay: fullDay });
+            SelectCalDay({ day: getDate.getDate(), fullDay: fullDay }, (monthFirstDateDay + getDate.getDate() - 1), { maxWeekNo });
 
-            const weekNo = Math.floor((monthFirstDateDay + getDate.getDate() - 1) / 7) + 1;
-            const startNo = (weekNo - 1) * 7;
-            const endNo = startNo + 6;
-            setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo });
         } else {
 
             if (isWeekStart) {
@@ -204,9 +200,9 @@ const TransformCalendar = () => {
         const weekNo = Math.floor(idx / 7) + 1;
         const startNo = (weekNo - 1) * 7;
         const endNo = startNo + 6;
-        let serverDayData:any = [];
+        let serverDayData: any = [];
 
-        const result = await ServerApi.m_app_my_subj_dt_list(rxLoginInfo.u_id,  item.fullDay);
+        const result = await ServerApi.m_app_my_subj_dt_list(rxLoginInfo.u_id, item.fullDay);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             serverDayData = result.DATA_RESULT.QUERY_DATA;
         } else {
@@ -216,7 +212,10 @@ const TransformCalendar = () => {
         MyUtil._consoleLog('weekNo : ' + weekNo);
         setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo: getViewWeelNo.maxWeekNo });
         setSelectDay({ day: item.day, fullDay: item.fullDay });
-    }, []);
+
+        // 부모뷰로 전달
+        GetDayItems(serverDayData);
+    }, [GetDayItems]);
 
 
 
@@ -224,7 +223,7 @@ const TransformCalendar = () => {
         return (
             <TouchableOpacity key={idx} style={styles.calItemBox}
                 onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
-                <View style={{ width: '60%', height: '62%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff',overflow:'hidden' }}>
+                <View style={{ width: '60%', height: '62%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff', overflow: 'hidden' }}>
                     <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000', marginTop: 3 }}>{item.day}</Text>
                     {
                         item.subj_day_yn === 'y' ? (

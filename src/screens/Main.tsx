@@ -21,11 +21,15 @@ const Main = () => {
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
-    
+    const [arrDayItem, setArrDayItem] = useState([]);
 
 
 
 
+
+    const GetDayItems = useCallback(async (getItem) => {
+        setArrDayItem(getItem);
+    }, []);
 
 
     return (
@@ -57,19 +61,13 @@ const Main = () => {
 
                             <View style={styles.calendarWrap}>
                                 <View style={{ width: Layout.window.width, height: 4, backgroundColor: '#ffffff', marginTop: -2 }}></View>
-                                <TransformCalendar />
+                                <TransformCalendar GetDayItems={GetDayItems} />
                             </View>
 
                             <ScrollView ref={refScrollView}
                                 contentContainerStyle={{ flexGrow: 1, alignItems: 'center', width: Layout.window.width, paddingBottom: 40 }} keyboardShouldPersistTaps='handled'
-                            // onScroll={({ nativeEvent }) => {
-                            //     MyUtil._consoleLog("nativeEvent.contentOffset.y : " + (nativeEvent.contentOffset.y))
-                            //     if(nativeEvent.contentOffset.y >= 0){
-                            //         setsScrollY(nativeEvent.contentOffset.y)
-                            //     }
-                            // }}
                             >
-                                <View style={styles.blurShadowWrap}>
+                                {/* <View style={styles.blurShadowWrap}>
                                     <Image style={styles.miniIcon}
                                         source={require('../img/ic_circle_check.png')}
                                         resizeMode='contain' />
@@ -91,26 +89,33 @@ const Main = () => {
                                         resizeMode='contain' />
 
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.miniText}>09</Text>
-                                </View>
+                                </View> */}
 
 
                                 {
-                                    ['', '', '', '', '', '', '', '', '', ''].map((item, idx) => (
-                                        <View key={idx} style={{ marginTop: 15, width: Layout.window.widthFix, height: 70, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 13 }}>
-                                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.mainBlue, fontWeight: 'bold' }}>15:00 ~ 16:20</Text>
-                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.baseTextGray, marginLeft: 7 }}>One 코딩 아카데미</Text>
+                                    MyUtil._isNull(arrDayItem) ? (
+                                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
+                                        </View>
+                                    ) : (
+                                        arrDayItem.map((item:any, idx) => (
+                                            <View key={idx} style={{ marginTop: 15, width: Layout.window.widthFix, height: 70, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 13 }}>
+                                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                        <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.mainBlue, fontWeight: 'bold' }}>{item.start_time} ~ {item.end_time}</Text>
+                                                        <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.baseTextGray, marginLeft: 7 }}>One 코딩 아카데미</Text>
+                                                    </View>
+
+                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 3 }}>({item.p_name}) {item.subj_nm}</Text>
                                                 </View>
 
-                                                <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 3 }}>(깁정훈) HTML 코딩 기초</Text>
+                                                <Image style={{ width: 32, height: 32 }}
+                                                    source={require('../img/ic_qrcode.png')}
+                                                    resizeMode='contain' />
                                             </View>
+                                        ))
+                                    )
 
-                                            <Image style={{ width: 32, height: 32 }}
-                                                source={require('../img/ic_qrcode.png')}
-                                                resizeMode='contain' />
-                                        </View>
-                                    ))
                                 }
                             </ScrollView>
                         </View>
