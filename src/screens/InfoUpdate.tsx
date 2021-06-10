@@ -48,7 +48,11 @@ const InfoUpdate = () => {
 
 
     useEffect(() => {
-        async function fetchData() { }
+        async function fetchData() { 
+            if(!isJoin){
+                setName(rxLoginInfo.name);
+            }
+        }
         fetchData();
     }, []);
 

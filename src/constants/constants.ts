@@ -20,6 +20,11 @@ export default {
     MALE: '1',    // 남자
     FEMALE: '2',    // 여자
 
+    C_BG_PARENTS: 'c1',    // 학부모
+    C_BG_STUDENT: 'c2',    // 학생
+    C_BG_CEO: 'b1',    // 원장
+    C_BG_TEACHER: 'b2',    // 선생님
+    
 
     // ### 이미지 경로
     PATH_IMG_DEF: getImgDefPath,
