@@ -1,23 +1,23 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, View, ImageBackground, Image, Platform, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux';
 import { BlurView } from "@react-native-community/blur";
-import { RootState } from '../components/redux/rootReducer'
+import { RootState } from '../components/redux/rootReducer';
 import {
     KakaoOAuthToken, KakaoProfile, unlink,
     logout as kakaoLogout,
     getProfile as getKakaoProfile,
     login as kakaLogin
 } from '@react-native-seoul/kakao-login';
-import Loader from "../components/Loader"
+import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import Config from "../constants/Config";
 import * as ServerApi from "../constants/ServerApi";
 import * as MyAsyncStorage from "../constants/MyAsyncStorage";
 import * as MyUtil from "../constants/MyUtil";
-import allActions from "../components/redux/allActions"
+import allActions from "../components/redux/allActions";
 import CST from '../constants/constants';
 
 
@@ -29,9 +29,7 @@ const Login = () => {
 
 
     useEffect(() => {
-        async function fetchData() {
-
-        }
+        async function fetchData() { }
         fetchData();
     }, []);
 
@@ -71,7 +69,7 @@ const Login = () => {
     }, [])
 
 
-    
+
     return (
         <ImageBackground source={require('../img/bg_blue.png')} resizeMode='cover'
             style={{ width: Layout.window.width, flex: 1 }}>

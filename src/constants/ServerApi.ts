@@ -54,6 +54,18 @@ export async function m_app_my_subj(u_id: string, mon: string): SG.httpReq {
 }
 
 
+export async function m_app_stu_biz(u_id: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_stu_biz";
+
+    const data =
+    {
+        u_id
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
+
 export async function m_app_my_subj_dt_list(u_id: string, day: string): SG.httpReq {
     const REQ_METHODS = "users/m_app_my_subj_dt_list";
 
@@ -83,3 +95,8 @@ export async function _join(formData: any) {
     return await MyUtil._multiPartReq(REQ_METHODS, formData);
 }
 
+export async function m_app_info_u(formData: any) {
+    const REQ_METHODS = "users/m_app_info_u";
+
+    return await MyUtil._multiPartReq(REQ_METHODS, formData);
+}

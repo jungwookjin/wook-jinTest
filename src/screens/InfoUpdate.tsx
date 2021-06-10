@@ -48,9 +48,12 @@ const InfoUpdate = () => {
 
 
     useEffect(() => {
-        async function fetchData() { 
-            if(!isJoin){
+        async function fetchData() {
+            if (!isJoin) {
                 setName(rxLoginInfo.name);
+                setBirth(rxLoginInfo.res_date);
+                setGender(rxLoginInfo.gender === CST.MALE ? '남자' : '여자');
+                setPhone(rxLoginInfo.handphone);
             }
         }
         fetchData();
@@ -58,9 +61,11 @@ const InfoUpdate = () => {
 
 
     const JoinStart = useCallback(async (getProfileImg, getName, getBirth, getGender, getPhone, getSchool) => {
-        if (MyUtil._isNull(uniq_key)) { return Alert.alert('', '잘못된 접근입니다! (uniq_key null)') }
-        if (MyUtil._isNull(easy_type)) { return Alert.alert('', '잘못된 접근입니다! (easy_type null)') }
-        if (MyUtil._isNull(getProfileImg)) { return Alert.alert('', '사진을 등록해주세요!') }
+        if(isJoin){
+            if (MyUtil._isNull(uniq_key)) { return Alert.alert('', '잘못된 접근입니다! (uniq_key null)') }
+            if (MyUtil._isNull(easy_type)) { return Alert.alert('', '잘못된 접근입니다! (easy_type null)') }
+            if (MyUtil._isNull(getProfileImg)) { return Alert.alert('', '사진을 등록해주세요!') }
+        }
         if (MyUtil._isNull(getName)) { return Alert.alert('', '이름을 입력해주세요!') }
         if (MyUtil._isNull(getBirth)) { return Alert.alert('', '생년월일을 입력해주세요!') }
         if (MyUtil._isNull(getGender)) { return Alert.alert('', '성별을 입력해주세요!') }
@@ -69,8 +74,12 @@ const InfoUpdate = () => {
         const TimeStamp = Date.now();
         const formData = new FormData();
 
-        formData.append('uniq_key', uniq_key);
-        formData.append('easy_type', easy_type);
+        if(isJoin){
+            formData.append('uniq_key', uniq_key);
+            formData.append('easy_type', easy_type);
+        }else{
+            formData.append('u_id', rxLoginInfo.u_id);
+        }
         formData.append('name', getName);
         formData.append('gender', getGender === '남자' ? CST.MALE : CST.FEMALE);
         formData.append('res_date', getBirth);
@@ -86,14 +95,19 @@ const InfoUpdate = () => {
             });
         }
 
-        const result = await ServerApi._join(formData);
+        let result;
+        if(isJoin){
+             result = await ServerApi._join(formData);
+        }else{
+            result = await ServerApi.m_app_info_u(formData);
+        }
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             Alert.alert("", "정상적으로 가입이 완료되었습니다!")
             LoginStart(easy_type, uniq_key)
         } else {
             MyUtil._alertMsg('JoinStart', result.DATA_RESULT)
         }
-    }, [uniq_key, easy_type])
+    }, [uniq_key, easy_type,isJoin,rxLoginInfo])
 
 
     const LoginStart = useCallback(async (easy_type, uniq_key) => {
@@ -204,13 +218,21 @@ const InfoUpdate = () => {
 
 
     // ******************************************
-    let profileSource: any = {}
-    if (profileImg !== null) {
-        profileSource.uri = 'data:' + profileImg.mime + ';base64,' + profileImg.data; // 이미지 피커 선택된 이미지
-    } else {
-        profileSource = require('../img/ic_circle_profile.png');
-    }
 
+    let profileSource: any = {}
+    if (profileImgError) {
+        profileSource = require('../img/ic_circle_profile.png');
+    } else {
+        if (profileImg !== null) {
+            profileSource.uri = 'data:' + profileImg.mime + ';base64,' + profileImg.data; // 이미지 피커 선택된 이미지
+        } else {
+            if (!MyUtil._isNull(rxLoginInfo.profile_img)) {
+                profileSource.uri = rxLoginInfo.profile_img; // 수정시 초기 이미지
+            } else {
+                profileSource.uri = "error"; // 추가시 아무것도 안뜨기때문에 에러 유도
+            }
+        }
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bgNavy }}>
@@ -306,7 +328,7 @@ const InfoUpdate = () => {
                                             onChangeText={(text) => setPhone(text)} />
                                     </View>
 
-                                    <View style={styles.ipWrap}>
+                                    {/* <View style={styles.ipWrap}>
                                         <View style={styles.menuTitle}>
                                             <Text allowFontScaling={false} style={styles.menuTitleText}>학교</Text>
                                         </View>
@@ -319,7 +341,7 @@ const InfoUpdate = () => {
                                             value={school}
                                             multiline={true}
                                             onChangeText={(text) => setSchool(text)} />
-                                    </View>
+                                    </View> */}
 
                                     <View style={{ width: 1, height: 30 }}></View>
                                 </ScrollView>
@@ -327,11 +349,7 @@ const InfoUpdate = () => {
 
                                 <TouchableOpacity style={{ width: Layout.window.width, height: 50, backgroundColor: '#425386', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}
                                     onPress={() => {
-                                        if (isJoin) {
-                                            JoinStart(profileImg, name, birth, gender, phone, school)
-                                        } else {
-
-                                        }
+                                        JoinStart(profileImg, name, birth, gender, phone, school)
                                     }}>
                                     <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: '#ffffff', marginLeft: 0, fontWeight: 'bold' }}>{isJoin ? '회원 가입' : '정보 수정'}</Text>
                                 </TouchableOpacity>
@@ -375,7 +393,7 @@ const styles = StyleSheet.create({
         fontSize: Layout.fsSM, color: '#000000', fontWeight: 'bold'
     },
     tiBox: {
-        flex: 1, fontSize: Layout.fsSM, color: '#000000', paddingTop: 0,paddingBottom:0, marginTop: 0
+        flex: 1, fontSize: Layout.fsSM, color: '#000000', paddingTop: 0, paddingBottom: 0, marginTop: 0
     }
 });
 

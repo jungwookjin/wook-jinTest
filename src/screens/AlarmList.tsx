@@ -20,9 +20,9 @@ const AlarmList = () => {
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(true);
     const [loadingFlag, setLoadingFlag] = useState<boolean>(false);
-    const [arrData, setArrData] = useState<any>([]);
     const [loadingList, setLoadingList] = useState<boolean>(false);
     const [pageNo, setPageNo] = useState<number>(1);
+    const [arrData, setArrData] = useState<any>([]);
 
     useEffect(() => {
         m_app_alarm(true);

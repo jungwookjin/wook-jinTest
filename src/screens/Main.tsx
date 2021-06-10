@@ -25,8 +25,6 @@ const Main = () => {
 
 
 
-
-
     const GetDayItems = useCallback(async (getItem) => {
         setArrDayItem(getItem);
     }, []);
@@ -103,7 +101,7 @@ const Main = () => {
                                                 <View style={{ flex: 1, justifyContent: 'center' }}>
                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                         <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.mainBlue, fontWeight: 'bold' }}>{item.start_time} ~ {item.end_time}</Text>
-                                                        <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.baseTextGray, marginLeft: 7 }}>One 코딩 아카데미</Text>
+                                                        <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.baseTextGray, marginLeft: 7 }}>{item.biz_nm}</Text>
                                                     </View>
 
                                                     <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 3 }}>({item.p_name}) {item.subj_nm}</Text>
