@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { StyleSheet, Animated, View, Text, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Animated, View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { useSelector } from 'react-redux';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { RootState } from '../components/redux/rootReducer';
 import * as MyUtil from '../constants/MyUtil';
+import * as ServerApi from "../constants/ServerApi";
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
+import CST from '../constants/constants';
 import Sprintf from 'sprintf-js';
 const sprintf = Sprintf.sprintf;
 const calWidth = Layout.window.width - 16;
@@ -41,8 +43,11 @@ const TransformCalendar = () => {
 
 
 
-    const initCalendar = useCallback((getDate: any, isWeekStart: boolean) => {
+
+
+    const initCalendar = useCallback(async (getDate: any, isWeekStart: boolean) => {
         setViewDate(getDate);
+        // setLoading(true);
         const lastDate = new Date(getDate.getFullYear(), getDate.getMonth() + 1, 0);
         const nowDayOfWeek = getDate.getDay();
         const nowDay = getDate.getDate();
@@ -75,13 +80,36 @@ const TransformCalendar = () => {
             calData.push({ date: '', fullDay: '' })
         }
 
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 달력에 뭔가 표시하려면 여기서 데이터 삽입 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        // 실제 달력 구성 요일
-        for (let dayCnt = 1; dayCnt < lastDate.getDate() + 1; dayCnt++) {
-            const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, dayCnt);
-            MyUtil._consoleLog("day : " + dayCnt + " / fullDay : " + fullDay)
-            calData.push({ day: dayCnt + '', fullDay: fullDay })
+
+        // *********************************** 서버에서 데이터 가져옴 ******************************************
+        const getMonYear = sprintf("%04d-%02d", getDate.getFullYear(), getDate.getMonth() + 1);
+        let serverData = [];
+
+        const result = await ServerApi.m_app_my_subj(rxLoginInfo.u_id, getMonYear);
+        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+            serverData = result.DATA_RESULT.QUERY_DATA;
+        } else {
+            MyUtil._alertMsg('m_app_my_subj', result.DATA_RESULT);
         }
+
+
+
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 달력에 뭔가 표시하려면 여기서 데이터 삽입 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        // @if@ 서버 안거치고 데이터 삽입   @else@ 서버 데이터 삽입
+        if (MyUtil._isNull(serverData)) {
+            for (let dayCnt = 1; dayCnt < lastDate.getDate() + 1; dayCnt++) {
+                const fullDay = sprintf("%04d-%02d-%02d", getDate.getFullYear(), getDate.getMonth() + 1, dayCnt);
+                MyUtil._consoleLog("day : " + dayCnt + " / fullDay : " + fullDay);
+                calData.push({ day: dayCnt + '', fullDay: fullDay });
+            }
+
+        } else {
+            for (const serverItem of serverData) {
+                calData.push({ day: serverItem.dd, fullDay: serverItem.date_ymd, subj_day_yn: serverItem.subj_day_yn });
+            }
+        }
+
+
 
         const maxWeekNo = (Math.floor((calData.length - 1) / 7) + 1);
         MyUtil._consoleLog('maxWeekNo : ' + maxWeekNo);
@@ -116,8 +144,8 @@ const TransformCalendar = () => {
             }).start();
         }
 
-        setArrCalData(calData);
         setLoading(false);
+        setArrCalData(calData);
     }, [viewWeekNo, isWeekCal]);
 
 
@@ -176,12 +204,39 @@ const TransformCalendar = () => {
         const weekNo = Math.floor(idx / 7) + 1;
         const startNo = (weekNo - 1) * 7;
         const endNo = startNo + 6;
+        let serverDayData:any = [];
+
+        const result = await ServerApi.m_app_my_subj_dt_list(rxLoginInfo.u_id,  item.fullDay);
+        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+            serverDayData = result.DATA_RESULT.QUERY_DATA;
+        } else {
+            MyUtil._alertMsg('m_app_my_subj_dt_list', result.DATA_RESULT);
+        }
 
         MyUtil._consoleLog('weekNo : ' + weekNo);
         setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo: getViewWeelNo.maxWeekNo });
         setSelectDay({ day: item.day, fullDay: item.fullDay });
     }, []);
 
+
+
+    const renderDayItem = (idx: number, item: any) => {
+        return (
+            <TouchableOpacity key={idx} style={styles.calItemBox}
+                onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
+                <View style={{ width: '60%', height: '62%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff',overflow:'hidden' }}>
+                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000', marginTop: 3 }}>{item.day}</Text>
+                    {
+                        item.subj_day_yn === 'y' ? (
+                            <View style={{ width: '50%', height: 2, backgroundColor: '#b9b0ff', marginTop: 1 }}></View>
+                        ) : (
+                            <View style={{ width: '50%', height: 2, marginTop: 1 }}></View>
+                        )
+                    }
+                </View>
+            </TouchableOpacity>
+        )
+    }
 
     return (
         <View>
@@ -241,22 +296,12 @@ const TransformCalendar = () => {
                                 {
                                     isWeekCal ? (
                                         arrCalData.map((item: any, idx: number) => ((idx >= viewWeekNo.startNo && idx <= viewWeekNo.endNo) && (
-                                            <TouchableOpacity key={idx} style={styles.calItemBox}
-                                                onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
-                                                <View style={{ width: '60%', height: '61%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
-                                                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
-                                                </View>
-                                            </TouchableOpacity>
+                                            renderDayItem(idx, item)
                                         )))
 
                                     ) : (
                                         arrCalData.map((item: any, idx: number) => (
-                                            <TouchableOpacity key={idx} style={styles.calItemBox}
-                                                onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
-                                                <View style={{ width: '60%', height: '61%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff' }}>
-                                                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000' }}>{item.day}</Text>
-                                                </View>
-                                            </TouchableOpacity>
+                                            renderDayItem(idx, item)
                                         ))
                                     )
                                 }

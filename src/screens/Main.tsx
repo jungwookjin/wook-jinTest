@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux'
-import { RootState } from '../components/redux/rootReducer'
-import * as ITF from '../constants/Interface'
-import * as MyUtil from '../constants/MyUtil'
-import Loader from "../components/Loader"
+import { useSelector } from 'react-redux';
+import { RootState } from '../components/redux/rootReducer';
+import * as ITF from '../constants/Interface';
+import * as MyUtil from '../constants/MyUtil';
+import * as ServerApi from "../constants/ServerApi";
+import TransformCalendar from "../components/TransformCalendar";
+import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
+import CST from '../constants/constants';
 import Sprintf from 'sprintf-js';
-import TransformCalendar from "../components/TransformCalendar";
 const sprintf = Sprintf.sprintf;
 
 
@@ -19,15 +21,7 @@ const Main = () => {
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        async function fetchData() {
-
-            // setSelectDay(sprintf("%04d-%02d-%02d", today.getFullYear(), today.getMonth() + 1, today.getDate()))
-            // setLoading(false)
-        }
-        fetchData();
-    }, []);
+    
 
 
 

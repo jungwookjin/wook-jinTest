@@ -42,6 +42,30 @@ export async function m_app_alarm(u_id: string, page: string): SG.httpReq {
 }
 
 
+export async function m_app_my_subj(u_id: string, mon: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_my_subj";
+
+    const data =
+    {
+        u_id, mon
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
+
+export async function m_app_my_subj_dt_list(u_id: string, day: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_my_subj_dt_list";
+
+    const data =
+    {
+        u_id, day
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
+
 export async function m_app_noti(u_id: string, page: string): SG.httpReq {
     const REQ_METHODS = "users/m_app_noti";
 

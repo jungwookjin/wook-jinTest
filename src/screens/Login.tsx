@@ -70,6 +70,8 @@ const Login = () => {
         }
     }, [])
 
+
+    
     return (
         <ImageBackground source={require('../img/bg_blue.png')} resizeMode='cover'
             style={{ width: Layout.window.width, flex: 1 }}>
