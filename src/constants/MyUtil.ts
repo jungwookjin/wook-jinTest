@@ -206,12 +206,24 @@ export function _isNull(obj: any) {
     }
 }
 
-export function _isNum(obj:string) {
+export function _isNum(obj: string) {
     var regType1 = /^[0-9]*$/;
     if (!regType1.test(obj)) {
         return false
     } else {
         return true
+    }
+}
+
+export function _codeToKor(code: string, type: string) {
+    if (type === 'target') {
+        if (code === 'A') {
+            return '전체'
+        } else if (code === 'S') {
+            return '학생'
+        } else if (code === 'P') {
+            return '부모'
+        }
     }
 }
 

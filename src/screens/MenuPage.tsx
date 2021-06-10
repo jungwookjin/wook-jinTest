@@ -117,62 +117,60 @@ const MenuPage = () => {
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={{ marginVertical: 20, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
+                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 0 }}>
+                                <View style={{ flexDirection: 'row', width: Layout.window.widthFix, alignItems: 'center', justifyContent: 'space-between', marginTop: 5 }}>
+                                    <TouchableOpacity style={styles.midBtnWrap}>
+                                        <Image style={styles.midBtnImg} source={require('../img/ic_share.png')} resizeMode='contain' />
 
-                            <FlatList
-                            
-                                style={{ width: '100%' }}
-                                data={arrData}
-                                keyExtractor={(item, index) => String(index)}
-                                onEndReached={() => { if (loadingFlag === false) { m_app_noti(false) } }}
-                                onEndReachedThreshold={0.8}
-                                initialNumToRender={15} // 필수 * 없으면 데이터 많을시 앱 죽음(IOS)
-                                ListHeaderComponent={() => {
-                                    return (
-                                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 0 }}>
-                                            <View style={{ flexDirection: 'row', width: Layout.window.widthFix, alignItems: 'center', justifyContent: 'space-between', marginTop: 5 }}>
-                                                <TouchableOpacity style={styles.midBtnWrap}>
-                                                    <Image style={styles.midBtnImg} source={require('../img/ic_share.png')} resizeMode='contain' />
+                                        <View style={styles.midBtnTextWrap}>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>코드 공유</Text>
+                                        </View>
+                                    </TouchableOpacity>
 
-                                                    <View style={styles.midBtnTextWrap}>
-                                                        <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
-                                                        <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>코드 공유</Text>
-                                                    </View>
-                                                </TouchableOpacity>
+                                    <TouchableOpacity style={styles.midBtnWrap}>
+                                        <Image style={styles.midBtnImg} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
 
-                                                <TouchableOpacity style={styles.midBtnWrap}>
-                                                    <Image style={styles.midBtnImg} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
+                                        <View style={styles.midBtnTextWrap}>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>QR 이미지</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
 
-                                                    <View style={styles.midBtnTextWrap}>
-                                                        <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
-                                                        <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>QR 이미지</Text>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            </View>
-
-                                            {
-                                                MyUtil._isNull(arrData) && (
-                                                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
-                                                        <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
-                                                    </View>
-                                                )
-                                            }
+                                {
+                                    MyUtil._isNull(arrData) && (
+                                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
                                         </View>
                                     )
-                                }}
-                                ListFooterComponent={() => {
-                                    if (loadingList) {
-                                        return (
-                                            <View style={{ width: Layout.window.width, height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
-                                                <ActivityIndicator color='#0000ff' />
-                                            </View>
-                                        )
-                                    } else { return <></>; }
-                                }}
-                                renderItem={({ item }) => {
-                                    return <NoticeItem />
-                                }}
-                            />
+                                }
+                            </View>
+
+                            <View style={{ marginVertical: 20, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
+
+                            <View style={styles.notiWrap}>
+                                <FlatList
+                                    style={{ width: '100%' }}
+                                    data={arrData}
+                                    keyExtractor={(item, index) => String(index)}
+                                    onEndReached={() => { if (loadingFlag === false) { m_app_noti(false) } }}
+                                    onEndReachedThreshold={0.8}
+                                    initialNumToRender={15} // 필수 * 없으면 데이터 많을시 앱 죽음(IOS)
+                                    ListFooterComponent={() => {
+                                        if (loadingList) {
+                                            return (
+                                                <View style={{ width: Layout.window.width, height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
+                                                    <ActivityIndicator color='#0000ff' />
+                                                </View>
+                                            )
+                                        } else { return <></>; }
+                                    }}
+                                    renderItem={({ item }) => {
+                                        return <NoticeItem item={item}/>
+                                    }}
+                                />
+                            </View>
                         </View>
                     )
                 }
@@ -199,10 +197,11 @@ const styles = StyleSheet.create({
     midBtnWrap: {
         alignItems: 'center',
         flexDirection: 'row',
+        marginTop:12,
         borderRadius: 16,
         backgroundColor: '#FAFAFA',
         width: Layout.window.widthFix / 2 - 7,
-        height: 70,
+        height: 60,
         ...Platform.select({
             ios: {
                 shadowColor: "rgb(50, 50, 50)",
@@ -219,9 +218,9 @@ const styles = StyleSheet.create({
         })
     },
     midBtnImg: {
-        width: 36,
-        height: 36,
-        marginLeft: 15
+        width: 32,
+        height: 32,
+        marginLeft: 18
     },
     midBtnTextWrap: {
         marginLeft: 12
@@ -236,13 +235,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     notiWrap: {
+        flex:1,
         borderRadius: 16,
         backgroundColor: '#FAFAFA',
         width: Layout.window.widthFix,
         paddingVertical: 10,
-        marginTop: 25,
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 10,
         ...Platform.select({
             ios: {
                 shadowColor: "rgb(50, 50, 50)",
