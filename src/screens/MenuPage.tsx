@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../components/redux/rootReducer';
 import * as ServerApi from "../constants/ServerApi";
 import * as MyUtil from "../constants/MyUtil";
+import Config from "../constants/Config";
 import CST from '../constants/constants';
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
@@ -21,6 +22,8 @@ const MenuPage = () => {
     const [pageNo, setPageNo] = useState<number>(1);
     const [arrData, setArrData] = useState<any>([]);
     const [loadingList, setLoadingList] = useState<boolean>(false);
+    const [profileImg, setProfileImg] = useState<any>(null);
+    const [profileImgError, setProfileImgError] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -64,6 +67,25 @@ const MenuPage = () => {
     }, [rxLoginInfo, pageNo, arrData]);
 
 
+
+
+    // ******************************************
+
+    let profileSource: any = {}
+    if (profileImgError) {
+        profileSource = require('../img/ic_circle_profile.png');
+    } else {
+        if (profileImg !== null) {
+            profileSource.uri = 'data:' + profileImg.mime + ';base64,' + profileImg.data; // 이미지 피커 선택된 이미지
+        } else {
+            if (!MyUtil._isNull(rxLoginInfo.profile_img)) {
+                profileSource.uri = Config.SERVER_URL + rxLoginInfo.profile_img; // 수정시 초기 이미지
+            } else {
+                profileSource.uri = "error"; // 추가시 아무것도 안뜨기때문에 에러 유도
+            }
+        }
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bgNavy }}>
             <View style={{ width: Layout.window.widthFix, flex: 1 }}>
@@ -79,10 +101,11 @@ const MenuPage = () => {
                             </View>
 
                             <View style={{ width: Layout.window.widthFix, alignItems: 'center', flexDirection: 'row' }}>
-                                <Image style={{ width: 50, height: 50, borderRadius: 25 }} source={require('../img/temp_user_profile.png')} resizeMode='cover' />
+                                <Image source={profileSource} resizeMode='cover'
+                                    style={{ width: 50, height: 50, borderRadius: 25 }} />
 
-                                <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsXL, marginLeft: 10 }}>김정훈</Text>
-                                <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsS, marginLeft: 3 }}>학생</Text>
+                                <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsXL, marginLeft: 10 }}>{rxLoginInfo.name}</Text>
+                                <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsS, marginLeft: 3 }}>{MyUtil._codeToKor(rxLoginInfo.c_gb_dt, "c_gb_dt")}</Text>
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
@@ -167,7 +190,7 @@ const MenuPage = () => {
                                         } else { return <></>; }
                                     }}
                                     renderItem={({ item }) => {
-                                        return <NoticeItem item={item}/>
+                                        return <NoticeItem item={item} />
                                     }}
                                 />
                             </View>
@@ -197,7 +220,7 @@ const styles = StyleSheet.create({
     midBtnWrap: {
         alignItems: 'center',
         flexDirection: 'row',
-        marginTop:12,
+        marginTop: 12,
         borderRadius: 16,
         backgroundColor: '#FAFAFA',
         width: Layout.window.widthFix / 2 - 7,
@@ -235,7 +258,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     notiWrap: {
-        flex:1,
+        flex: 1,
         borderRadius: 16,
         backgroundColor: '#FAFAFA',
         width: Layout.window.widthFix,

@@ -5,12 +5,12 @@ import ImagePicker from 'react-native-image-crop-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../components/redux/rootReducer';
-import Config from "../constants/Config";
 import * as ServerApi from "../constants/ServerApi";
 import * as MyAsyncStorage from "../constants/MyAsyncStorage";
 import * as ITF from '../constants/Interface';
 import * as SG from '../constants/Signature';
 import * as MyUtil from "../constants/MyUtil";
+import Config from "../constants/Config";
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
@@ -61,7 +61,7 @@ const InfoUpdate = () => {
 
 
     const JoinStart = useCallback(async (getProfileImg, getName, getBirth, getGender, getPhone, getSchool) => {
-        if(isJoin){
+        if (isJoin) {
             if (MyUtil._isNull(uniq_key)) { return Alert.alert('', '잘못된 접근입니다! (uniq_key null)') }
             if (MyUtil._isNull(easy_type)) { return Alert.alert('', '잘못된 접근입니다! (easy_type null)') }
             if (MyUtil._isNull(getProfileImg)) { return Alert.alert('', '사진을 등록해주세요!') }
@@ -74,10 +74,10 @@ const InfoUpdate = () => {
         const TimeStamp = Date.now();
         const formData = new FormData();
 
-        if(isJoin){
+        if (isJoin) {
             formData.append('uniq_key', uniq_key);
             formData.append('easy_type', easy_type);
-        }else{
+        } else {
             formData.append('u_id', rxLoginInfo.u_id);
         }
         formData.append('name', getName);
@@ -96,18 +96,29 @@ const InfoUpdate = () => {
         }
 
         let result;
-        if(isJoin){
-             result = await ServerApi._join(formData);
-        }else{
+        if (isJoin) {
+            result = await ServerApi._join(formData);
+        } else {
             result = await ServerApi.m_app_info_u(formData);
         }
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
-            Alert.alert("", "정상적으로 가입이 완료되었습니다!")
-            LoginStart(easy_type, uniq_key)
+
+            if (isJoin) {
+                Alert.alert("", "정상적으로 가입이 완료되었습니다!");
+                LoginStart(easy_type, uniq_key)
+
+
+            } else {
+                Alert.alert("", "정상적으로 정보 수정이 완료되었습니다!");
+
+                // 로그인 정보 갱신
+                await MyUtil._loginRenewal(dispatch, navigation);
+                return navigation.goBack();
+            }
         } else {
             MyUtil._alertMsg('JoinStart', result.DATA_RESULT)
         }
-    }, [uniq_key, easy_type,isJoin,rxLoginInfo])
+    }, [uniq_key, easy_type, isJoin, rxLoginInfo])
 
 
     const LoginStart = useCallback(async (easy_type, uniq_key) => {
@@ -227,7 +238,7 @@ const InfoUpdate = () => {
             profileSource.uri = 'data:' + profileImg.mime + ';base64,' + profileImg.data; // 이미지 피커 선택된 이미지
         } else {
             if (!MyUtil._isNull(rxLoginInfo.profile_img)) {
-                profileSource.uri = rxLoginInfo.profile_img; // 수정시 초기 이미지
+                profileSource.uri = Config.SERVER_URL + rxLoginInfo.profile_img; // 수정시 초기 이미지
             } else {
                 profileSource.uri = "error"; // 추가시 아무것도 안뜨기때문에 에러 유도
             }

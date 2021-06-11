@@ -1,5 +1,9 @@
 import axios from "axios";
 import { Alert, Platform, StatusBar, PermissionsAndroid } from "react-native";
+import * as MyAsyncStorage from "./MyAsyncStorage";
+import * as ServerApi from "./ServerApi";
+import allActions from "../components/redux/allActions";
+import CST from '../constants/constants';
 import Config from "./Config";
 import Layout from "./Layout";
 
@@ -224,6 +228,16 @@ export function _codeToKor(code: string, type: string) {
         } else if (code === 'P') {
             return '부모'
         }
+    } else if (type === 'c_gb_dt') {
+        if (code === CST.C_BG_CEO) {
+            return '원장님';
+        } else if (code === CST.C_BG_TEACHER) {
+            return '선생님';
+        } else if (code === CST.C_BG_PARENTS) {
+            return '학부모';
+        } else if (code === CST.C_BG_STUDENT) {
+            return '학생';
+        }
     }
 }
 
@@ -305,5 +319,23 @@ export async function _checkCameraPermission() {
         // } else {
         //     return false;
         // }
+    }
+}
+
+
+export async function _loginRenewal(dispatch: any, navigation: any) {
+    const loginInfo = await MyAsyncStorage._getAsyncStorage(Config.AS_KEY_LOGIN_INFO)
+
+    const result = await ServerApi._login(loginInfo.easy_type, loginInfo.uniq_key)
+
+    if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+        // * 로그인 정보 리덕스 저장
+        dispatch(allActions.setRxLoginInfo(result.DATA_RESULT.QUERY_DATA[0]))
+
+    } else {
+        dispatch(allActions.logOut())
+        MyAsyncStorage._writeAsyncStorage(Config.AS_KEY_LOGIN_INFO, null);
+        Alert.alert("", "로그인이 필요합니다!\n로그인 페이지로 이동됩니다.")
+        navigation.reset({ index: 0, routes: [{ name: 'Login', params: {} }] })
     }
 }

@@ -29,8 +29,19 @@ const Login = () => {
 
 
     useEffect(() => {
-        async function fetchData() { }
-        fetchData();
+        async function fetchData() {
+            const loginInfo = await MyAsyncStorage._getAsyncStorage(Config.AS_KEY_LOGIN_INFO)
+
+            // ** 어싱크에 로그인 데이터가 존재하면 자동 로그인
+            if (loginInfo !== null) {
+                LoginStart(loginInfo.easy_type, loginInfo.uniq_key)
+            } else {
+                setLoading(false)
+            }
+        }
+        fetchData()
+
+        return () => { }
     }, []);
 
 
@@ -76,7 +87,6 @@ const Login = () => {
             <SafeAreaView style={{ flex: 1, width: Layout.window.width }}>
                 {
                     loading ? (<Loader />) : (
-                        // <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', width: Layout.window.width }} keyboardShouldPersistTaps='handled'>
                         <View style={{ width: Layout.window.width, flex: 1, alignItems: 'center' }}>
 
                             <View style={styles.blurShadowWrap}>
@@ -111,7 +121,6 @@ const Login = () => {
                                 </View>
                             </View>
                         </View>
-                        // </ScrollView>
                     )
                 }
             </SafeAreaView >

@@ -109,7 +109,7 @@ const AlarmList = () => {
                                         } else { return <></>; }
                                     }}
                                     renderItem={({ item }) => {
-                                        return <NoticeItem />
+                                        return <NoticeItem item={item}/>
                                     }}
                                 />
                             </View>
