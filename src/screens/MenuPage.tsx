@@ -33,6 +33,7 @@ const MenuPage = () => {
 
     const m_app_noti = useCallback(async (isReset: boolean) => {
         setLoadingFlag(true);
+        setLoadingList(true)
         let rowNo = pageNo + 1;
         let getLoadingFalg = false;
         let arrPrev = arrData;
@@ -170,7 +171,7 @@ const MenuPage = () => {
                                 }
                             </View>
 
-                            <View style={{ marginVertical: 20, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
+                            <View style={{ marginVertical: 15, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
 
                             <View style={styles.notiWrap}>
                                 <FlatList
@@ -179,11 +180,11 @@ const MenuPage = () => {
                                     keyExtractor={(item, index) => String(index)}
                                     onEndReached={() => { if (loadingFlag === false) { m_app_noti(false) } }}
                                     onEndReachedThreshold={0.8}
-                                    initialNumToRender={15} // 필수 * 없으면 데이터 많을시 앱 죽음(IOS)
+                                    initialNumToRender={5} // 필수 * 없으면 데이터 많을시 앱 죽음(IOS)
                                     ListFooterComponent={() => {
                                         if (loadingList) {
                                             return (
-                                                <View style={{ width: Layout.window.width, height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
+                                                <View style={{ width: Layout.window.width, height: 40, marginBottom: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
                                                     <ActivityIndicator color='#0000ff' />
                                                 </View>
                                             )
@@ -262,7 +263,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         backgroundColor: '#FAFAFA',
         width: Layout.window.widthFix,
-        paddingVertical: 10,
+        paddingVertical: 5,
         alignItems: 'center',
         marginBottom: 10,
         ...Platform.select({

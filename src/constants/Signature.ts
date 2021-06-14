@@ -6,6 +6,9 @@ export type StackParams = {
         uniq_key: string,
         easy_type: string
     }
+    COMMON: {
+        detailItem: any
+    }
 }
 
 export type httpReq = Promise<{ IS_SUCCESS: boolean; DATA_RESULT: any; }>

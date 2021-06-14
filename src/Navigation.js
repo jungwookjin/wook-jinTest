@@ -16,6 +16,7 @@ import AlarmList from './screens/AlarmList';
 import MyInfo from './screens/del';
 import AttendChart from './screens/AttendChart';
 import InfoUpdate from './screens/InfoUpdate';
+import Notidetail from './screens/Notidetail';
 
 
 
@@ -64,6 +65,14 @@ function Navigator() {
                     name="MenuPage"
                     component={MenuPage}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, headerShown: false, gestureEnabled: false }}
+                />
+                <Stack.Screen
+                    name="Notidetail"
+                    component={Notidetail}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
+                    initialParams={{
+                        detailItem: { reg_date: "", target_type: "", title: "", contents: "", file_nm: "" }
+                    }}
                 />
                 <Stack.Screen
                     name="InfoUpdate"

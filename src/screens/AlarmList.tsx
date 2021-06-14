@@ -31,6 +31,7 @@ const AlarmList = () => {
 
     const m_app_alarm = useCallback(async (isReset: boolean) => {
         setLoadingFlag(true);
+        setLoadingList(true);
         let rowNo = pageNo + 1;
         let getLoadingFalg = false;
         let arrPrev = arrData;
@@ -102,14 +103,14 @@ const AlarmList = () => {
                                     ListFooterComponent={() => {
                                         if (loadingList) {
                                             return (
-                                                <View style={{ width: Layout.window.width, height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
+                                                <View style={{ width: Layout.window.width, height: 40, marginBottom: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
                                                     <ActivityIndicator color='#0000ff' />
                                                 </View>
                                             )
                                         } else { return <></>; }
                                     }}
                                     renderItem={({ item }) => {
-                                        return <NoticeItem item={item}/>
+                                        return <NoticeItem item={item} />
                                     }}
                                 />
                             </View>

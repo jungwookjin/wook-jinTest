@@ -10,6 +10,7 @@ import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import CustomHeader from "../components/CustomHeader";
 import CST from '../constants/constants';
+import Config from "../constants/Config";
 
 
 
@@ -18,6 +19,7 @@ const CramList = () => {
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; });
     const [loading, setLoading] = useState(true);
     const [arrData, setArrData] = useState<any>([]);
+
 
 
 
@@ -32,7 +34,6 @@ const CramList = () => {
         const result = await ServerApi.m_app_stu_biz(rxLoginInfo.u_id);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             setArrData(result.DATA_RESULT.QUERY_DATA);
-
         } else {
             MyUtil._alertMsg('m_app_stu_biz', result.DATA_RESULT);
         }
@@ -40,6 +41,10 @@ const CramList = () => {
         setLoading(false);
     }, [])
 
+
+
+
+    // ******************************************
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bgNavy }}>
@@ -57,7 +62,7 @@ const CramList = () => {
 
                                 ) : (
                                     arrData.map((item: any, idx: number) => (
-                                        <ImageBackground key={idx} source={require('../img/temp_cram_img.png')} resizeMode='cover'
+                                        <ImageBackground key={idx} source={{uri:Config.SERVER_URL+item.file_nm}} resizeMode='cover'
                                             style={{ width: Layout.window.widthFix, height: 160, borderRadius: 20, overflow: 'hidden', marginVertical: 12, flexDirection: 'column' }}>
 
                                             <TouchableOpacity style={{ height: 124, width: Layout.window.widthFix }} onPress={() => { navigation.navigate({ name: 'CramDetail', params: {} }); }}></TouchableOpacity>
