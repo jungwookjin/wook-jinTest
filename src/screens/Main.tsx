@@ -2,15 +2,14 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import ModalQrCode from "../components/ModalQrCode";
 import { RootState } from '../components/redux/rootReducer';
-import * as ITF from '../constants/Interface';
 import * as MyUtil from '../constants/MyUtil';
 import * as ServerApi from "../constants/ServerApi";
 import TransformCalendar from "../components/TransformCalendar";
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
-import CST from '../constants/constants';
 import Sprintf from 'sprintf-js';
 const sprintf = Sprintf.sprintf;
 
@@ -22,6 +21,7 @@ const Main = () => {
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
     const [arrDayItem, setArrDayItem] = useState([]);
+    const [isModalQr, setIsModalQr] = useState(false);
 
 
 
@@ -30,11 +30,20 @@ const Main = () => {
     }, []);
 
 
+    // 다이얼로그에서 넘어오는 정보
+    const _modalQrCb = useCallback(async (isOk, detailDt) => {
+        setIsModalQr(false)
+
+        setTimeout(async () => {
+            if (isOk) { }
+        }, 500)
+    }, [])
+
 
 
     // ******************************************
     if (MyUtil._isNull(rxLoginInfo)) { return <></> }
-    
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
             {
@@ -97,9 +106,10 @@ const Main = () => {
 
                                 {
                                     MyUtil._isNull(arrDayItem) ? (
-                                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+                                        <TouchableOpacity style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}
+                                            onPress={() => { setIsModalQr(true) }}>
                                             <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
-                                        </View>
+                                        </TouchableOpacity>
                                     ) : (
                                         arrDayItem.map((item: any, idx) => (
                                             <View key={idx} style={{ marginTop: 15, width: Layout.window.widthFix, height: 70, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 13 }}>
@@ -125,6 +135,8 @@ const Main = () => {
                     </ImageBackground>
                 )
             }
+
+            <ModalQrCode isModalOpen={isModalQr} _modalCb={_modalQrCb} />
         </SafeAreaView >
     );
 
