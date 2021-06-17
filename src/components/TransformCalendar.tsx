@@ -48,37 +48,19 @@ const TransformCalendar = ({ GetDayItems }: any) => {
     const initCalendar = useCallback(async (getDate: any, isWeekStart: boolean) => {
         setViewDate(getDate);
         setLoading(true);
-        const lastDate = new Date(getDate.getFullYear(), getDate.getMonth() + 1, 0);
-        const nowDayOfWeek = getDate.getDay();
-        const nowDay = getDate.getDate();
-        const nowMonth = getDate.getMonth() + 1;
-        const nowYear = getDate.getFullYear();
-
-        const weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
-        const weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek));
-
-        // 선택 날짜가 몇주차인지 확인
-        const selectedDayOfMonth = getDate.getDate();
-        const first = new Date(getDate.getFullYear() + '/' + (getDate.getMonth() + 1) + '/01');
-        const monthFirstDateDay = first.getDay();
-
-        MyUtil._consoleLog("첫날 요일 : " + monthFirstDateDay);  // 0: 일  ~ 6: 토
-        MyUtil._consoleLog("마지막 일자 : " + lastDate.getDate());
-
-        MyUtil._consoleLog("오늘 일자 : " + getDate.getDate() / 7);
-        MyUtil._consoleLog("오늘 일자의 주차 : " + Math.ceil((selectedDayOfMonth + monthFirstDateDay) / 7));
-
-        MyUtil._consoleLog("이번주의 시작 (이월 주의) : " + weekStartDate.getDate());
-        MyUtil._consoleLog("이번주의 마지막 (이월 주의) : " + weekEndDate.getDate());
-
 
         const calData = [];
+
+        const firstDate = new Date(getDate.getFullYear(), getDate.getMonth(), 1);
+        const lastDate = new Date(getDate.getFullYear(), getDate.getMonth() + 1, 0);
+        const monthFirstDateDay = firstDate.getDay();
 
         // 첫달 시작 요일에 따라서 빈값 넣어줍니다.
         for (let emptyCnt = 0; emptyCnt < monthFirstDateDay; emptyCnt++) {
             MyUtil._consoleLog("empty")
             calData.push({ date: '', fullDay: '' })
         }
+
 
 
         // *********************************** 서버에서 데이터 가져옴 ******************************************
@@ -220,16 +202,22 @@ const TransformCalendar = ({ GetDayItems }: any) => {
 
 
     const renderDayItem = (idx: number, item: any) => {
+        let dayText = '';
+
+        if (!MyUtil._isNull(item.day)) {
+            dayText = (item.day).replace(/(^0+)/, "");  // 앞자리 0 빼기
+        }
+
         return (
             <TouchableOpacity key={idx} style={styles.calItemBox}
                 onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
-                <View style={{ width: '60%', height: '62%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff', overflow: 'hidden' }}>
-                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000', marginTop: 3 }}>{item.day}</Text>
+                <View style={{ width: '52%', height: '54%', justifyContent: 'center', alignItems: 'center',borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff', overflow: 'hidden' }}>
+                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000', fontWeight: item.fullDay === selectDay.fullDay ? 'bold' : 'normal', marginTop: 1 }}>{dayText}</Text>
                     {
                         item.subj_day_yn === 'y' ? (
-                            <View style={{ width: '50%', height: 2, backgroundColor: '#b9b0ff', marginTop: 1 }}></View>
+                            <View style={{ width: '52%', height: 2, backgroundColor: '#b9b0ff', marginTop: 1 }}></View>
                         ) : (
-                            <View style={{ width: '50%', height: 2, marginTop: 1 }}></View>
+                            <View style={{ width: '52%', height: 2, marginTop: 1 }}></View>
                         )
                     }
                 </View>
@@ -251,13 +239,13 @@ const TransformCalendar = ({ GetDayItems }: any) => {
                 const gXResult = eXGesture - sXGesture;
 
                 if (gYResult > 30) {
-                    setIsWeekCal(false)
+                    setIsWeekCal(false);
                 } else if (gYResult < -30) {
-                    setIsWeekCal(true)
+                    setIsWeekCal(true);
                 } else if (gXResult > 50) {
-                    isWeekCal ? WeekPrev(viewDate) : MonthPrev(viewDate)
+                    isWeekCal ? WeekPrev(viewDate) : MonthPrev(viewDate);
                 } else if (gXResult < -50) {
-                    isWeekCal ? WeekNext(viewDate) : MonthNext(viewDate)
+                    isWeekCal ? WeekNext(viewDate) : MonthNext(viewDate);
                 }
             }}
         >
@@ -280,7 +268,7 @@ const TransformCalendar = ({ GetDayItems }: any) => {
                 </View>
 
                 {
-                    loading ? (<View style={{ width: Layout.window.width, flex: 1, justifyContent: 'center', alignItems: 'center' }}><Loader /></View>)
+                    loading ? (<View style={{ width: Layout.window.width, flex: 1, justifyContent: 'center', alignItems: 'center' }}><View style={{ flex: 1 }}></View><Loader /><View style={{ flex: 3 }}></View></View>)
                         : (
                             <View style={{ width: Layout.window.width, alignItems: 'center' }}>
                                 <View style={styles.calContainer}>

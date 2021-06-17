@@ -184,13 +184,6 @@ const MenuPage = () => {
                                     </TouchableOpacity>
                                 </View>
 
-                                {
-                                    MyUtil._isNull(arrData) && (
-                                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
-                                            <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
-                                        </View>
-                                    )
-                                }
                             </View>
 
                             <View style={{ marginVertical: 15, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
@@ -203,6 +196,11 @@ const MenuPage = () => {
                                     onEndReached={() => { if (loadingFlag === false) { m_app_noti(false) } }}
                                     onEndReachedThreshold={0.8}
                                     initialNumToRender={5} // 필수 * 없으면 데이터 많을시 앱 죽음(IOS)
+                                    ListEmptyComponent={() => {
+                                        return (<View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
+                                        </View>)
+                                    }}
                                     ListFooterComponent={() => {
                                         if (loadingList) {
                                             return (

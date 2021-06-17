@@ -14,7 +14,7 @@ export default {
     DB_ERR_ABNORMAL: 302,   // 비정상 데이터 다수 존재
     DB_TXT_ABNORMAL: "회원 정보 비정상(다수 존재)",  
 
-    DB_USER_NONE: 211,    // 회원 정보 없음
+    DB_USER_NONE: "200",    // 회원 정보 없음
     DB_TXT_USER_NONE: "회원 정보가 없습니다.",  
 
     MALE: '1',    // 남자

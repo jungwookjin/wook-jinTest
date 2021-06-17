@@ -41,6 +41,7 @@ const InfoUpdate = () => {
     const [isDateDialog, setIsDateDialog] = useState<boolean>(false)
     const [name, setName] = useState<string>('');
     const [gender, setGender] = useState("");
+    const [gbType, setGbType] = useState("");
     const [birth, setBirth] = useState("");
     const [phone, setPhone] = useState("");
     const [school, setSchool] = useState("");
@@ -60,11 +61,12 @@ const InfoUpdate = () => {
     }, []);
 
 
-    const JoinStart = useCallback(async (getProfileImg, getName, getBirth, getGender, getPhone, getSchool) => {
+    const JoinStart = useCallback(async (getProfileImg, getName, getBirth, getGender, getPhone, getSchool, getGbType) => {
         if (isJoin) {
             if (MyUtil._isNull(uniq_key)) { return Alert.alert('', '잘못된 접근입니다! (uniq_key null)') }
             if (MyUtil._isNull(easy_type)) { return Alert.alert('', '잘못된 접근입니다! (easy_type null)') }
             if (MyUtil._isNull(getProfileImg)) { return Alert.alert('', '사진을 등록해주세요!') }
+            if (MyUtil._isNull(getGbType)) { return Alert.alert('', '가입 유형을 선택해주세요!') }
         }
         if (MyUtil._isNull(getName)) { return Alert.alert('', '이름을 입력해주세요!') }
         if (MyUtil._isNull(getBirth)) { return Alert.alert('', '생년월일을 입력해주세요!') }
@@ -77,6 +79,7 @@ const InfoUpdate = () => {
         if (isJoin) {
             formData.append('uniq_key', uniq_key);
             formData.append('easy_type', easy_type);
+            formData.append('c_gb_dt', gbType === '학부모' ? CST.C_BG_PARENTS : CST.C_BG_STUDENT);
         } else {
             formData.append('u_id', rxLoginInfo.u_id);
         }
@@ -208,6 +211,10 @@ const InfoUpdate = () => {
                     setGender('남자')
                 } else if (detailDt.menuName === '여자') {
                     setGender('여자')
+                } else if (detailDt.menuName === '학부모') {
+                    setGbType('학부모')
+                } else if (detailDt.menuName === '학생') {
+                    setGbType('학생')
                 }
             }
         }, 500)
@@ -229,21 +236,28 @@ const InfoUpdate = () => {
 
 
     // ******************************************
-
     let profileSource: any = {}
+
     if (profileImgError) {
         profileSource = require('../img/ic_circle_profile.png');
     } else {
+       
         if (profileImg !== null) {
             profileSource.uri = 'data:' + profileImg.mime + ';base64,' + profileImg.data; // 이미지 피커 선택된 이미지
+       
         } else {
-            if (!MyUtil._isNull(rxLoginInfo.profile_img)) {
-                profileSource.uri = Config.SERVER_URL + rxLoginInfo.profile_img; // 수정시 초기 이미지
+            if (!MyUtil._isNull(rxLoginInfo)) {
+                if (!MyUtil._isNull(rxLoginInfo.profile_img)) {
+                    profileSource.uri = Config.SERVER_URL + rxLoginInfo.profile_img; // 수정시 초기 이미지
+                } else {
+                    profileSource.uri = "error"; // 추가시 아무것도 안뜨기때문에 에러 유도
+                }
             } else {
-                profileSource.uri = "error"; // 추가시 아무것도 안뜨기때문에 에러 유도
+                profileSource = require('../img/ic_circle_profile.png');
             }
         }
     }
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bgNavy }}>
@@ -263,7 +277,8 @@ const InfoUpdate = () => {
                                         <Image
                                             style={{ width: 120, height: 120, borderRadius: 120 }}
                                             source={profileSource}
-                                            resizeMode='contain' />
+                                            resizeMode='contain'
+                                            onError={() => { setProfileImgError(true) }} />
                                         <Image
                                             style={{ width: 36, height: 36, borderRadius: 18, position: 'absolute', bottom: 8, right: 6 }}
                                             source={require('../img/btn_circle_camera.png')}
@@ -324,6 +339,30 @@ const InfoUpdate = () => {
                                             multiline={true} />
                                     </TouchableOpacity>
 
+                                    {
+                                        isJoin && (
+                                            <TouchableOpacity style={styles.ipWrap} onPress={() => {
+                                                setArrMenuName(['학부모', '학생'])
+                                                setIsModalSelect(true)
+                                            }}>
+                                                <View style={styles.menuTitle}>
+                                                    <Text allowFontScaling={false} style={styles.menuTitleText}>가입 유형</Text>
+                                                    <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text>
+                                                </View>
+
+                                                <TextInput
+                                                    style={[styles.tiBox]}
+                                                    autoCapitalize='none'
+                                                    placeholder={`선택해주세요`}
+                                                    pointerEvents="none"
+                                                    editable={false}
+                                                    placeholderTextColor={Colors.baseTextLightGray}
+                                                    value={gbType}
+                                                    multiline={true} />
+                                            </TouchableOpacity>
+                                        )
+                                    }
+
                                     <View style={styles.ipWrap}>
                                         <View style={styles.menuTitle}>
                                             <Text allowFontScaling={false} style={styles.menuTitleText}>전화번호</Text>
@@ -360,7 +399,7 @@ const InfoUpdate = () => {
 
                                 <TouchableOpacity style={{ width: Layout.window.width, height: 50, backgroundColor: '#425386', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}
                                     onPress={() => {
-                                        JoinStart(profileImg, name, birth, gender, phone, school)
+                                        JoinStart(profileImg, name, birth, gender, phone, school, gbType)
                                     }}>
                                     <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: '#ffffff', marginLeft: 0, fontWeight: 'bold' }}>{isJoin ? '회원 가입' : '정보 수정'}</Text>
                                 </TouchableOpacity>
