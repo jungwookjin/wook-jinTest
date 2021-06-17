@@ -1,20 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, Image, TouchableOpacity, StatusBar, Text, Platform, FlatList, ActivityIndicator } from "react-native";
+import { StyleSheet, Alert, SafeAreaView, View, Image, TouchableOpacity, StatusBar, Text, Platform, FlatList, ActivityIndicator } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../components/redux/rootReducer';
 import * as ServerApi from "../constants/ServerApi";
 import * as MyUtil from "../constants/MyUtil";
+import * as MyAsyncStorage from "../constants/MyAsyncStorage";
 import Config from "../constants/Config";
 import CST from '../constants/constants';
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
+import allActions from "../components/redux/allActions";
 import NoticeItem from "../components/NoticeItem";
 
 
 
 const MenuPage = () => {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
@@ -68,9 +71,26 @@ const MenuPage = () => {
     }, [rxLoginInfo, pageNo, arrData]);
 
 
+    const _logOut = useCallback(() => {
+        Alert.alert("", '정말로 로그아웃 하시겠습니까?', [
+            { text: '취소', onPress: () => { }, style: 'cancel', },
+            {
+                text: '확인', onPress: async () => {
+                    dispatch(allActions.logOut())
+                    await MyAsyncStorage._writeAsyncStorage(Config.AS_KEY_LOGIN_INFO, null);
+
+                    Alert.alert("", "로그아웃 하였습니다.")
+                    navigation.reset({ index: 0, routes: [{ name: 'Login', params: {} }] })
+
+                }
+            },], { cancelable: false },
+        )
+    }, [])
+
 
 
     // ******************************************
+    if (MyUtil._isNull(rxLoginInfo)) { return <></> }
 
     let profileSource: any = {}
     if (profileImgError) {
@@ -110,7 +130,9 @@ const MenuPage = () => {
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
-                                <Image style={{ width: 20, height: 20 }} source={require('../img/btn_logout.png')} resizeMode='contain' />
+                                <TouchableOpacity onPress={() => { _logOut() }}>
+                                    <Image style={{ width: 20, height: 20 }} source={require('../img/btn_logout.png')} resizeMode='contain' />
+                                </TouchableOpacity>
                             </View>
 
                             <View style={{ width: Layout.window.widthFix, alignItems: 'center', flexDirection: 'row', marginTop: 15 }}>

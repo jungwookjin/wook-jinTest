@@ -30,6 +30,11 @@ const Main = () => {
     }, []);
 
 
+
+
+    // ******************************************
+    if (MyUtil._isNull(rxLoginInfo)) { return <></> }
+    
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff' }}>
             {
