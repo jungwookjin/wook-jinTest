@@ -34,15 +34,11 @@ const TransformCalendar = ({ GetDayItems }: any) => {
 
     useEffect(() => {
         Animated.timing(animHeight, {
-            toValue: !isWeekCal ? 84 + (((calWidth / 7) - 2) * viewWeekNo.maxWeekNo) + 10 : 84 + ((calWidth / 7) - 2) + 10,
+            toValue: !isWeekCal ? 84 + (((calWidth / 7) - 2) * viewWeekNo.maxWeekNo) + 7 : 84 + ((calWidth / 7) - 2) + 7,
             duration: 200,
             useNativeDriver: false,
         }).start();
     }, [isWeekCal]);
-
-
-
-
 
 
     const initCalendar = useCallback(async (getDate: any, isWeekStart: boolean) => {
@@ -116,7 +112,7 @@ const TransformCalendar = ({ GetDayItems }: any) => {
 
         if (!isWeekCal) { // 변경됐을때만 실행하면 더 좋을듯
             Animated.timing(animHeight, {
-                toValue: 84 + (((calWidth / 7) - 2) * maxWeekNo) + 10,
+                toValue: 84 + (((calWidth / 7) - 2) * maxWeekNo) + 7,
                 duration: 300,
                 useNativeDriver: false,
             }).start();
@@ -202,16 +198,13 @@ const TransformCalendar = ({ GetDayItems }: any) => {
 
 
     const renderDayItem = (idx: number, item: any) => {
-        let dayText = '';
-
-        if (!MyUtil._isNull(item.day)) {
-            dayText = (item.day).replace(/(^0+)/, "");  // 앞자리 0 빼기
-        }
+        let dayText = '';       
+        if (!MyUtil._isNull(item.day)) { dayText = (item.day).replace(/(^0+)/, ""); }  // 앞자리 0 빼기
 
         return (
             <TouchableOpacity key={idx} style={styles.calItemBox}
                 onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
-                <View style={{ width: '52%', height: '54%', justifyContent: 'center', alignItems: 'center',borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff', overflow: 'hidden' }}>
+                <View style={{ width: '52%', height: '54%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff', overflow: 'hidden' }}>
                     <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000', fontWeight: item.fullDay === selectDay.fullDay ? 'bold' : 'normal', marginTop: 1 }}>{dayText}</Text>
                     {
                         item.subj_day_yn === 'y' ? (
@@ -227,7 +220,6 @@ const TransformCalendar = ({ GetDayItems }: any) => {
 
     return (
         <PanGestureHandler
-            // onGestureEvent={(event) => { console.log('event : ', event.nativeEvent.translationY); }}
             onBegan={(event) => {
                 sYGesture = MyUtil._isNull(event.nativeEvent.translationY) ? 0 : event.nativeEvent.translationY;
                 sXGesture = MyUtil._isNull(event.nativeEvent.translationX) ? 0 : event.nativeEvent.translationX;
