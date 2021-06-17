@@ -27,13 +27,13 @@ PODS:
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
-  - FirebaseCoreDiagnostics (8.0.0):
+  - FirebaseCoreDiagnostics (8.1.0):
     - GoogleDataTransport (~> 9.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
     - nanopb (~> 2.30908.0)
   - glog (0.3.5)
-  - GoogleDataTransport (9.0.0):
+  - GoogleDataTransport (9.0.1):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (~> 1.2)
@@ -100,6 +100,14 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - Permission-Camera (3.0.4):
+    - RNPermissions
+  - Permission-MediaLibrary (3.0.4):
+    - RNPermissions
+  - Permission-PhotoLibrary (3.0.4):
+    - RNPermissions
+  - Permission-PhotoLibraryAddOnly (3.0.4):
+    - RNPermissions
   - PromisesObjC (1.2.12)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
@@ -398,6 +406,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNPermissions (3.0.4):
+    - React-Core
   - RNScreens (2.18.1):
     - React-Core
   - RNSVG (12.1.1):
@@ -412,6 +422,10 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - "kakao-login (from `../node_modules/@react-native-seoul/kakao-login`)"
+  - Permission-Camera (from `../node_modules/react-native-permissions/ios/Camera`)
+  - Permission-MediaLibrary (from `../node_modules/react-native-permissions/ios/MediaLibrary`)
+  - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary`)
+  - Permission-PhotoLibraryAddOnly (from `../node_modules/react-native-permissions/ios/PhotoLibraryAddOnly`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -448,6 +462,7 @@ DEPENDENCIES:
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -489,6 +504,14 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   kakao-login:
     :path: "../node_modules/@react-native-seoul/kakao-login"
+  Permission-Camera:
+    :path: "../node_modules/react-native-permissions/ios/Camera"
+  Permission-MediaLibrary:
+    :path: "../node_modules/react-native-permissions/ios/MediaLibrary"
+  Permission-PhotoLibrary:
+    :path: "../node_modules/react-native-permissions/ios/PhotoLibrary"
+  Permission-PhotoLibraryAddOnly:
+    :path: "../node_modules/react-native-permissions/ios/PhotoLibraryAddOnly"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -557,6 +580,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -574,9 +599,9 @@ SPEC CHECKSUMS:
   Firebase: 73c3e3b216ec1ecbc54d2ffdd4670c65c749edb1
   FirebaseAuth: b8cd992fca5b53dc6eec09e873a3f375f000c5a1
   FirebaseCore: 3f09591d51292843e2a46f18358d60bf4e996255
-  FirebaseCoreDiagnostics: a31d987ba0fe16d59886a5dbadc2f1de871f88c8
+  FirebaseCoreDiagnostics: 3e249cee3de5c5f9cfd6cc2a19997231286fec11
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
-  GoogleDataTransport: 11e3a5f2c190327df1a4a5d7e7ae3d4d5b9c9e4c
+  GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
   GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   kakao-login: f545fda326cdf9419645abb7c8f36ec97132c26b
@@ -590,6 +615,10 @@ SPEC CHECKSUMS:
   KakaoSDKTemplate: 8bb288765bfc0195631da809b2d707f09495acdf
   KakaoSDKUser: 11955811d99d1ff1f1dfd5428afe69937e31ccef
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  Permission-Camera: 74dc395c37a06ebe915069c5dca954c7a2a5a2e3
+  Permission-MediaLibrary: f57d9a116468c560c2a4a2a479fc211b770f7a92
+  Permission-PhotoLibrary: 440f206f0d36e5951c4c9b28567f60471fdddfb5
+  Permission-PhotoLibraryAddOnly: 0ac89da5e01e80479947b517091a67c9e462c99a
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 2f8cb5b7533219bf4218a045f92768129cf7050a
@@ -625,12 +654,13 @@ SPEC CHECKSUMS:
   RNFBAuth: 6853dd2d92ed8635831679b695a6690151ae6b77
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNImageCropPicker: 35a3ceb837446fa11547704709bb22b5fac6d584
+  RNPermissions: c46788f4cd402287425983e04a4c9bb4356036eb
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
 
-PODFILE CHECKSUM: 64f593f03fc0da1ef817dba5bf8a8f1af3beaf0d
+PODFILE CHECKSUM: 446049ec1f09fc843eb1b41f6edab97dc60cf63f
 
 COCOAPODS: 1.10.1

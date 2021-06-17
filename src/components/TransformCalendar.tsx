@@ -205,12 +205,12 @@ const TransformCalendar = ({ GetDayItems }: any) => {
             <TouchableOpacity key={idx} style={styles.calItemBox}
                 onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>
                 <View style={{ width: '52%', height: '54%', justifyContent: 'center', alignItems: 'center', borderRadius: 150, backgroundColor: item.fullDay === selectDay.fullDay ? '#619eff' : '#ffffff', overflow: 'hidden' }}>
-                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000', fontWeight: item.fullDay === selectDay.fullDay ? 'bold' : 'normal', marginTop: 1 }}>{dayText}</Text>
+                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, color: item.fullDay === selectDay.fullDay ? '#ffffff' : '#000000', fontWeight: item.fullDay === selectDay.fullDay ? 'bold' : 'normal', marginTop: 2 }}>{dayText}</Text>
                     {
                         item.subj_day_yn === 'y' ? (
-                            <View style={{ width: '52%', height: 2, backgroundColor: '#b9b0ff', marginTop: 1 }}></View>
+                            <View style={{ width: '52%', height: 2, backgroundColor: '#b9b0ff', marginTop: 2 }}></View>
                         ) : (
-                            <View style={{ width: '52%', height: 2, marginTop: 1 }}></View>
+                            <View style={{ width: '52%', height: 2, marginTop: 2 }}></View>
                         )
                     }
                 </View>
