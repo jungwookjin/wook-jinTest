@@ -204,7 +204,7 @@ const MenuPage = () => {
                                     ListFooterComponent={() => {
                                         if (loadingList) {
                                             return (
-                                                <View style={{ width: Layout.window.width, height: 40, marginBottom: 5, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' }}>
+                                                <View style={{ width: Layout.window.width, height: 40, marginBottom: 5, justifyContent: 'center', alignItems: 'center' }}>
                                                     <ActivityIndicator color='#0000ff' />
                                                 </View>
                                             )

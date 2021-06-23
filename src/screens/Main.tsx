@@ -10,6 +10,7 @@ import TransformCalendar from "../components/TransformCalendar";
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
+import CST from '../constants/constants';
 import Sprintf from 'sprintf-js';
 const sprintf = Sprintf.sprintf;
 
@@ -21,8 +22,21 @@ const Main = () => {
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
     const [arrDayItem, setArrDayItem] = useState([]);
+    const [selectSubjNo, setSelectSubjNo] = useState('');
     const [isModalQr, setIsModalQr] = useState(false);
 
+
+    const m_app_subj_qr_attend_i = useCallback(async (getBizCode, getSelectSubjNo) => {
+        const result = await ServerApi.m_app_subj_qr_attend_i(rxLoginInfo.u_id, getBizCode, getSelectSubjNo);
+        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+            setSelectSubjNo('');
+            Alert.alert('', '정상적으로 등록되었습니다.');
+        } else {
+            MyUtil._alertMsg('m_app_subj_qr_attend_i', result.DATA_RESULT);
+        }
+
+        setLoading(false);
+    }, []);
 
 
     const GetDayItems = useCallback(async (getItem) => {
@@ -31,11 +45,15 @@ const Main = () => {
 
 
     // 다이얼로그에서 넘어오는 정보
-    const _modalQrCb = useCallback(async (isOk, detailDt) => {
+    const _modalQrCb = useCallback(async (isOk, detailDt, getSelectSubjNo) => {
         setIsModalQr(false)
 
         setTimeout(async () => {
-            if (isOk) { }
+            if (isOk) {
+                MyUtil._consoleLog('_modalQrCb : ' + detailDt);
+                setLoading(true);
+                m_app_subj_qr_attend_i(detailDt, getSelectSubjNo);
+            }
         }, 500)
     }, [])
 
@@ -107,7 +125,7 @@ const Main = () => {
                                 {
                                     MyUtil._isNull(arrDayItem) ? (
                                         <TouchableOpacity style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}
-                                            onPress={() => { setIsModalQr(true) }}>
+                                            onPress={() => { }}>
                                             <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
                                         </TouchableOpacity>
                                     ) : (
@@ -122,9 +140,34 @@ const Main = () => {
                                                     <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 3 }}>({item.p_name}) {item.subj_nm}</Text>
                                                 </View>
 
-                                                <Image style={{ width: 32, height: 32 }}
-                                                    source={require('../img/ic_qrcode.png')}
-                                                    resizeMode='contain' />
+                                                {
+                                                    item.attend_type === CST.ATTEND_OK && (
+                                                        <Image style={{ width: 32, height: 32 }} source={require('../img/ic_circle_check.png')} resizeMode='contain' />
+                                                    )
+                                                }
+
+                                                {
+                                                    item.attend_type === CST.ATTEND_TARDY && (
+                                                        <Image style={{ width: 32, height: 32 }} source={require('../img/ic_warning.png')} resizeMode='contain' />
+                                                    )
+                                                }
+
+                                                {
+                                                    item.attend_type === CST.ATTEND_ABSENT && (
+                                                        <Image style={{ width: 32, height: 32 }} source={require('../img/ic_circle_x.png')} resizeMode='contain' />
+                                                    )
+                                                }
+
+                                                {
+                                                    item.attend_type === CST.ATTEND_BEFORE && (
+                                                        <TouchableOpacity onPress={() => {
+                                                            setSelectSubjNo(item.subj_no + '');
+                                                            setIsModalQr(true);
+                                                        }}>
+                                                            <Image style={{ width: 32, height: 32 }} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
+                                                        </TouchableOpacity>
+                                                    )
+                                                }
                                             </View>
                                         ))
                                     )
@@ -136,7 +179,11 @@ const Main = () => {
                 )
             }
 
-            <ModalQrCode isModalOpen={isModalQr} _modalCb={_modalQrCb} />
+            {
+                isModalQr && (
+                    <ModalQrCode isModalOpen={isModalQr} _modalCb={_modalQrCb} selectSubjNo={selectSubjNo} />
+                )
+            }
         </SafeAreaView >
     );
 

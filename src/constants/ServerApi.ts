@@ -66,6 +66,17 @@ export async function m_app_stu_biz(u_id: string): SG.httpReq {
 }
 
 
+export async function m_app_subj_qr_attend_i(u_id: string, biz_code: string, subj_no: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_subj_qr_attend_i";
+
+    const data =
+    {
+        u_id, biz_code, subj_no
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
 export async function m_app_my_subj_dt_list(u_id: string, day: string): SG.httpReq {
     const REQ_METHODS = "users/m_app_my_subj_dt_list";
 

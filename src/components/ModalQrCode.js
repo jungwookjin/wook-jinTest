@@ -1,5 +1,5 @@
 
-import React, {  useCallback } from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, View, Platform, Text, SafeAreaView, TouchableOpacity, Linking, KeyboardAvoidingView, Alert } from 'react-native';
 import Modal from 'react-native-modal';
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -7,13 +7,13 @@ import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 
 
-const ModalQrCode = ({ _modalCb, isModalOpen }) => {
+const ModalQrCode = ({ _modalCb, isModalOpen, selectSubjNo }) => {
 
     // useEffect(() => {
     // }, [isModalOpen]);
 
     const OnSuccess = useCallback((event) => {
-        _modalCb(true, event.data)
+        _modalCb(true, event.data, selectSubjNo)
         // Linking.openURL(event.data).catch(err =>
         //     console.error('An error occured', err)
         // );
@@ -47,7 +47,7 @@ const ModalQrCode = ({ _modalCb, isModalOpen }) => {
 
                         <View style={{ position: 'absolute', borderWidth: 2, width: Layout.window.width - 150, height: Layout.window.width - 150, borderColor: Colors.mainBlue, borderRadius: 15 }}></View>
 
-                        <View style={{ position: 'absolute', bottom: 100 ,padding:10,borderRadius:12,backgroundColor:Colors.mainBlue}}>
+                        <View style={{ position: 'absolute', bottom: 100, padding: 10, borderRadius: 12, backgroundColor: Colors.mainBlue }}>
                             <Text allowFontScaling={false} style={{ fontSize: Layout.fsS, color: '#000000' }}>QR코드를 파란 박스에 맞춰주세요</Text>
                         </View>
                     </View>
