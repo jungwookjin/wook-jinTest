@@ -68,8 +68,8 @@ const Main = () => {
                 loading ? (<Loader />) : (
                     <ImageBackground source={require('../img/bg_blue_blur.png')} resizeMode='cover'
                         style={{ width: Layout.window.width, flex: 1 }}
-                        imageStyle={{ ...Platform.select({ ios: { opacity: 0.7 }, android: { opacity: 0.6 } }) }}
-                    >
+                        imageStyle={{ ...Platform.select({ ios: { opacity: 0.7 }, android: { opacity: 0.6 } }) }}>
+
                         <View style={{ width: Layout.window.width, flex: 1 }}>
 
                             <View style={{ width: Layout.window.width, height: 44, backgroundColor: '#ffffff', flexDirection: 'row', alignItems: 'center', zIndex: 99, ...Platform.select({ android: { elevation: 0 } }) }}>

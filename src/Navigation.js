@@ -17,6 +17,7 @@ import MyInfo from './screens/del';
 import AttendChart from './screens/AttendChart';
 import InfoUpdate from './screens/InfoUpdate';
 import Notidetail from './screens/Notidetail';
+import ChildList from './screens/ChildList';
 
 
 
@@ -89,6 +90,7 @@ function Navigator() {
                     name="CramDetail"
                     component={CramDetail}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                    initialParams={{biz_no:""}}
                 />
                 <Stack.Screen
                     name="AlarmList"
@@ -103,6 +105,11 @@ function Navigator() {
                 <Stack.Screen
                     name="AttendChart"
                     component={AttendChart}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                />
+                <Stack.Screen
+                    name="ChildList"
+                    component={ChildList}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
                 />
             </Stack.Navigator>

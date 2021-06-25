@@ -4,10 +4,11 @@ export type StackParams = {
     InfoUpdate: {
         isJoin: boolean,
         uniq_key: string,
-        easy_type: string
+        easy_type: String
     }
     COMMON: {
-        detailItem: any
+        detailItem: any,
+        biz_no: string
     }
 }
 

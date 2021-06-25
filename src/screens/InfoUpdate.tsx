@@ -79,7 +79,7 @@ const InfoUpdate = () => {
         if (isJoin) {
             formData.append('uniq_key', uniq_key);
             formData.append('easy_type', easy_type);
-            formData.append('c_gb_dt', gbType === '학부모' ? CST.C_BG_PARENTS : CST.C_BG_STUDENT);
+            formData.append('c_gb_dt', getGbType === '학부모' ? CST.C_BG_PARENTS : CST.C_BG_STUDENT);
         } else {
             formData.append('u_id', rxLoginInfo.u_id);
         }
@@ -108,8 +108,7 @@ const InfoUpdate = () => {
 
             if (isJoin) {
                 Alert.alert("", "정상적으로 가입이 완료되었습니다!");
-                LoginStart(easy_type, uniq_key)
-
+                setTimeout(() => { LoginStart(easy_type, uniq_key); }, 500);
 
             } else {
                 Alert.alert("", "정상적으로 정보 수정이 완료되었습니다!");
@@ -124,11 +123,11 @@ const InfoUpdate = () => {
     }, [uniq_key, easy_type, isJoin, rxLoginInfo])
 
 
-    const LoginStart = useCallback(async (easy_type, uniq_key) => {
-        const result = await ServerApi._login(easy_type, uniq_key);
+    const LoginStart = useCallback(async (getEasy_type, getUniq_key) => {
+        const result = await ServerApi._login(getEasy_type, getUniq_key);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
-            MyAsyncStorage._writeAsyncStorage(Config.AS_KEY_LOGIN_INFO, { easy_type, uniq_key });
-            dispatch(allActions.setRxLoginInfo(result.DATA_RESULT))
+            MyAsyncStorage._writeAsyncStorage(Config.AS_KEY_LOGIN_INFO, { easy_type: getEasy_type, uniq_key: getUniq_key });
+            dispatch(allActions.setRxLoginInfo(result.DATA_RESULT.QUERY_DATA[0]));
             navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] });
 
         } else {
@@ -241,10 +240,10 @@ const InfoUpdate = () => {
     if (profileImgError) {
         profileSource = require('../img/ic_circle_profile.png');
     } else {
-       
+
         if (profileImg !== null) {
             profileSource.uri = 'data:' + profileImg.mime + ';base64,' + profileImg.data; // 이미지 피커 선택된 이미지
-       
+
         } else {
             if (!MyUtil._isNull(rxLoginInfo)) {
                 if (!MyUtil._isNull(rxLoginInfo.profile_img)) {
@@ -275,9 +274,9 @@ const InfoUpdate = () => {
                                     <TouchableOpacity style={{ width: 120, height: 120, marginTop: 10, marginBottom: 25 }}
                                         onPress={() => { setIsModalBottom(true) }}>
                                         <Image
-                                            style={{ width: 120, height: 120, borderRadius: 120 }}
+                                            style={{ width: 120, height: 120, borderRadius: 60 }}
                                             source={profileSource}
-                                            resizeMode='contain'
+                                            resizeMode='cover'
                                             onError={() => { setProfileImgError(true) }} />
                                         <Image
                                             style={{ width: 36, height: 36, borderRadius: 18, position: 'absolute', bottom: 8, right: 6 }}

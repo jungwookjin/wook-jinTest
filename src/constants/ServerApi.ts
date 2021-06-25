@@ -54,6 +54,18 @@ export async function m_app_my_subj(u_id: string, mon: string): SG.httpReq {
 }
 
 
+export async function m_app_my_child_subj(u_id: string, mon: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_my_child_subj";
+
+    const data =
+    {
+        u_id, mon
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
+
 export async function m_app_stu_biz(u_id: string): SG.httpReq {
     const REQ_METHODS = "users/m_app_stu_biz";
 
@@ -66,12 +78,59 @@ export async function m_app_stu_biz(u_id: string): SG.httpReq {
 }
 
 
+export async function m_app_my_child(u_id: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_my_child";
+
+    const data =
+    {
+        u_id
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
+export async function m_app_code_child(c_code: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_code_child";
+
+    const data =
+    {
+        c_code
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
+
+export async function m_app_child_i(u_id: string, c_u_id: string, f_relation: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_child_i";
+
+    const data =
+    {
+        u_id,
+        c_u_id,
+        f_relation
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
 export async function m_app_subj_qr_attend_i(u_id: string, biz_code: string, subj_no: string): SG.httpReq {
     const REQ_METHODS = "users/m_app_subj_qr_attend_i";
 
     const data =
     {
         u_id, biz_code, subj_no
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
+export async function m_app_biz_subj_list(biz_no: string, u_id: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_biz_subj_list";
+
+    const data =
+    {
+        biz_no, u_id
     };
 
     return await MyUtil._httpReq(REQ_METHODS, data);
@@ -88,6 +147,16 @@ export async function m_app_my_subj_dt_list(u_id: string, day: string): SG.httpR
     return await MyUtil._httpReq(REQ_METHODS, data);
 }
 
+export async function m_app_my_child_subj_dt_list(u_id: string, day: string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_my_child_subj_dt_list";
+
+    const data =
+    {
+        u_id, day
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
 
 export async function m_app_noti(u_id: string, page: string): SG.httpReq {
     const REQ_METHODS = "users/m_app_noti";

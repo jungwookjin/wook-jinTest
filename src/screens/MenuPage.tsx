@@ -6,6 +6,7 @@ import { RootState } from '../components/redux/rootReducer';
 import * as ServerApi from "../constants/ServerApi";
 import * as MyUtil from "../constants/MyUtil";
 import * as MyAsyncStorage from "../constants/MyAsyncStorage";
+import ModalQrCode from "../components/ModalQrCode";
 import Config from "../constants/Config";
 import CST from '../constants/constants';
 import Loader from "../components/Loader";
@@ -13,6 +14,7 @@ import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import allActions from "../components/redux/allActions";
 import NoticeItem from "../components/NoticeItem";
+import ModalQrImage from "../components/ModalQrImage";
 
 
 
@@ -27,6 +29,9 @@ const MenuPage = () => {
     const [loadingList, setLoadingList] = useState<boolean>(false);
     const [profileImg, setProfileImg] = useState<any>(null);
     const [profileImgError, setProfileImgError] = useState<boolean>(false);
+    const [isModalQr, setIsModalQr] = useState(false);
+    const [isModalImgQr, setIsModalImgQr] = useState(false);
+    const [searchChildData, setSearchChildData] = useState("");
 
 
     useEffect(() => {
@@ -85,6 +90,60 @@ const MenuPage = () => {
                 }
             },], { cancelable: false },
         )
+    }, []);
+
+
+
+    const m_app_code_child = useCallback(async (getCcode) => {
+        const result = await ServerApi.m_app_code_child(getCcode);
+        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+            setSearchChildData(result.DATA_RESULT.QUERY_DATA[0]);
+
+            Alert.alert("", result.DATA_RESULT.QUERY_DATA[0].name + ' 자녀를 등록하시겠습니까?', [
+                { text: '취소', onPress: () => { }, style: 'cancel', },
+                {
+                    text: '확인', onPress: async () => {
+                        m_app_child_i(result.DATA_RESULT.QUERY_DATA[0].u_id);
+                    }
+                },], { cancelable: false },
+            )
+        } else {
+            MyUtil._alertMsg('m_app_code_child', result.DATA_RESULT);
+        }
+
+        setLoading(false);
+    }, []);
+
+
+    const m_app_child_i = useCallback(async (getCuid) => {
+        const result = await ServerApi.m_app_child_i(rxLoginInfo.u_id, getCuid, rxLoginInfo.gender);
+        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+            Alert.alert('', '자녀가 등록되었습니다.');
+        } else {
+            MyUtil._alertMsg('m_app_child_i', result.DATA_RESULT);
+        }
+
+        setLoading(false);
+    }, [rxLoginInfo]);
+
+
+    // 다이얼로그에서 넘어오는 정보
+    const _modalQrCb = useCallback(async (isOk, detailDt, getSelectSubjNo) => {
+        setIsModalQr(false)
+
+        setTimeout(async () => {
+            if (isOk) {
+                MyUtil._consoleLog('_modalQrCb : ' + detailDt);
+                setLoading(true);
+                m_app_code_child(detailDt)
+            }
+        }, 500)
+    }, [])
+
+
+    // 다이얼로그에서 넘어오는 정보
+    const _modalImgQrCb = useCallback(async (isOk, detailDt, getSelectSubjNo) => {
+        setIsModalImgQr(false);
     }, [])
 
 
@@ -150,14 +209,20 @@ const MenuPage = () => {
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
-                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'CramList', params: {} }); }}>
-                                    <Image style={styles.mainBtnImg} source={require('../img/ic_cram.png')} resizeMode='contain' />
-                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>학원 관리</Text>
+                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {
+                                    if(rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS){
+                                        navigation.navigate({ name: 'ChildList', params: {} });
+                                    }else{
+                                        navigation.navigate({ name: 'CramList', params: {} });
+                                    }
+                                }}>
+                                    <Image style={styles.mainBtnImg} source={rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? require('../img/ic_childrun.png') : require('../img/ic_cram.png')} resizeMode='contain' />
+                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>{rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '자녀 관리' : '학원 관리'}</Text>
                                 </TouchableOpacity>
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
-                                <TouchableOpacity style={styles.mainBtnWrap}>
+                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { }}>
                                     <Image style={styles.mainBtnImg} source={require('../img/ic_msg.png')} resizeMode='contain' />
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>문의 하기</Text>
                                 </TouchableOpacity>
@@ -165,7 +230,7 @@ const MenuPage = () => {
 
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 0 }}>
                                 <View style={{ flexDirection: 'row', width: Layout.window.widthFix, alignItems: 'center', justifyContent: 'space-between', marginTop: 5 }}>
-                                    <TouchableOpacity style={styles.midBtnWrap}>
+                                    <TouchableOpacity style={styles.midBtnWrap} onPress={() => { Alert.alert('', '기능 준비중입니다.') }}>
                                         <Image style={styles.midBtnImg} source={require('../img/ic_share.png')} resizeMode='contain' />
 
                                         <View style={styles.midBtnTextWrap}>
@@ -174,12 +239,18 @@ const MenuPage = () => {
                                         </View>
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity style={styles.midBtnWrap}>
+                                    <TouchableOpacity style={styles.midBtnWrap} onPress={() => {
+                                        if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
+                                            setIsModalQr(true)
+                                        } else {
+                                            setIsModalImgQr(true)
+                                        }
+                                    }}>
                                         <Image style={styles.midBtnImg} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
 
                                         <View style={styles.midBtnTextWrap}>
                                             <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText1}>자녀 등록</Text>
-                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>QR 이미지</Text>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={styles.midBtnText2}>QR {rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '촬영' : '이미지'}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 </View>
@@ -219,6 +290,19 @@ const MenuPage = () => {
                     )
                 }
             </View>
+
+
+            {
+                isModalQr && (
+                    <ModalQrCode isModalOpen={isModalQr} _modalCb={_modalQrCb} selectSubjNo={""} />
+                )
+            }
+
+            {
+                isModalImgQr && (
+                    <ModalQrImage isModalOpen={isModalImgQr} _modalCb={_modalImgQrCb} getCcode={rxLoginInfo.c_code} />
+                )
+            }
         </SafeAreaView >
     );
 

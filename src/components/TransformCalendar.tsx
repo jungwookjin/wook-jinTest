@@ -62,8 +62,13 @@ const TransformCalendar = ({ GetDayItems }: any) => {
         // *********************************** 서버에서 데이터 가져옴 ******************************************
         const getMonYear = sprintf("%04d-%02d", getDate.getFullYear(), getDate.getMonth() + 1);
         let serverData = [];
+        let result: any;
 
-        const result = await ServerApi.m_app_my_subj(rxLoginInfo.u_id, getMonYear);
+        if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
+            result = await ServerApi.m_app_my_child_subj(rxLoginInfo.u_id, getMonYear);
+        } else {
+            result = await ServerApi.m_app_my_subj(rxLoginInfo.u_id, getMonYear);
+        }
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             serverData = result.DATA_RESULT.QUERY_DATA;
         } else {
@@ -120,7 +125,7 @@ const TransformCalendar = ({ GetDayItems }: any) => {
 
         setLoading(false);
         setArrCalData(calData);
-    }, [viewWeekNo, isWeekCal]);
+    }, [viewWeekNo, isWeekCal, rxLoginInfo]);
 
 
 
@@ -179,8 +184,13 @@ const TransformCalendar = ({ GetDayItems }: any) => {
         const startNo = (weekNo - 1) * 7;
         const endNo = startNo + 6;
         let serverDayData: any = [];
+        let result: any;
 
-        const result = await ServerApi.m_app_my_subj_dt_list(rxLoginInfo.u_id, item.fullDay);
+        if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
+            result = await ServerApi.m_app_my_child_subj_dt_list(rxLoginInfo.u_id, item.fullDay);
+        } else {
+            result = await ServerApi.m_app_my_subj_dt_list(rxLoginInfo.u_id, item.fullDay);
+        }
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             serverDayData = result.DATA_RESULT.QUERY_DATA;
         } else {
@@ -193,12 +203,12 @@ const TransformCalendar = ({ GetDayItems }: any) => {
 
         // 부모뷰로 전달
         GetDayItems(serverDayData);
-    }, [GetDayItems]);
+    }, [GetDayItems,rxLoginInfo]);
 
 
 
     const renderDayItem = (idx: number, item: any) => {
-        let dayText = '';       
+        let dayText = '';
         if (!MyUtil._isNull(item.day)) { dayText = (item.day).replace(/(^0+)/, ""); }  // 앞자리 0 빼기
 
         return (

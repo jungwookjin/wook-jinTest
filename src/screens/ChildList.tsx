@@ -14,7 +14,7 @@ import Config from "../constants/Config";
 
 
 
-const CramList = () => {
+const ChildList = () => {
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; });
     const [loading, setLoading] = useState(true);
@@ -24,18 +24,18 @@ const CramList = () => {
 
 
     useEffect(() => {
-        async function fetchData() { m_app_stu_biz() }
+        async function fetchData() { m_app_my_child() }
         fetchData();
     }, []);
 
 
 
-    const m_app_stu_biz = useCallback(async () => {
-        const result = await ServerApi.m_app_stu_biz(rxLoginInfo.u_id);
+    const m_app_my_child = useCallback(async () => {
+        const result = await ServerApi.m_app_my_child(rxLoginInfo.u_id);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             setArrData(result.DATA_RESULT.QUERY_DATA);
         } else {
-            MyUtil._alertMsg('m_app_stu_biz', result.DATA_RESULT);
+            MyUtil._alertMsg('m_app_my_child', result.DATA_RESULT);
         }
 
         setLoading(false);
@@ -51,7 +51,7 @@ const CramList = () => {
             {
                 loading ? (<Loader />) : (
                     <View style={{ flex: 1, width: Layout.window.width }}>
-                        <CustomHeader navigation={navigation} isBackBtn={true} title={'학원 관리'} themeColor={'#ffffff'} />
+                        <CustomHeader navigation={navigation} isBackBtn={true} title={'자녀 관리'} themeColor={'#ffffff'} />
 
                         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} keyboardShouldPersistTaps='handled'>
                             {
@@ -93,4 +93,4 @@ const CramList = () => {
 const styles = StyleSheet.create({
 });
 
-export default CramList;
+export default ChildList;
