@@ -11,6 +11,7 @@ import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import CST from '../constants/constants';
+import Config from "../constants/Config";
 import Sprintf from 'sprintf-js';
 const sprintf = Sprintf.sprintf;
 
@@ -129,8 +130,16 @@ const Main = () => {
                                             <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
                                         </TouchableOpacity>
                                     ) : (
-                                        arrDayItem.map((item: any, idx) => (
-                                            <View key={idx} style={{ marginTop: 15, width: Layout.window.widthFix, height: 70, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 13 }}>
+                                        arrDayItem.map((item: any, idx) => {
+                                            let arrCildrenImg = [];
+                                            let arrChildrenState: any = [];
+
+                                            try {
+                                                arrCildrenImg = item.profile_img.split(',');
+                                                arrChildrenState = item.attend_type.split(',');
+                                            } catch (err) { }
+
+                                            return (<View key={idx} style={{ marginTop: 15, width: Layout.window.widthFix, height: 70, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 13 }}>
                                                 <View style={{ flex: 1, justifyContent: 'center' }}>
                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                         <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.mainBlue, fontWeight: 'bold' }}>{item.start_time} ~ {item.end_time}</Text>
@@ -140,26 +149,28 @@ const Main = () => {
                                                     <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 3 }}>({item.p_name}) {item.subj_nm}</Text>
                                                 </View>
 
+                                                {/* **************************** 학생 **************************** */}
+
                                                 {
-                                                    item.attend_type === CST.ATTEND_OK && (
+                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type === CST.ATTEND_OK && (
                                                         <Image style={{ width: 32, height: 32 }} source={require('../img/ic_circle_check.png')} resizeMode='contain' />
                                                     )
                                                 }
 
                                                 {
-                                                    item.attend_type === CST.ATTEND_TARDY && (
+                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type === CST.ATTEND_TARDY && (
                                                         <Image style={{ width: 32, height: 32 }} source={require('../img/ic_warning.png')} resizeMode='contain' />
                                                     )
                                                 }
 
                                                 {
-                                                    item.attend_type === CST.ATTEND_ABSENT && (
+                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type === CST.ATTEND_ABSENT && (
                                                         <Image style={{ width: 32, height: 32 }} source={require('../img/ic_circle_x.png')} resizeMode='contain' />
                                                     )
                                                 }
 
                                                 {
-                                                    item.attend_type === CST.ATTEND_BEFORE && (
+                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type === CST.ATTEND_BEFORE && (
                                                         <TouchableOpacity onPress={() => {
                                                             setSelectSubjNo(item.subj_no + '');
                                                             setIsModalQr(true);
@@ -168,10 +179,32 @@ const Main = () => {
                                                         </TouchableOpacity>
                                                     )
                                                 }
-                                            </View>
-                                        ))
-                                    )
 
+
+
+                                                {/* **************************** 학부모 **************************** */}
+
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    {
+                                                        rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS && (
+
+                                                            arrCildrenImg.map((subItem: any, idx2: number) => (
+                                                                <Image key={idx2} source={{ uri: Config.SERVER_URL + subItem }} resizeMode='cover'
+                                                                    style={{
+                                                                        width: 46, height: 46, borderRadius: 23, overflow: 'hidden', flexDirection: 'column', borderWidth: 2.5, position: 'absolute', right: idx2 * 20,
+                                                                        borderColor: arrChildrenState[idx2] === CST.ATTEND_BEFORE ? Colors.baseTextMidGray :
+                                                                            arrChildrenState[idx2] === CST.ATTEND_OK ? '#00ed33' :
+                                                                                arrChildrenState[idx2] === CST.ATTEND_TARDY ? '#e6bf00' :
+                                                                                    arrChildrenState[idx2] === CST.ATTEND_ABSENT ? '#e60000' : '#ffffff'
+                                                                    }} />
+                                                            ))
+                                                        )
+                                                    }
+                                                </View>
+                                            </View>
+                                            )
+                                        })
+                                    )
                                 }
                             </ScrollView>
                         </View>

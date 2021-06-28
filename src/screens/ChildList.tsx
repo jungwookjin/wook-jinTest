@@ -29,6 +29,25 @@ const ChildList = () => {
     }, []);
 
 
+    const m_app_child_d = useCallback((getCUid) => {
+        Alert.alert("", '정말로 삭제 하시겠습니까?', [
+            { text: '취소', onPress: () => { }, style: 'cancel', },
+            {
+                text: '확인', onPress: async () => {
+                    const result = await ServerApi.m_app_child_d(rxLoginInfo.u_id, getCUid);
+                    if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+                        Alert.alert('', '삭제되었습니다');
+                        navigation.goBack();
+                    } else {
+                        MyUtil._alertMsg('m_app_my_child', result.DATA_RESULT);
+                    }
+
+                }
+            },], { cancelable: false },
+        )
+    }, []);
+
+
     const m_app_my_child = useCallback(async () => {
         const result = await ServerApi.m_app_my_child(rxLoginInfo.u_id);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
@@ -59,26 +78,7 @@ const ChildList = () => {
                 if ((newArray.length - 1) === parseInt(idx)) { rootData.push(addData); }
             }
 
-            // console.log("rootData : " + JSON.stringify(rootData))
             setArrData(rootData);
-
-            // [
-            //     {
-            //         u_id:"",
-            //         name:"학생",
-            //         profile_img:"",
-            //         school:[{biz_nm:"",file_nm:"",rep_tel:""}]
-            //     },
-            //     {
-            //         u_id:"",
-            //         name:"학생",
-            //         profile_img:"",
-            //         school:[{biz_nm:"",file_nm:"",rep_tel:""}]
-            //     }
-            // ]
-
-
-
 
         } else {
             MyUtil._alertMsg('m_app_my_child', result.DATA_RESULT);
@@ -115,7 +115,7 @@ const ChildList = () => {
                                                         style={{ width: (Layout.window.widthFix / 2) - 14, marginHorizontal: 6.6, height: 180, borderRadius: 20, overflow: 'hidden', flexDirection: 'column', justifyContent: 'space-between' }}>
 
                                                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                                            <TouchableOpacity style={{ padding: 10 }} onPress={() => { Alert.alert('', '123') }}>
+                                                            <TouchableOpacity style={{ padding: 10 }} onPress={() => { m_app_child_d(item[0].u_id)}}>
                                                                 <Image style={{ width: 24, height: 24 }}
                                                                     source={require('../img/ic_setting.png')}
                                                                     resizeMode='contain' />

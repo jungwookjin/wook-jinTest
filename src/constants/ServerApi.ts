@@ -89,6 +89,18 @@ export async function m_app_my_child(u_id: string): SG.httpReq {
     return await MyUtil._httpReq(REQ_METHODS, data);
 }
 
+
+export async function m_app_child_d(u_id: string,c_u_id:string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_child_d";
+
+    const data =
+    {
+        u_id,c_u_id
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
 export async function m_app_code_child(c_code: string): SG.httpReq {
     const REQ_METHODS = "users/m_app_code_child";
 
