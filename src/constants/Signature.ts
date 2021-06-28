@@ -8,6 +8,7 @@ export type StackParams = {
     }
     COMMON: {
         detailItem: any,
+        arrData:any,
         biz_no: string
     }
 }

@@ -11,6 +11,7 @@ import Login from './screens/Login';
 import Main from './screens/Main';
 import MenuPage from './screens/MenuPage';
 import CramList from './screens/CramList';
+import CramListParents from './screens/CramListParents';
 import CramDetail from './screens/CramDetail';
 import AlarmList from './screens/AlarmList';
 import MyInfo from './screens/del';
@@ -87,10 +88,16 @@ function Navigator() {
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
                 />
                 <Stack.Screen
+                    name="CramListParents"
+                    component={CramListParents}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                    initialParams={{ arrData: [] }}
+                />
+                <Stack.Screen
                     name="CramDetail"
                     component={CramDetail}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                    initialParams={{biz_no:""}}
+                    initialParams={{ biz_no: "" }}
                 />
                 <Stack.Screen
                     name="AlarmList"

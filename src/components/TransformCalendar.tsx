@@ -188,6 +188,10 @@ const TransformCalendar = ({ GetDayItems }: any) => {
 
         if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
             result = await ServerApi.m_app_my_child_subj_dt_list(rxLoginInfo.u_id, item.fullDay);
+
+            // ******  컴마로 순서대로 구분되어져 있음
+            // "attend_type":null,
+            // "profile_img":"img/profile/1624355344433..jpg",
         } else {
             result = await ServerApi.m_app_my_subj_dt_list(rxLoginInfo.u_id, item.fullDay);
         }
@@ -211,6 +215,7 @@ const TransformCalendar = ({ GetDayItems }: any) => {
         let dayText = '';
         if (!MyUtil._isNull(item.day)) { dayText = (item.day).replace(/(^0+)/, ""); }  // 앞자리 0 빼기
 
+        // attend_typ:",,"
         return (
             <TouchableOpacity key={idx} style={styles.calItemBox}
                 onPress={() => { if (!MyUtil._isNull(item.day)) { SelectCalDay(item, idx, viewWeekNo); } }}>

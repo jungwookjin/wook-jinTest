@@ -29,11 +29,57 @@ const ChildList = () => {
     }, []);
 
 
-
     const m_app_my_child = useCallback(async () => {
         const result = await ServerApi.m_app_my_child(rxLoginInfo.u_id);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
-            setArrData(result.DATA_RESULT.QUERY_DATA);
+
+            const newArray = result.DATA_RESULT.QUERY_DATA;
+            let addData = [];
+            let prevName = '';
+            let rootData = [];
+
+            // 날짜별로 데이터 모아줍니다.
+            for (const idx in newArray) {
+                const item = newArray[idx];
+                const curName = item.name;
+
+                if (prevName === '' || prevName !== curName) {
+                    prevName = curName;
+
+                    if (addData.length > 0) { rootData.push(addData); }
+
+                    addData = [];
+                    addData.push(item);
+
+                } else {
+                    addData.push(item);
+                }
+
+                // 마지막 데이터 푸시
+                if ((newArray.length - 1) === parseInt(idx)) { rootData.push(addData); }
+            }
+
+            // console.log("rootData : " + JSON.stringify(rootData))
+            setArrData(rootData);
+
+            // [
+            //     {
+            //         u_id:"",
+            //         name:"학생",
+            //         profile_img:"",
+            //         school:[{biz_nm:"",file_nm:"",rep_tel:""}]
+            //     },
+            //     {
+            //         u_id:"",
+            //         name:"학생",
+            //         profile_img:"",
+            //         school:[{biz_nm:"",file_nm:"",rep_tel:""}]
+            //     }
+            // ]
+
+
+
+
         } else {
             MyUtil._alertMsg('m_app_my_child', result.DATA_RESULT);
         }
@@ -61,24 +107,34 @@ const ChildList = () => {
                                     </View>
 
                                 ) : (
-                                    arrData.map((item: any, idx: number) => (
-                                        <ImageBackground key={idx} source={{uri:Config.SERVER_URL+item.file_nm}} resizeMode='cover'
-                                            style={{ width: Layout.window.widthFix, height: 160, borderRadius: 20, overflow: 'hidden', marginVertical: 12, flexDirection: 'column' }}>
+                                    <View style={{ width: Layout.window.widthFix, flexWrap: 'wrap', flexDirection: 'row' }}>
+                                        {
+                                            arrData.map((item: any, idx: number) => (
+                                                <TouchableOpacity key={idx} onPress={() => { navigation.navigate({ name: 'CramListParents', params: { arrData: item } }); }}>
+                                                    <ImageBackground source={{ uri: Config.SERVER_URL + item[0].profile_img }} resizeMode='cover'
+                                                        style={{ width: (Layout.window.widthFix / 2) - 14, marginHorizontal: 6.6, height: 180, borderRadius: 20, overflow: 'hidden', flexDirection: 'column', justifyContent: 'space-between' }}>
 
-                                            <TouchableOpacity style={{ height: 124, width: Layout.window.widthFix }} onPress={() => { navigation.navigate({ name: 'CramDetail', params: {biz_no:item.biz_no} }); }}></TouchableOpacity>
+                                                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                                            <TouchableOpacity style={{ padding: 10 }} onPress={() => { Alert.alert('', '123') }}>
+                                                                <Image style={{ width: 24, height: 24 }}
+                                                                    source={require('../img/ic_setting.png')}
+                                                                    resizeMode='contain' />
+                                                            </TouchableOpacity>
+                                                        </View>
 
-                                            <View style={{ width: '100%', height: 36, paddingHorizontal: 15, backgroundColor: 'rgba(0,0,0,0.6)', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsM }}>{item.biz_nm}</Text>
-
-                                                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { Alert.alert('', '전화 걸기 : '+item.rep_tel) }}>
-                                                    <Image style={{ width: 14, height: 14 }}
-                                                        source={require('../img/ic_call.png')}
-                                                        resizeMode='contain' />
-                                                    <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsS }}> 전화 걸기</Text>
+                                                        <View style={{ width: '100%', flexDirection: 'row', marginLeft: 10, marginBottom: 10, height: 38 }}>
+                                                            {
+                                                                item.map((subItem: any, idx2: number) => (
+                                                                    <Image key={idx2} source={{ uri: Config.SERVER_URL + subItem.file_nm }} resizeMode='cover'
+                                                                        style={{ width: 38, height: 38, borderRadius: 19, overflow: 'hidden', flexDirection: 'column', borderWidth: 2, borderColor: '#ffffff', position: 'absolute', left: idx2 * 20 }} />
+                                                                ))
+                                                            }
+                                                        </View>
+                                                    </ImageBackground>
                                                 </TouchableOpacity>
-                                            </View>
-                                        </ImageBackground>
-                                    ))
+                                            ))
+                                        }
+                                    </View>
                                 )
                             }
                         </ScrollView>
