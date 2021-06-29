@@ -21,7 +21,6 @@ const Main = () => {
 
     useEffect(() => {
         async function fetchData() {
-            console.log("rxLoginInfo : " + JSON.stringify(rxLoginInfo))
             let today = new Date();
             setSelectDay(sprintf("%04d-%02d-%02d", today.getFullYear(), today.getMonth() + 1, today.getDate()))
 

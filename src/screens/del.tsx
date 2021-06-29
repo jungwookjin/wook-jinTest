@@ -18,9 +18,7 @@ const MyInfo = () => {
     const [name, setName] = useState('');
 
     useEffect(() => {
-        async function fetchData() {
-            console.log("rxLoginInfo : " + JSON.stringify(rxLoginInfo))
-        }
+        async function fetchData() { }
         fetchData();
     }, []);
 

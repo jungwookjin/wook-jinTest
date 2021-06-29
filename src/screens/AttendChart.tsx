@@ -16,20 +16,54 @@ const AttendChart = () => {
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
+    const defaultDataConfig = {
+        lineWidth: 1.5,
+        valueTextSize: 9,
+        valueTextColor: processColor('#bfbfbf'),
+        valueFormatter: ''
+    }
     const chartData = {
         dataSets: [{
-            values: [{ x: 4, y: 135, marker: "" }, { x: 5, y: 0.88, marker: "" }, { x: 6, y: 0.77, marker: "" }, { x: 7, y: 105, marker: "" }], label: 'A',
-        }, {
-            values: [{ x: 4, y: 105, marker: "" }, { x: 5, y: 90, marker: "" }, { x: 6, y: 130, marker: "" }, { x: 7, y: 100, marker: "" }], label: 'B',
-        }, {
-            values: [{ x: 4, y: 110, marker: "" }, { x: 5, y: 110, marker: "" }, { x: 6, y: 105, marker: "" }, { x: 7, y: 115, marker: "" }], label: 'C',
-        }],
+            label: '김정훈',
+            config: { ...defaultDataConfig, ...{ colors: [processColor('#D14B5A')], circleColors: [processColor('#D14B5A')] } },
+            values: [
+                { x: 1, y: 90 },
+                { x: 2, y: 100 },
+                { x: 3, y: 90 },
+                { x: 4, y: 90 },
+                { x: 5, y: 80 },
+                { x: 6, y: 80 },
+                { x: 7, y: 70 },
+                { x: 8, y: 100 },
+                { x: 9, y: 80 },
+                { x: 10, y: 80 },
+                { x: 11, y: 80 },
+                { x: 12, y: 100 },
+            ]
+        },
+        {
+            label: '송재영',
+            config: { ...defaultDataConfig, ...{ colors: [processColor('#04de54')], circleColors: [processColor('#04de54')] } },
+            values: [
+                { x: 1, y: 70 },
+                { x: 2, y: 80 },
+                { x: 3, y: 30 },
+                { x: 4, y: 50 },
+                { x: 5, y: 70 },
+                { x: 6, y: 50 },
+                { x: 7, y: 50 },
+                { x: 8, y: 30 },
+                { x: 9, y: 80 },
+                { x: 10, y: 60 },
+                { x: 11, y: 60 },
+                { x: 12, y: 80 },
+            ]
+        },],
+
     };
 
     useEffect(() => {
-        async function fetchData() {
-            console.log("rxLoginInfo : " + JSON.stringify(rxLoginInfo))
-        }
+        async function fetchData() {  }
         fetchData();
     }, []);
 
@@ -47,32 +81,33 @@ const AttendChart = () => {
                                 <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsM, fontWeight: 'bold', marginTop: 20 }}>월별 출석률</Text>
                             </View>
 
-                            <View style={{ width: Layout.window.width, marginTop: 0, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ width: Layout.window.widthFix, marginTop: 0, justifyContent: 'center', alignItems: 'center' }}>
                                 <LineChart
-                                    // ref="chart"
-                                    style={{ height: 250, width: Layout.window.width }}
+                                    style={{ height: 260, width: Layout.window.widthFix + 10 }}
                                     data={chartData}
-                                    chartDescription={{ text: '' }}
-                                    // legend={this.state.legend}
-                                    marker={{
-                                        enabled: true,
-                                        digits: 2,
-                                        markerColor: processColor('#F0C0FF8C'),
-                                        textColor: processColor('white'),
-                                        textSize: 16
-                                    }}
                                     xAxis={{
+                                        drawGridLines: false,
                                         granularityEnabled: true,
                                         granularity: 1,
-                                        position: 'BOTTOM'
+                                        position: 'BOTTOM',
+                                        textColor: processColor('#ffffff')
                                     }}
                                     yAxis={{
-                                        right: { inverted: false, }
+                                        left: { granularityEnabled: false, drawAxisLines: true, drawGridLines: false, drawLabels: true, textColor: processColor('#ffffff') },
+                                        right: { drawLabels: false }
                                     }}
+                                    legend={{
+                                        enabled: true,
+                                        textColor: processColor('#ffffff'),
+                                        form: 'LINE',
+                                        formToTextSpace: 5,
+                                        xEntrySpace: 12
+                                    }}
+                                    marker={{ enabled: true }}
                                     drawGridBackground={false}
-                                    borderColor={processColor('teal')}
-                                    borderWidth={1}
-                                    drawBorders={true}
+                                    drawBorders={false}
+                                    borderColor={processColor('#c4c4c4')}
+                                    borderWidth={0}
                                     autoScaleMinMaxEnabled={false}
                                     touchEnabled={true}
                                     dragEnabled={true}
@@ -80,15 +115,18 @@ const AttendChart = () => {
                                     scaleXEnabled={true}
                                     scaleYEnabled={true}
                                     pinchZoom={true}
-                                    doubleTapToZoomEnabled={true}
+                                    doubleTapToZoomEnabled={false}
                                     highlightPerTapEnabled={true}
-                                    highlightPerDragEnabled={false}
-                                    // visibleRange={this.state.visibleRange}
+                                    highlightPerDragEnabled={true}
                                     dragDecelerationEnabled={true}
                                     dragDecelerationFrictionCoef={0.99}
                                     keepPositionOnRotation={false}
-                                    // onSelect={this.handleSelect.bind(this)}
                                     onChange={(event) => console.log(event.nativeEvent)}
+                                    chartDescription={{ text: '' }}
+                                // gridBackgroundColor={processColor('#ffffff')}
+                                // ref="chart"
+                                // visibleRange={this.state.visibleRange}
+                                // onSelect={this.handleSelect.bind(this)}
                                 />
                             </View>
 
@@ -105,118 +143,3 @@ const styles = StyleSheet.create({
 });
 
 export default AttendChart;
-
-
-// dataSets: [
-//     {
-//         values: [
-//             {
-//                 y: 65,
-//                 x: 0,
-//                 marker: "65 kg"
-//             },
-//             {
-//                 y: 77,
-//                 x: 1,
-//                 marker: "77 kg"
-//             },
-//             {
-//                 y: 76,
-//                 x: 2,
-//                 marker: "76 kg"
-//             },
-//             {
-//                 y: 74,
-//                 x: 3,
-//                 marker: "74 kg"
-//             },
-//             {
-//                 y: 76,
-//                 x: 4,
-//                 marker: "76 kg"
-//             },
-//             {
-//                 y: 65,
-//                 x: 5,
-//                 marker: "Today: 65 kg"
-//             }
-//         ],
-//         label: "",
-//         config: {
-//             mode: "CUBIC_BEZIER",
-//             drawValues: false,
-//             lineWidth: 2,
-//             drawCircles: true,
-//             circleColor: processColor(petrel),
-//             drawCircleHole: false,
-//             circleRadius: 5,
-//             highlightColor: processColor("transparent"),
-//             color: processColor(petrel),
-//             drawFilled: true,
-//             fillGradient: {
-//                 colors: [processColor(petrel), processColor(greenBlue)],
-//                 positions: [0, 0.5],
-//                 angle: 90,
-//                 orientation: "TOP_BOTTOM"
-//             },
-//             fillAlpha: 1000,
-//             valueTextSize: 15
-//         }
-//     },
-
-//     {
-//         values: [
-//             {
-//                 y: 35,
-//                 x: 0,
-//                 marker: "35 kg"
-//             },
-//             {
-//                 y: 47,
-//                 x: 1,
-//                 marker: "47 kg"
-//             },
-//             {
-//                 y: 46,
-//                 x: 2,
-//                 marker: "46 kg"
-//             },
-//             {
-//                 y: 44,
-//                 x: 3,
-//                 marker: "44 kg"
-//             },
-//             {
-//                 y: 46,
-//                 x: 4,
-//                 marker: "46 kg"
-//             },
-//             {
-//                 y: 35,
-//                 x: 5,
-//                 marker: "Today: 35 kg"
-//             }
-//         ],
-//         label: "",
-//         config: {
-//             mode: "CUBIC_BEZIER",
-//             drawValues: false,
-//             lineWidth: 2,
-//             drawCircles: true,
-//             circleColor: processColor(petrel),
-//             drawCircleHole: false,
-//             circleRadius: 5,
-//             highlightColor: processColor("transparent"),
-//             color: processColor(petrel),
-//             drawFilled: true,
-//             fillGradient: {
-//                 colors: [processColor('red'), processColor('yellow')],
-//                 positions: [0, 0.5],
-//                 angle: 90,
-//                 orientation: "TOP_BOTTOM"
-//             },
-//             fillAlpha: 1000,
-//             valueTextSize: 15
-//         }
-//     }
-// ]

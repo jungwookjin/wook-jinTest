@@ -210,9 +210,9 @@ const MenuPage = () => {
                                 <View style={{ flex: 1, height: 1 }}></View>
 
                                 <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {
-                                    if(rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS){
+                                    if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
                                         navigation.navigate({ name: 'ChildList', params: {} });
-                                    }else{
+                                    } else {
                                         navigation.navigate({ name: 'CramList', params: {} });
                                     }
                                 }}>
@@ -222,7 +222,7 @@ const MenuPage = () => {
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
-                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { }}>
+                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { Alert.alert('', '준비중입니다.') }}>
                                     <Image style={styles.mainBtnImg} source={require('../img/ic_msg.png')} resizeMode='contain' />
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>문의 하기</Text>
                                 </TouchableOpacity>
@@ -230,7 +230,7 @@ const MenuPage = () => {
 
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 0 }}>
                                 <View style={{ flexDirection: 'row', width: Layout.window.widthFix, alignItems: 'center', justifyContent: 'space-between', marginTop: 5 }}>
-                                    <TouchableOpacity style={styles.midBtnWrap} onPress={() => { Alert.alert('', '기능 준비중입니다.') }}>
+                                    <TouchableOpacity style={styles.midBtnWrap} onPress={() => { Alert.alert('', '준비중입니다.') }}>
                                         <Image style={styles.midBtnImg} source={require('../img/ic_share.png')} resizeMode='contain' />
 
                                         <View style={styles.midBtnTextWrap}>
