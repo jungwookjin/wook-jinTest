@@ -89,8 +89,8 @@ const Login = () => {
                     loading ? (<Loader />) : (
                         <View style={{ width: Layout.window.width, flex: 1, alignItems: 'center' }}>
 
-                            <View style={styles.blurShadowWrap}>
-                                <View style={styles.blurRadiusWrap}>
+                            <View style={[styles.blurShadowWrap, { height: Platform.OS === 'ios' ? 120 : 90 }]}>
+                                <View style={[styles.blurRadiusWrap, { height: Platform.OS === 'ios' ? 120 : 90 }]}>
                                     <BlurView
                                         style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0 }}
                                         blurType="xlight"
@@ -111,13 +111,16 @@ const Login = () => {
                                             source={require('../img/btn_login_google.png')}
                                             resizeMode='contain' />
                                     </TouchableOpacity> */}
-
-                                    <TouchableOpacity style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6, marginVertical: 5 }}
-                                        onPress={() => { navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] }); }}>
-                                        <Image style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6 }}
-                                            source={require('../img/btn_login_apple.png')}
-                                            resizeMode='contain' />
-                                    </TouchableOpacity>
+                                    {
+                                        Platform.OS === 'ios' && (
+                                            <TouchableOpacity style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6, marginVertical: 5 }}
+                                                onPress={() => { navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] }); }}>
+                                                <Image style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6 }}
+                                                    source={require('../img/btn_login_apple.png')}
+                                                    resizeMode='contain' />
+                                            </TouchableOpacity>
+                                        )
+                                    }
                                 </View>
                             </View>
                         </View>

@@ -222,12 +222,19 @@ const MenuPage = () => {
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
-                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { Alert.alert('', '준비중입니다.') }}>
-                                    <Image style={styles.mainBtnImg} source={require('../img/ic_msg.png')} resizeMode='contain' />
-                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>문의 하기</Text>
+                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {
+                                    if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
+                                        setIsModalQr(true)
+                                    } else {
+                                        setIsModalImgQr(true)
+                                    }
+                                }}>
+                                    <Image style={[{   width: 28, height: 28,marginTop:2,marginBottom:4,tintColor:'#ffffff'}]} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
+                                    {/* <Image style={styles.mainBtnImg} source={require('../img/ic_msg.png')} resizeMode='contain' /> */}
+                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>QR {rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '촬영' : '이미지'}</Text>
                                 </TouchableOpacity>
                             </View>
-
+                            {/* 
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 0 }}>
                                 <View style={{ flexDirection: 'row', width: Layout.window.widthFix, alignItems: 'center', justifyContent: 'space-between', marginTop: 5 }}>
                                     <TouchableOpacity style={styles.midBtnWrap} onPress={() => { Alert.alert('', '준비중입니다.') }}>
@@ -254,8 +261,7 @@ const MenuPage = () => {
                                         </View>
                                     </TouchableOpacity>
                                 </View>
-
-                            </View>
+                            </View> */}
 
                             <View style={{ marginVertical: 15, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
 
@@ -348,7 +354,7 @@ const styles = StyleSheet.create({
     midBtnImg: {
         width: 32,
         height: 32,
-        marginLeft: 18
+        marginLeft: 18,
     },
     midBtnTextWrap: {
         marginLeft: 12

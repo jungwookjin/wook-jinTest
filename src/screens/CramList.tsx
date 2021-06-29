@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, Alert, TouchableOpacity } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, Linking, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../components/redux/rootReducer'
@@ -62,15 +62,15 @@ const CramList = () => {
 
                                 ) : (
                                     arrData.map((item: any, idx: number) => (
-                                        <ImageBackground key={idx} source={{uri:Config.SERVER_URL+item.file_nm}} resizeMode='cover'
+                                        <ImageBackground key={idx} source={{ uri: Config.SERVER_URL + item.file_nm }} resizeMode='cover'
                                             style={{ width: Layout.window.widthFix, height: 160, borderRadius: 20, overflow: 'hidden', marginVertical: 12, flexDirection: 'column' }}>
 
-                                            <TouchableOpacity style={{ height: 124, width: Layout.window.widthFix }} onPress={() => { navigation.navigate({ name: 'CramDetail', params: {biz_no:item.biz_no} }); }}></TouchableOpacity>
+                                            <TouchableOpacity style={{ height: 124, width: Layout.window.widthFix }} onPress={() => { navigation.navigate({ name: 'CramDetail', params: { biz_no: item.biz_no } }); }}></TouchableOpacity>
 
                                             <View style={{ width: '100%', height: 36, paddingHorizontal: 15, backgroundColor: 'rgba(0,0,0,0.6)', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                                 <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsM }}>{item.biz_nm}</Text>
 
-                                                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { Alert.alert('', '전화 걸기 : '+item.rep_tel) }}>
+                                                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { Linking.openURL(`tel:${item.rep_tel}`) }}>
                                                     <Image style={{ width: 14, height: 14 }}
                                                         source={require('../img/ic_call.png')}
                                                         resizeMode='contain' />

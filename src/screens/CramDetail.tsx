@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, TouchableOpacity, Image, Alert } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, TouchableOpacity, Image, Linking } from "react-native";
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../components/redux/rootReducer';
@@ -13,6 +13,7 @@ import Layout from "../constants/Layout";
 import CST from '../constants/constants';
 import CustomHeader from "../components/CustomHeader";
 import CramClassItem from "../components/CramClassItem";
+import Config from "../constants/Config";
 
 
 
@@ -22,7 +23,7 @@ const CramDetail = () => {
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
     const [biz_no, setBiz_no] = useState<any>(route.params.biz_no);
-    const [serverData, setServerData] = useState<any>({ rep_tel: "", jibun_add: "", jibun_add_dtl: "", array1: [], array2: [], RSP_CODE: "", MSG: "" });
+    const [serverData, setServerData] = useState<any>({ file_nm: "", rep_tel: "", jibun_add: "", jibun_add_dtl: "", array1: [], array2: [], RSP_CODE: "", MSG: "" });
 
 
     useEffect(() => {
@@ -50,12 +51,12 @@ const CramDetail = () => {
             {
                 loading ? (<Loader />) : (
                     <View style={{ flex: 1, width: Layout.window.width }}>
-                        <ImageBackground source={require('../img/temp_cram_img.png')} resizeMode='cover'
+                        <ImageBackground source={{ uri: Config.SERVER_URL + serverData.file_nm }} resizeMode='cover'
                             style={{ width: Layout.window.width, height: Layout.window.width * (10 / 16) }}>
-                            <CustomHeader navigation={navigation} isBackBtn={true} title={'S 코딩 아카데미'} themeColor={'#ffffff'} />
+                            <CustomHeader navigation={navigation} isBackBtn={true} title={serverData.biz_nm} themeColor={'#ffffff'} />
 
                             <View style={{ width: '100%', paddingVertical: 10, paddingHorizontal: 15, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'space-between', position: 'absolute', bottom: 0 }}>
-                                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { Alert.alert('', '전화 걸기') }}>
+                                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => { Linking.openURL(`tel:${serverData.rep_tel}`) }}>
                                     <Image style={{ width: 14, height: 14 }}
                                         source={require('../img/ic_call.png')}
                                         resizeMode='contain' />
