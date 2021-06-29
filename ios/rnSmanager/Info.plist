@@ -59,6 +59,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(PRODUCT_NAME)에서 공지 알림 재생에 사용됩니다.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME)에서 프로필 사진 등록을 위해 필요한 권한입니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
