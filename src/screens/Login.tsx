@@ -4,6 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { BlurView } from "@react-native-community/blur";
 import { RootState } from '../components/redux/rootReducer';
+import { appleAuth, appleAuthAndroid } from '@invertase/react-native-apple-authentication';
+import auth from '@react-native-firebase/auth';
 import {
     KakaoOAuthToken, KakaoProfile, unlink,
     logout as kakaoLogout,
@@ -64,6 +66,38 @@ const Login = () => {
     }, [])
 
 
+
+    const AppleLoginStart = useCallback(async () => {
+        try {
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME,],
+            });
+
+            const { user: newUser, nonce, identityToken } = appleAuthRequestResponse;
+            const credentialState = await appleAuth.getCredentialStateForUser(newUser);
+
+            if (identityToken) {
+                const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+                const userCredential = await auth().signInWithCredential(appleCredential);
+
+                // ** 로그인
+                LoginStart("a", userCredential.user.uid);
+            } else {
+                setLoading(false);
+                MyUtil._consoleLog("apple 로그인 실패 : 토큰 정보가 없습니다");
+            }
+        } catch (error) {
+            setLoading(false);
+            if (error.code === appleAuth.Error.CANCELED) {
+                // console.warn('User canceled Apple Sign in.')
+            } else {
+                MyUtil._consoleLog("apple 로그인 실패 : " + error);
+            };
+        }
+    }, []);
+
+
     const LoginStart = useCallback(async (easy_type, uniq_key) => {
         const result = await ServerApi._login(easy_type, uniq_key);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
@@ -114,7 +148,7 @@ const Login = () => {
                                     {
                                         Platform.OS === 'ios' && (
                                             <TouchableOpacity style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6, marginVertical: 5 }}
-                                                onPress={() => { navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] }); }}>
+                                                onPress={() => { AppleLoginStart() }}>
                                                 <Image style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6 }}
                                                     source={require('../img/btn_login_apple.png')}
                                                     resizeMode='contain' />

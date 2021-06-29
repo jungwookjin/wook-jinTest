@@ -45,6 +45,7 @@
 		AB01E6080B958FFC5AF82836 /* libPods-rnSmanager.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnSmanager.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF4DC1C4265B770C000341A2 /* rnSmanager-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rnSmanager-Bridging-Header.h"; sourceTree = "<group>"; };
 		AF4DC1C5265B770C000341A2 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		AF58A99E268B005E00CB54BE /* rnSmanager.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = rnSmanager.entitlements; path = rnSmanager/rnSmanager.entitlements; sourceTree = "<group>"; };
 		AF770D46265DD8F400A5E991 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../doc/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CE2F02A1BB0C9CFD6F509ED8 /* libPods-rnSmanager-rnSmanagerTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rnSmanager-rnSmanagerTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAE924444E85F8F751669414 /* Pods-rnSmanager.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnSmanager.release.xcconfig"; path = "Target Support Files/Pods-rnSmanager/Pods-rnSmanager.release.xcconfig"; sourceTree = "<group>"; };
@@ -91,6 +92,7 @@
 		13B07FAE1A68108700A75B9A /* rnSmanager */ = {
 			isa = PBXGroup;
 			children = (
+				AF58A99E268B005E00CB54BE /* rnSmanager.entitlements */,
 				AF770D46265DD8F400A5E991 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -473,6 +475,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = rnSmanager/rnSmanager.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GMT23Y33MH;
 				ENABLE_BITCODE = NO;
@@ -501,6 +504,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = rnSmanager/rnSmanager.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GMT23Y33MH;
 				INFOPLIST_FILE = rnSmanager/Info.plist;

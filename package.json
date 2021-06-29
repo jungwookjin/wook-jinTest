@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^2.1.2",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/datetimepicker": "^3.5.0",
