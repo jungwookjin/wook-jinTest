@@ -93,7 +93,6 @@ const MenuPage = () => {
     }, []);
 
 
-
     const m_app_code_child = useCallback(async (getCcode) => {
         const result = await ServerApi.m_app_code_child(getCcode);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
@@ -151,7 +150,7 @@ const MenuPage = () => {
     // ******************************************
     if (MyUtil._isNull(rxLoginInfo)) { return <></> }
 
-    let profileSource: any = {}
+    let profileSource: any = {};
     if (profileImgError) {
         profileSource = require('../img/ic_circle_profile.png');
     } else {
@@ -181,8 +180,7 @@ const MenuPage = () => {
                             </View>
 
                             <View style={{ width: Layout.window.widthFix, alignItems: 'center', flexDirection: 'row' }}>
-                                <Image source={profileSource} resizeMode='cover'
-                                    style={{ width: 50, height: 50, borderRadius: 25 }} />
+                                <Image source={profileSource} resizeMode='cover' style={{ width: 50, height: 50, borderRadius: 25 }} onError={() => { setProfileImgError(true) }} />
 
                                 <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsXL, marginLeft: 10 }}>{rxLoginInfo.name}</Text>
                                 <Text allowFontScaling={false} numberOfLines={1} style={{ color: '#ffffff', fontSize: Layout.fsS, marginLeft: 3 }}>{MyUtil._codeToKor(rxLoginInfo.c_gb_dt, "c_gb_dt")}</Text>
@@ -210,10 +208,15 @@ const MenuPage = () => {
                                 <View style={{ flex: 1, height: 1 }}></View>
 
                                 <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {
-                                    if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
-                                        navigation.navigate({ name: 'ChildList', params: {} });
+                                    if (MyUtil._isNull(rxLoginInfo.name)) {
+                                        Alert.alert('', '이름, 프로필 사진 등록 후 사용가능합니다.');
+                                        navigation.navigate({ name: 'InfoUpdate', params: { isJoin: false, uniq_key: "", easy_type: "" } });
                                     } else {
-                                        navigation.navigate({ name: 'CramList', params: {} });
+                                        if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
+                                            navigation.navigate({ name: 'ChildList', params: {} });
+                                        } else {
+                                            navigation.navigate({ name: 'CramList', params: {} });
+                                        }
                                     }
                                 }}>
                                     <Image style={styles.mainBtnImg} source={rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? require('../img/ic_childrun.png') : require('../img/ic_cram.png')} resizeMode='contain' />
@@ -229,7 +232,7 @@ const MenuPage = () => {
                                         setIsModalImgQr(true)
                                     }
                                 }}>
-                                    <Image style={[{   width: 28, height: 28,marginTop:2,marginBottom:4,tintColor:'#ffffff'}]} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
+                                    <Image style={[{ width: 28, height: 28, marginTop: 2, marginBottom: 4, tintColor: '#ffffff' }]} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
                                     {/* <Image style={styles.mainBtnImg} source={require('../img/ic_msg.png')} resizeMode='contain' /> */}
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>QR {rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '촬영' : '이미지'}</Text>
                                 </TouchableOpacity>

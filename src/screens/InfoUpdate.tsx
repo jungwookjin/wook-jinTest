@@ -53,7 +53,7 @@ const InfoUpdate = () => {
             if (!isJoin) {
                 setName(rxLoginInfo.name);
                 setBirth(rxLoginInfo.res_date);
-                setGender(rxLoginInfo.gender === CST.MALE ? '남자' : '여자');
+                setGender(rxLoginInfo.gender === CST.MALE ? '남자' : gender === CST.FEMALE ? '여자' : '');
                 setPhone(rxLoginInfo.handphone);
             }
         }
@@ -65,13 +65,15 @@ const InfoUpdate = () => {
         if (isJoin) {
             if (MyUtil._isNull(uniq_key)) { return Alert.alert('', '잘못된 접근입니다! (uniq_key null)') }
             if (MyUtil._isNull(easy_type)) { return Alert.alert('', '잘못된 접근입니다! (easy_type null)') }
-            if (MyUtil._isNull(getProfileImg)) { return Alert.alert('', '사진을 등록해주세요!') }
+            if (Platform.OS === 'android') { if (MyUtil._isNull(getProfileImg)) { return Alert.alert('', '사진을 등록해주세요!') } }
             if (MyUtil._isNull(getGbType)) { return Alert.alert('', '가입 유형을 선택해주세요!') }
         }
-        if (MyUtil._isNull(getName)) { return Alert.alert('', '이름을 입력해주세요!') }
-        if (MyUtil._isNull(getBirth)) { return Alert.alert('', '생년월일을 입력해주세요!') }
-        if (MyUtil._isNull(getGender)) { return Alert.alert('', '성별을 입력해주세요!') }
-        if (!MyUtil._isNum(getPhone)) { return Alert.alert('', '핸드폰번호는 숫자만 입력해주세요.') }
+        if (Platform.OS === 'android') {
+            if (MyUtil._isNull(getName)) { return Alert.alert('', '이름을 입력해주세요!') }
+            if (MyUtil._isNull(getBirth)) { return Alert.alert('', '생년월일을 입력해주세요!') }
+            if (MyUtil._isNull(getGender)) { return Alert.alert('', '성별을 입력해주세요!') }
+            if (!MyUtil._isNum(getPhone)) { return Alert.alert('', '핸드폰번호는 숫자만 입력해주세요.') }
+        }
 
         const TimeStamp = Date.now();
         const formData = new FormData();
@@ -84,7 +86,7 @@ const InfoUpdate = () => {
             formData.append('u_id', rxLoginInfo.u_id);
         }
         formData.append('name', getName);
-        formData.append('gender', getGender === '남자' ? CST.MALE : CST.FEMALE);
+        formData.append('gender', getGender === '남자' ? CST.MALE : getGender === '여자' ? CST.FEMALE : '');
         formData.append('res_date', getBirth);
         formData.append('handphone', getPhone);
         formData.append('school', getSchool);
@@ -284,60 +286,6 @@ const InfoUpdate = () => {
                                             resizeMode='contain' />
                                     </TouchableOpacity>
 
-
-                                    <View style={styles.ipWrap}>
-                                        <View style={styles.menuTitle}>
-                                            <Text allowFontScaling={false} style={styles.menuTitleText}>이름</Text>
-                                            <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text>
-                                        </View>
-
-                                        <TextInput
-                                            style={[styles.tiBox]}
-                                            autoCapitalize='none'
-                                            placeholder={`입력해주세요`}
-                                            placeholderTextColor={Colors.baseTextLightGray}
-                                            value={name}
-                                            multiline={true}
-                                            onChangeText={(text) => setName(text)} />
-                                    </View>
-
-                                    <TouchableOpacity style={styles.ipWrap} onPress={() => { setIsDateDialog(true) }}>
-                                        <View style={styles.menuTitle}>
-                                            <Text allowFontScaling={false} style={styles.menuTitleText}>생년월일</Text>
-                                            <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text>
-                                        </View>
-
-                                        <TextInput
-                                            style={[styles.tiBox]}
-                                            autoCapitalize='none'
-                                            placeholder={`선택해주세요`}
-                                            pointerEvents="none"
-                                            editable={false}
-                                            placeholderTextColor={Colors.baseTextLightGray}
-                                            value={birth}
-                                            multiline={true} />
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity style={styles.ipWrap} onPress={() => {
-                                        setArrMenuName(['남자', '여자'])
-                                        setIsModalSelect(true)
-                                    }}>
-                                        <View style={styles.menuTitle}>
-                                            <Text allowFontScaling={false} style={styles.menuTitleText}>성별</Text>
-                                            <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text>
-                                        </View>
-
-                                        <TextInput
-                                            style={[styles.tiBox]}
-                                            autoCapitalize='none'
-                                            placeholder={`선택해주세요`}
-                                            pointerEvents="none"
-                                            editable={false}
-                                            placeholderTextColor={Colors.baseTextLightGray}
-                                            value={gender}
-                                            multiline={true} />
-                                    </TouchableOpacity>
-
                                     {
                                         isJoin && (
                                             <TouchableOpacity style={styles.ipWrap} onPress={() => {
@@ -361,6 +309,60 @@ const InfoUpdate = () => {
                                             </TouchableOpacity>
                                         )
                                     }
+
+                                    <View style={styles.ipWrap}>
+                                        <View style={styles.menuTitle}>
+                                            <Text allowFontScaling={false} style={styles.menuTitleText}>이름</Text>
+                                            {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
+                                        </View>
+
+                                        <TextInput
+                                            style={[styles.tiBox]}
+                                            autoCapitalize='none'
+                                            placeholder={`입력해주세요`}
+                                            placeholderTextColor={Colors.baseTextLightGray}
+                                            value={name}
+                                            multiline={true}
+                                            onChangeText={(text) => setName(text)} />
+                                    </View>
+
+                                    <TouchableOpacity style={styles.ipWrap} onPress={() => { setIsDateDialog(true) }}>
+                                        <View style={styles.menuTitle}>
+                                            <Text allowFontScaling={false} style={styles.menuTitleText}>생년월일</Text>
+                                            {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
+                                        </View>
+
+                                        <TextInput
+                                            style={[styles.tiBox]}
+                                            autoCapitalize='none'
+                                            placeholder={`선택해주세요`}
+                                            pointerEvents="none"
+                                            editable={false}
+                                            placeholderTextColor={Colors.baseTextLightGray}
+                                            value={birth}
+                                            multiline={true} />
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity style={styles.ipWrap} onPress={() => {
+                                        setArrMenuName(['남자', '여자'])
+                                        setIsModalSelect(true)
+                                    }}>
+                                        <View style={styles.menuTitle}>
+                                            <Text allowFontScaling={false} style={styles.menuTitleText}>성별</Text>
+                                            {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
+                                        </View>
+
+                                        <TextInput
+                                            style={[styles.tiBox]}
+                                            autoCapitalize='none'
+                                            placeholder={`선택해주세요`}
+                                            pointerEvents="none"
+                                            editable={false}
+                                            placeholderTextColor={Colors.baseTextLightGray}
+                                            value={gender}
+                                            multiline={true} />
+                                    </TouchableOpacity>
+
 
                                     <View style={styles.ipWrap}>
                                         <View style={styles.menuTitle}>
