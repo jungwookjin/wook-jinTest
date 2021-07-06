@@ -326,59 +326,69 @@ const InfoUpdate = () => {
                                             onChangeText={(text) => setName(text)} />
                                     </View>
 
-                                    <TouchableOpacity style={styles.ipWrap} onPress={() => { setIsDateDialog(true) }}>
-                                        <View style={styles.menuTitle}>
-                                            <Text allowFontScaling={false} style={styles.menuTitleText}>생년월일</Text>
-                                            {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
-                                        </View>
+                                    {
+                                        Platform.OS !== 'ios' && !isJoin && (
+                                            <TouchableOpacity style={styles.ipWrap} onPress={() => { setIsDateDialog(true) }}>
+                                                <View style={styles.menuTitle}>
+                                                    <Text allowFontScaling={false} style={styles.menuTitleText}>생년월일</Text>
+                                                    {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
+                                                </View>
 
-                                        <TextInput
-                                            style={[styles.tiBox]}
-                                            autoCapitalize='none'
-                                            placeholder={`선택해주세요`}
-                                            pointerEvents="none"
-                                            editable={false}
-                                            placeholderTextColor={Colors.baseTextLightGray}
-                                            value={birth}
-                                            multiline={true} />
-                                    </TouchableOpacity>
+                                                <TextInput
+                                                    style={[styles.tiBox]}
+                                                    autoCapitalize='none'
+                                                    placeholder={`선택해주세요`}
+                                                    pointerEvents="none"
+                                                    editable={false}
+                                                    placeholderTextColor={Colors.baseTextLightGray}
+                                                    value={birth}
+                                                    multiline={true} />
+                                            </TouchableOpacity>
+                                        )
+                                    }
 
-                                    <TouchableOpacity style={styles.ipWrap} onPress={() => {
-                                        setArrMenuName(['남자', '여자'])
-                                        setIsModalSelect(true)
-                                    }}>
-                                        <View style={styles.menuTitle}>
-                                            <Text allowFontScaling={false} style={styles.menuTitleText}>성별</Text>
-                                            {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
-                                        </View>
+                                    {
+                                        Platform.OS !== 'ios' && !isJoin && (
+                                            <TouchableOpacity style={styles.ipWrap} onPress={() => {
+                                                setArrMenuName(['남자', '여자'])
+                                                setIsModalSelect(true)
+                                            }}>
+                                                <View style={styles.menuTitle}>
+                                                    <Text allowFontScaling={false} style={styles.menuTitleText}>성별</Text>
+                                                    {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
+                                                </View>
 
-                                        <TextInput
-                                            style={[styles.tiBox]}
-                                            autoCapitalize='none'
-                                            placeholder={`선택해주세요`}
-                                            pointerEvents="none"
-                                            editable={false}
-                                            placeholderTextColor={Colors.baseTextLightGray}
-                                            value={gender}
-                                            multiline={true} />
-                                    </TouchableOpacity>
+                                                <TextInput
+                                                    style={[styles.tiBox]}
+                                                    autoCapitalize='none'
+                                                    placeholder={`선택해주세요`}
+                                                    pointerEvents="none"
+                                                    editable={false}
+                                                    placeholderTextColor={Colors.baseTextLightGray}
+                                                    value={gender}
+                                                    multiline={true} />
+                                            </TouchableOpacity>
+                                        )
+                                    }
 
-
-                                    <View style={styles.ipWrap}>
-                                        <View style={styles.menuTitle}>
-                                            <Text allowFontScaling={false} style={styles.menuTitleText}>전화번호</Text>
-                                        </View>
-                                        <TextInput
-                                            style={[styles.tiBox]}
-                                            autoCapitalize='none'
-                                            placeholder={`숫자만 입력해주세요`}
-                                            placeholderTextColor={Colors.baseTextLightGray}
-                                            value={phone}
-                                            multiline={true}
-                                            keyboardType='numeric'
-                                            onChangeText={(text) => setPhone(text)} />
-                                    </View>
-
+                                    {
+                                        Platform.OS !== 'ios' && !isJoin && (
+                                            <View style={styles.ipWrap}>
+                                                <View style={styles.menuTitle}>
+                                                    <Text allowFontScaling={false} style={styles.menuTitleText}>전화번호</Text>
+                                                </View>
+                                                <TextInput
+                                                    style={[styles.tiBox]}
+                                                    autoCapitalize='none'
+                                                    placeholder={`숫자만 입력해주세요`}
+                                                    placeholderTextColor={Colors.baseTextLightGray}
+                                                    value={phone}
+                                                    multiline={true}
+                                                    keyboardType='numeric'
+                                                    onChangeText={(text) => setPhone(text)} />
+                                            </View>
+                                        )
+                                    }
                                     {/* <View style={styles.ipWrap}>
                                         <View style={styles.menuTitle}>
                                             <Text allowFontScaling={false} style={styles.menuTitleText}>학교</Text>
