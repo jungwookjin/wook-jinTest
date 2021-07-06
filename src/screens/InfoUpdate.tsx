@@ -327,7 +327,9 @@ const InfoUpdate = () => {
                                     </View>
 
                                     {
-                                        Platform.OS !== 'ios' && !isJoin && (
+                                        (isJoin && Platform.OS === 'ios') ? (
+                                            <></>
+                                        ) : (
                                             <TouchableOpacity style={styles.ipWrap} onPress={() => { setIsDateDialog(true) }}>
                                                 <View style={styles.menuTitle}>
                                                     <Text allowFontScaling={false} style={styles.menuTitleText}>생년월일</Text>
@@ -348,7 +350,9 @@ const InfoUpdate = () => {
                                     }
 
                                     {
-                                        Platform.OS !== 'ios' && !isJoin && (
+                                        (isJoin && Platform.OS === 'ios') ? (
+                                            <></>
+                                        ) : (
                                             <TouchableOpacity style={styles.ipWrap} onPress={() => {
                                                 setArrMenuName(['남자', '여자'])
                                                 setIsModalSelect(true)
@@ -372,7 +376,9 @@ const InfoUpdate = () => {
                                     }
 
                                     {
-                                        Platform.OS !== 'ios' && !isJoin && (
+                                        (isJoin && Platform.OS === 'ios') ? (
+                                            <></>
+                                        ) : (
                                             <View style={styles.ipWrap}>
                                                 <View style={styles.menuTitle}>
                                                     <Text allowFontScaling={false} style={styles.menuTitleText}>전화번호</Text>
