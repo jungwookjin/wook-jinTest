@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform, Alert } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform, Alert,Linking } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import ModalQrCode from "../components/ModalQrCode";
@@ -96,7 +96,7 @@ const Main = () => {
                             </View>
 
                             <ScrollView ref={refScrollView}
-                                contentContainerStyle={{ flexGrow: 1, alignItems: 'center', width: Layout.window.width, paddingBottom: 40 }} keyboardShouldPersistTaps='handled'
+                                contentContainerStyle={{ flexGrow: 1, alignItems: 'center', width: Layout.window.width }} keyboardShouldPersistTaps='handled'
                             >
                                 {/* <View style={styles.blurShadowWrap}>
                                     <Image style={styles.miniIcon}
@@ -206,6 +206,15 @@ const Main = () => {
                                         })
                                     )
                                 }
+
+                                <View style={{ width: 1, flex: 1 }}></View>
+
+                                <View style={{ width: Layout.window.width, paddingVertical: 10, backgroundColor: Colors.grayLine, marginTop: 40 }}>
+                                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsXS, color: Colors.baseTextGray, paddingHorizontal: 10 }}>데브에듀  |  대표: 유지현  |  사업자 번호: 826-53-00301  |  주소: 부산광역시 남구 전포대로 10 신화빌딩 6층</Text>
+                                    <TouchableOpacity onPress={()=>{Linking.openURL('http://15.165.156.218:3909/term/privacy.html')}}>
+                                        <Text allowFontScaling={false} style={{ fontSize: Layout.fsXS, color: '#0000ff', paddingHorizontal: 10, marginTop: 3 }}>개인정보 취급 방침</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </ScrollView>
                         </View>
                     </ImageBackground>
