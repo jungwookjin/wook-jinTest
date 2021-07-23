@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, View, ImageBackground, Image, Platform, Alert } from "react-native";
+import { StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, View, ImageBackground, Image, Platform, Alert, Text, Linking } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { BlurView } from "@react-native-community/blur";
@@ -121,7 +121,7 @@ const Login = () => {
             <SafeAreaView style={{ flex: 1, width: Layout.window.width }}>
                 {
                     loading ? (<Loader />) : (
-                        <View style={{ width: Layout.window.width, flex: 1, alignItems: 'center' }}>
+                        <View style={{ width: Layout.window.width, flex: 1, alignItems: 'center',flexDirection:'column' }}>
 
                             <View style={[styles.blurShadowWrap, { height: Platform.OS === 'ios' ? 120 : 90 }]}>
                                 <View style={[styles.blurRadiusWrap, { height: Platform.OS === 'ios' ? 120 : 90 }]}>
@@ -160,6 +160,13 @@ const Login = () => {
                         </View>
                     )
                 }
+
+                <View style={{ width: Layout.window.width, paddingVertical: 10, backgroundColor: Colors.grayLine, marginTop: 40 }}>
+                    <Text allowFontScaling={false} style={{ fontSize: Layout.fsXS, color: Colors.baseTextGray, paddingHorizontal: 10 }}>데브에듀  |  대표: 유지현  |  사업자 번호: 826-53-00301  |  주소: 부산광역시 남구 전포대로 10 신화빌딩 6층</Text>
+                    <TouchableOpacity onPress={() => { Linking.openURL('http://15.165.156.218:3909/term/privacy.html') }}>
+                        <Text allowFontScaling={false} style={{ fontSize: Layout.fsXS, color: '#0000ff', paddingHorizontal: 10, marginTop: 3 }}>개인정보 취급 방침</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView >
         </ImageBackground>
     );
