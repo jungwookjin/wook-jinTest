@@ -34,7 +34,7 @@ const CramDetail = () => {
     }, []);
 
     const m_app_biz_subj_list = useCallback(async () => {
-        const result = await ServerApi.m_app_biz_subj_list(biz_no, rxLoginInfo.u_id);
+        const result = await ServerApi.m_app_biz_subj_list(biz_no, rxLoginInfo.u_id,rxLoginInfo.c_gb_dt);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             setServerData(result.DATA_RESULT);
         } else {

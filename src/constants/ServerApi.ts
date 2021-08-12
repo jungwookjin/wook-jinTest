@@ -137,12 +137,12 @@ export async function m_app_subj_qr_attend_i(u_id: string, biz_code: string, sub
     return await MyUtil._httpReq(REQ_METHODS, data);
 }
 
-export async function m_app_biz_subj_list(biz_no: string, u_id: string): SG.httpReq {
+export async function m_app_biz_subj_list(biz_no: string, u_id: string,c_gb:string): SG.httpReq {
     const REQ_METHODS = "users/m_app_biz_subj_list";
 
     const data =
     {
-        biz_no, u_id
+        biz_no, u_id,c_gb
     };
 
     return await MyUtil._httpReq(REQ_METHODS, data);
