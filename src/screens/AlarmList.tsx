@@ -119,12 +119,12 @@ const AlarmList = () => {
                     </ImageBackground>
                 )
             }
-            <View style={{ width: Layout.window.width, paddingVertical: 10, backgroundColor: Colors.grayLine, marginTop: 10 }}>
+            {/* <View style={{ width: Layout.window.width, paddingVertical: 10, backgroundColor: Colors.grayLine, marginTop: 10 }}>
                 <Text allowFontScaling={false} style={{ fontSize: Layout.fsXS, color: Colors.baseTextGray, paddingHorizontal: 10 }}>데브에듀  |  대표: 유지현  |  사업자 번호: 826-53-00301  |  주소: 부산광역시 남구 전포대로 10 신화빌딩 6층</Text>
                 <TouchableOpacity onPress={() => { Linking.openURL('http://15.165.156.218:3909/term/privacy.html') }}>
                     <Text allowFontScaling={false} style={{ fontSize: Layout.fsXS, color: '#0000ff', paddingHorizontal: 10, marginTop: 3 }}>개인정보 취급 방침</Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </SafeAreaView >
     );
 
