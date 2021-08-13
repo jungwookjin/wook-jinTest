@@ -53,7 +53,7 @@ const InfoUpdate = () => {
             if (!isJoin) {
                 setName(rxLoginInfo.name);
                 setBirth(rxLoginInfo.res_date);
-                setGender(rxLoginInfo.gender === CST.MALE ? '남자' : gender === CST.FEMALE ? '여자' : '');
+                setGender(rxLoginInfo.gender === CST.MALE ? '남자' : rxLoginInfo.gender === CST.FEMALE ? '여자' : '');
                 setPhone(rxLoginInfo.handphone);
             }
         }
