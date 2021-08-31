@@ -202,12 +202,12 @@ const MenuPage = () => {
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>내 정보</Text>
                                 </TouchableOpacity>
 
-                                {/* <View style={{ flex: 1, height: 1 }}></View>
+                                <View style={{ flex: 1, height: 1 }}></View>
 
                                 <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'AttendChart', params: {} }); }}>
                                     <Image style={styles.mainBtnImg} source={require('../img/ic_graph.png')} resizeMode='contain' />
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>출석률</Text>
-                                </TouchableOpacity> */}
+                                </TouchableOpacity>
 
                                 <View style={{ flex: 1, height: 1 }}></View>
 
@@ -241,7 +241,7 @@ const MenuPage = () => {
                                     <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>QR {rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '촬영' : '이미지'}</Text>
                                 </TouchableOpacity>
 
-                                <View style={{ flex: 12, height: 1 }}></View>
+                                {/* <View style={{ flex: 12, height: 1 }}></View> */}
                             </View>
                             {/* 
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 0 }}>

@@ -1,6 +1,7 @@
 import * as MyUtil from "./MyUtil";
 import * as SG from "./Signature";
 import Config from "./Config";
+import messaging from '@react-native-firebase/messaging';
 import { Alert } from "react-native";
 
 export async function _login(easy_type: string, uniq_key: string): SG.httpReq {
@@ -8,7 +9,7 @@ export async function _login(easy_type: string, uniq_key: string): SG.httpReq {
     let fcmToken = ""
 
     try {
-        // fcmToken = await messaging().getToken();
+        fcmToken = await messaging().getToken();
         if (fcmToken) {
             MyUtil._consoleLog("******* 로그인 토큰 : " + fcmToken);
         } else {
@@ -23,7 +24,7 @@ export async function _login(easy_type: string, uniq_key: string): SG.httpReq {
 
     const data =
     {
-        easy_type, uniq_key
+        easy_type, uniq_key, token:fcmToken
     };
 
     return await MyUtil._httpReq(REQ_METHODS, data);
@@ -137,6 +138,16 @@ export async function m_app_subj_qr_attend_i(u_id: string, biz_code: string, sub
     return await MyUtil._httpReq(REQ_METHODS, data);
 }
 
+export async function m_app_my_attend(u_id:string,mon:string,subj_no:string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_my_attend";
+
+    const data =
+    {
+        u_id, mon, subj_no
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
 export async function m_app_biz_subj_list(biz_no: string, u_id: string,c_gb:string): SG.httpReq {
     const REQ_METHODS = "users/m_app_biz_subj_list";
 

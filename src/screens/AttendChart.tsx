@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, Alert, TouchableOpacity, processColor } from "react-native";
+import React, { useState, useEffect,useCallback } from "react";
+import { StyleSheet, ScrollView, SafeAreaView, View,  Text, Image, Alert, TouchableOpacity, processColor } from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 import { LineChart } from "react-native-charts-wrapper";
-import { RootState } from '../components/redux/rootReducer'
-import * as ITF from '../constants/Interface'
-import Loader from "../components/Loader"
+import { RootState } from '../components/redux/rootReducer';
+import * as ITF from '../constants/Interface';
+import * as ServerApi from "../constants/ServerApi";
+import * as MyUtil from '../constants/MyUtil';
+import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import CustomHeader from "../components/CustomHeader";
+import CST from '../constants/constants';
+import Sprintf from 'sprintf-js';
+const sprintf = Sprintf.sprintf;
 
 
 
@@ -63,9 +68,24 @@ const AttendChart = () => {
     };
 
     useEffect(() => {
-        async function fetchData() {  }
+        async function fetchData() {  m_app_my_attend();}
         fetchData();
     }, []);
+
+
+    const m_app_my_attend = useCallback(async () => {
+        const todya = new Date();
+        const getMonYear = sprintf("%04d%02d", todya.getFullYear(), todya.getMonth() + 1);
+        const result = await ServerApi.m_app_my_attend(rxLoginInfo.u_id, getMonYear, '');
+
+        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+        } else {
+            MyUtil._alertMsg('m_app_my_attend', result.DATA_RESULT);
+        }
+
+        setLoading(false);
+    }, []);
+
 
 
     return (
