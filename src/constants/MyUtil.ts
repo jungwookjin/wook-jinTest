@@ -330,7 +330,7 @@ export async function _loginRenewal(dispatch: any, navigation: any) {
 
     if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
         // * 로그인 정보 리덕스 저장
-        dispatch(allActions.setRxLoginInfo(result.DATA_RESULT.QUERY_DATA[0]))
+        dispatch(allActions.setRxLoginInfo(result.DATA_RESULT))
 
     } else {
         dispatch(allActions.logOut())

@@ -27,6 +27,12 @@ const Main = () => {
     const [isModalQr, setIsModalQr] = useState(false);
 
 
+
+    useEffect(() => {
+        async function fetchData() { console.log('rxLoginInfo : '+JSON.stringify(rxLoginInfo)) }
+        fetchData();
+    }, []);
+
     const m_app_subj_qr_attend_i = useCallback(async (getBizCode, getSelectSubjNo) => {
         const result = await ServerApi.m_app_subj_qr_attend_i(rxLoginInfo.u_id, getBizCode, getSelectSubjNo);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {

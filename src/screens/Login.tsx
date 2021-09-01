@@ -102,7 +102,7 @@ const Login = () => {
         const result = await ServerApi._login(easy_type, uniq_key);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             MyAsyncStorage._writeAsyncStorage(Config.AS_KEY_LOGIN_INFO, { easy_type, uniq_key });
-            dispatch(allActions.setRxLoginInfo(result.DATA_RESULT.QUERY_DATA[0]));
+            dispatch(allActions.setRxLoginInfo(result.DATA_RESULT));
             navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] });
 
         } else if (result.DATA_RESULT.RSP_CODE === CST.DB_USER_NONE) {

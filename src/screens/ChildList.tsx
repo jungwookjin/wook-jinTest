@@ -24,7 +24,7 @@ const ChildList = () => {
 
 
     useEffect(() => {
-        async function fetchData() { m_app_my_child() }
+        async function fetchData() { m_app_my_child(); }
         fetchData();
     }, []);
 
@@ -65,27 +65,26 @@ const ChildList = () => {
                 if (prevName === '' || prevName !== curName) {
                     prevName = curName;
 
-                    if (addData.length > 0) { rootData.push(addData); }
-
+                    if (addData.length > 0) { rootData.push(addData); };
                     addData = [];
                     addData.push(item);
 
                 } else {
                     addData.push(item);
-                }
+                };
 
                 // 마지막 데이터 푸시
-                if ((newArray.length - 1) === parseInt(idx)) { rootData.push(addData); }
-            }
+                if ((newArray.length - 1) === parseInt(idx)) { rootData.push(addData); };
+            };
 
             setArrData(rootData);
 
         } else {
             MyUtil._alertMsg('m_app_my_child', result.DATA_RESULT);
-        }
+        };
 
         setLoading(false);
-    }, [])
+    }, []);
 
 
 
