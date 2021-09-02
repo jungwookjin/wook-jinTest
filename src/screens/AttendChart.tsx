@@ -104,7 +104,7 @@ const AttendChart = () => {
             let serverData: any = [];
             let idx = 0;
             for (const child of rxLoginInfo.children) {
-                idx = idx++;
+                idx = idx+1;
                 result = await ServerApi.m_app_my_attend(child.u_id, getMonYear, '');
 
                 if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {

@@ -1203,6 +1203,13 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.11.tgz#2f4c6e10bee0786abff4604e39a37ded6f3980ce"
   integrity sha512-rQfMIGSR/1r/SyN87+VD8xHHzDYeHaJq6elOSCAD+0iLagXkSI2pfA0LmSXP21uw5i3em7GkkRjfJ8wpqWXZNw==
 
+"@react-native-community/push-notification-ios@^1.9.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.10.0.tgz#27cbf9a3e5e54e04794d146b03ae2fee110139ae"
+  integrity sha512-NPtJ9QtSI5ODLWfeT0UA9CiEJPsjw47WlZ4E5uViLjOb0P9iRtkb0Stavg9zwt3NpQA2KPxtZGd0GmLM7Rui3w==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-firebase/app@^12.5.0":
   version "12.7.3"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-12.7.3.tgz#80c1519380abc26dbbf170c916529fe6689e04b4"
@@ -1446,6 +1453,11 @@
   dependencies:
     "@types/react" "*"
     "@types/react-native" "*"
+
+"@types/react-native-push-notification@^7.3.1":
+  version "7.3.2"
+  resolved "https://registry.yarnpkg.com/@types/react-native-push-notification/-/react-native-push-notification-7.3.2.tgz#fa4ca52925ac82f8c2520b1524e02310493369c1"
+  integrity sha512-iTJJMdC8US/s8Q9VmMyHTsQl9ivAYijH0eHG2XU8LzxYBg0ItJmM7E5xzZcdARiJK8Hui2PDxceEHqS31BETvA==
 
 "@types/react-native@*", "@types/react-native@^0.64.0":
   version "0.64.13"
@@ -5909,6 +5921,11 @@ react-native-permissions@^3.0.4:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-3.0.5.tgz#94542a343abdac801fa0a4593ea2c751cb45c41f"
   integrity sha512-hcvLtHhTyOTXC+CCv79d4Qtdnj6PGuY5Ms0fhW8V6Et1T/mPvzO6++Du4jwEv/oHZ62qMWKUDq0/Tsh63QHuyQ==
+
+react-native-push-notification@^7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-7.4.0.tgz#81192356eddfee8eeaf72a9a696c7c90bf5b0ece"
+  integrity sha512-Ac3Ep71e2D8Q/Vy0OHBAO5JwhsFsNSuf9knkpXQWS0B9488nIZJLEMuTpF8610xPvGw7XxVrL/q0oZO5F1pOzw==
 
 react-native-qrcode-scanner@^1.5.4:
   version "1.5.4"

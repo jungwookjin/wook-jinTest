@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform, Alert,Linking } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform, Alert, Linking } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import ModalQrCode from "../components/ModalQrCode";
@@ -29,7 +29,7 @@ const Main = () => {
 
 
     useEffect(() => {
-        async function fetchData() { console.log('rxLoginInfo : '+JSON.stringify(rxLoginInfo)) }
+        async function fetchData() { console.log('rxLoginInfo : ' + JSON.stringify(rxLoginInfo)) }
         fetchData();
     }, []);
 
@@ -195,14 +195,18 @@ const Main = () => {
                                                         rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS && (
 
                                                             arrCildrenImg.map((subItem: any, idx2: number) => (
-                                                                <Image key={idx2} source={{ uri: Config.SERVER_URL + subItem }} resizeMode='cover'
-                                                                    style={{
-                                                                        width: 46, height: 46, borderRadius: 23, overflow: 'hidden', flexDirection: 'column', borderWidth: 2.5, position: 'absolute', right: idx2 * 20,
-                                                                        borderColor: arrChildrenState[idx2] === CST.ATTEND_BEFORE ? Colors.baseTextMidGray :
-                                                                            arrChildrenState[idx2] === CST.ATTEND_OK ? '#00ed33' :
-                                                                                arrChildrenState[idx2] === CST.ATTEND_TARDY ? '#e6bf00' :
-                                                                                    arrChildrenState[idx2] === CST.ATTEND_ABSENT ? '#e60000' : '#ffffff'
-                                                                    }} />
+                                                                <View key={idx2} style={{
+                                                                    width: 46, height: 46, borderRadius: 23, overflow: 'hidden', flexDirection: 'column', borderWidth: 2.5, position: 'absolute', right: idx2 * 20,
+                                                                    borderColor: arrChildrenState[idx2] === CST.ATTEND_BEFORE ? Colors.baseTextMidGray :
+                                                                        arrChildrenState[idx2] === CST.ATTEND_OK ? '#00ed33' :
+                                                                            arrChildrenState[idx2] === CST.ATTEND_TARDY ? '#e6bf00' :
+                                                                                arrChildrenState[idx2] === CST.ATTEND_ABSENT ? '#e60000' : '#ffffff'
+                                                                }}>
+                                                                    <Image source={{ uri: Config.SERVER_URL + subItem }} resizeMode='cover'
+                                                                        style={{
+                                                                            width: 46, height: 46, borderRadius: 23
+                                                                        }} />
+                                                                </View>
                                                             ))
                                                         )
                                                     }

@@ -25,7 +25,7 @@ export default {
     C_BG_CEO: 'b1',    // 원장
     C_BG_TEACHER: 'b2',    // 선생님
 
-    ATTEND_BEFORE: '',    // 출석전
+    ATTEND_BEFORE: 'x',    // 출석전
     ATTEND_OK: '1',       // 출석
     ATTEND_TARDY: '2',    // 지각
     ATTEND_ABSENT: '3',   // 결석
