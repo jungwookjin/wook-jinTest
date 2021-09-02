@@ -1,5 +1,5 @@
-import React, { useState, useEffect,useCallback } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View,  Text, Image, Alert, TouchableOpacity, processColor } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { StyleSheet, ScrollView, SafeAreaView, View, Text, Image, Alert, TouchableOpacity, processColor } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { LineChart } from "react-native-charts-wrapper";
@@ -14,20 +14,20 @@ import CustomHeader from "../components/CustomHeader";
 import CST from '../constants/constants';
 import Sprintf from 'sprintf-js';
 const sprintf = Sprintf.sprintf;
-
+const colorList = ['#D14B5A', '#04de54', '#f0e800', '#D14B5A', '#04de54', '#f0e800', '#D14B5A', '#04de54', '#f0e800'];
+const defaultDataConfig = {
+    lineWidth: 1.5,
+    valueTextSize: 9,
+    valueTextColor: processColor('#bfbfbf'),
+    valueFormatter: ''
+}
 
 
 const AttendChart = () => {
     const navigation = useNavigation();
     const { rxLoginInfo } = useSelector((state: RootState) => state.rxLoginInfo, (prev, next) => { return prev.rxLoginInfo === next.rxLoginInfo; })
     const [loading, setLoading] = useState(false);
-    const defaultDataConfig = {
-        lineWidth: 1.5,
-        valueTextSize: 9,
-        valueTextColor: processColor('#bfbfbf'),
-        valueFormatter: ''
-    }
-    const chartData = {
+    const [chartData, setChartData] = useState({
         dataSets: [{
             label: '김정훈',
             config: { ...defaultDataConfig, ...{ colors: [processColor('#D14B5A')], circleColors: [processColor('#D14B5A')] } },
@@ -64,11 +64,10 @@ const AttendChart = () => {
                 { x: 12, y: 80 },
             ]
         },],
-
-    };
+    });
 
     useEffect(() => {
-        async function fetchData() {  m_app_my_attend();}
+        async function fetchData() { m_app_my_attend(); };
         fetchData();
     }, []);
 
@@ -76,15 +75,67 @@ const AttendChart = () => {
     const m_app_my_attend = useCallback(async () => {
         const todya = new Date();
         const getMonYear = sprintf("%04d%02d", todya.getFullYear(), todya.getMonth() + 1);
-        const result = await ServerApi.m_app_my_attend(rxLoginInfo.u_id, getMonYear, '');
+        let result: any = '';
 
-        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+        if (MyUtil._isNull(rxLoginInfo.children)) {
+            result = await ServerApi.m_app_my_attend(rxLoginInfo.u_id, getMonYear, '');
+            setChartData({
+                dataSets: [{
+                    label: rxLoginInfo.name,
+                    config: { ...defaultDataConfig, ...{ colors: [processColor('#D14B5A')], circleColors: [processColor('#D14B5A')] } },
+                    values: [
+                        { x: 1, y: parseInt(result.DATA_RESULT.mon01) },
+                        { x: 2, y: parseInt(result.DATA_RESULT.mon02) },
+                        { x: 3, y: parseInt(result.DATA_RESULT.mon03) },
+                        { x: 4, y: parseInt(result.DATA_RESULT.mon04) },
+                        { x: 5, y: parseInt(result.DATA_RESULT.mon05) },
+                        { x: 6, y: parseInt(result.DATA_RESULT.mon06) },
+                        { x: 7, y: parseInt(result.DATA_RESULT.mon07) },
+                        { x: 8, y: parseInt(result.DATA_RESULT.mon08) },
+                        { x: 9, y: parseInt(result.DATA_RESULT.mon09) },
+                        { x: 10, y: parseInt(result.DATA_RESULT.mon10) },
+                        { x: 11, y: parseInt(result.DATA_RESULT.mon11) },
+                        { x: 12, y: parseInt(result.DATA_RESULT.mon12) },
+                    ]
+                }],
+            });
         } else {
-            MyUtil._alertMsg('m_app_my_attend', result.DATA_RESULT);
-        }
 
+            let serverData: any = [];
+            let idx = 0;
+            for (const child of rxLoginInfo.children) {
+                idx = idx++;
+                result = await ServerApi.m_app_my_attend(child.u_id, getMonYear, '');
+
+                if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+                    serverData.push({
+                        label: child.name,
+                        config: { ...defaultDataConfig, ...{ colors: [processColor(colorList[idx])], circleColors: [processColor(colorList[idx])] } },
+                        values: [
+                            { x: 1, y: parseInt(result.DATA_RESULT.mon01) },
+                            { x: 2, y: parseInt(result.DATA_RESULT.mon02) },
+                            { x: 3, y: parseInt(result.DATA_RESULT.mon03) },
+                            { x: 4, y: parseInt(result.DATA_RESULT.mon04) },
+                            { x: 5, y: parseInt(result.DATA_RESULT.mon05) },
+                            { x: 6, y: parseInt(result.DATA_RESULT.mon06) },
+                            { x: 7, y: parseInt(result.DATA_RESULT.mon07) },
+                            { x: 8, y: parseInt(result.DATA_RESULT.mon08) },
+                            { x: 9, y: parseInt(result.DATA_RESULT.mon09) },
+                            { x: 10, y: parseInt(result.DATA_RESULT.mon10) },
+                            { x: 11, y: parseInt(result.DATA_RESULT.mon11) },
+                            { x: 12, y: parseInt(result.DATA_RESULT.mon12) },
+                        ]
+                    });
+                } else {
+                    MyUtil._alertMsg('m_app_my_attend', result.DATA_RESULT);
+                }
+            }
+
+            setChartData({ dataSets: serverData });
+        }
         setLoading(false);
     }, []);
+
 
 
 
