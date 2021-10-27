@@ -87,7 +87,7 @@ const Login = () => {
                 setLoading(false);
                 MyUtil._consoleLog("apple 로그인 실패 : 토큰 정보가 없습니다");
             }
-        } catch (error) {
+        } catch (error:any) {
             setLoading(false);
             if (error.code === appleAuth.Error.CANCELED) {
                 // console.warn('User canceled Apple Sign in.')

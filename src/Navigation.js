@@ -19,6 +19,7 @@ import AttendChart from './screens/AttendChart';
 import InfoUpdate from './screens/InfoUpdate';
 import Notidetail from './screens/Notidetail';
 import ChildList from './screens/ChildList';
+import PicList from './screens/PicList';
 
 
 
@@ -117,6 +118,11 @@ function Navigator() {
                 <Stack.Screen
                     name="ChildList"
                     component={ChildList}
+                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                />
+                <Stack.Screen
+                    name="PicList"
+                    component={PicList}
                     options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
                 />
             </Stack.Navigator>

@@ -47,7 +47,6 @@ const Notidetail = () => {
                                     <Text allowFontScaling={false} style={{ width: '100%', paddingLeft: 15, paddingRight: 15, fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 5, fontWeight: 'bold' }}>{detailItem.title}</Text>
                                     <Text allowFontScaling={false} style={{ width: '100%', paddingLeft: 15, paddingRight: 15, fontSize: Layout.fsSM, color: Colors.baseTextGray, marginTop: 15, lineHeight: 19 }}>{detailItem.contents}</Text>
 
-
                                     <View style={{ width: Layout.window.widthFix - 30, marginTop: 30 }}>
                                         <AutoHeightImage
                                             width={Layout.window.widthFix * 4 / 5}

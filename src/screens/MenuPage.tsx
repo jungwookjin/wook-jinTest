@@ -85,12 +85,11 @@ const MenuPage = () => {
             { text: '취소', onPress: () => { }, style: 'cancel', },
             {
                 text: '확인', onPress: async () => {
-                    dispatch(allActions.logOut())
+                    dispatch(allActions.logOut());
                     await MyAsyncStorage._writeAsyncStorage(Config.AS_KEY_LOGIN_INFO, null);
 
-                    Alert.alert("", "로그아웃 하였습니다.")
-                    navigation.reset({ index: 0, routes: [{ name: 'Login', params: {} }] })
-
+                    Alert.alert("", "로그아웃 하였습니다.");
+                    navigation.reset({ index: 0, routes: [{ name: 'Login', params: {} }] });
                 }
             },], { cancelable: false },
         )
@@ -132,22 +131,22 @@ const MenuPage = () => {
 
     // 다이얼로그에서 넘어오는 정보
     const _modalQrCb = useCallback(async (isOk, detailDt, getSelectSubjNo) => {
-        setIsModalQr(false)
+        setIsModalQr(false);
 
         setTimeout(async () => {
             if (isOk) {
                 MyUtil._consoleLog('_modalQrCb : ' + detailDt);
                 setLoading(true);
-                m_app_code_child(detailDt)
-            }
-        }, 500)
-    }, [])
+                m_app_code_child(detailDt);
+            };
+        }, 500);
+    }, []);
 
 
     // 다이얼로그에서 넘어오는 정보
     const _modalImgQrCb = useCallback(async (isOk, detailDt, getSelectSubjNo) => {
         setIsModalImgQr(false);
-    }, [])
+    }, []);
 
 
 
@@ -196,53 +195,6 @@ const MenuPage = () => {
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={{ width: Layout.window.widthFix, alignItems: 'center', flexDirection: 'row', marginTop: 15 }}>
-                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'InfoUpdate', params: { isJoin: false, uniq_key: "", easy_type: "" } }); }}>
-                                    <Image style={styles.mainBtnImg} source={require('../img/ic_my.png')} resizeMode='contain' />
-                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>내 정보</Text>
-                                </TouchableOpacity>
-
-                                <View style={{ flex: 1, height: 1 }}></View>
-
-                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'AttendChart', params: {} }); }}>
-                                    <Image style={styles.mainBtnImg} source={require('../img/ic_graph.png')} resizeMode='contain' />
-                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>출석률</Text>
-                                </TouchableOpacity>
-
-                                <View style={{ flex: 1, height: 1 }}></View>
-
-                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {
-                                    if (MyUtil._isNull(rxLoginInfo.name)) {
-                                        Alert.alert('', '이름, 프로필 사진 등록 후 사용가능합니다.');
-                                        navigation.navigate({ name: 'InfoUpdate', params: { isJoin: false, uniq_key: "", easy_type: "" } });
-                                    } else {
-                                        if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
-                                            navigation.navigate({ name: 'ChildList', params: {} });
-                                        } else {
-                                            navigation.navigate({ name: 'CramList', params: {} });
-                                        }
-                                    }
-                                }}>
-                                    <Image style={styles.mainBtnImg} source={rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? require('../img/ic_childrun.png') : require('../img/ic_cram.png')} resizeMode='contain' />
-                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>{rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '자녀 관리' : '학원 관리'}</Text>
-                                </TouchableOpacity>
-
-                                <View style={{ flex: 1, height: 1 }}></View>
-
-                                <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {
-                                    if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
-                                        setIsModalQr(true)
-                                    } else {
-                                        setIsModalImgQr(true)
-                                    }
-                                }}>
-                                    <Image style={[{ width: 28, height: 28, marginTop: 2, marginBottom: 4, tintColor: '#ffffff' }]} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
-                                    {/* <Image style={styles.mainBtnImg} source={require('../img/ic_msg.png')} resizeMode='contain' /> */}
-                                    <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>QR {rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '촬영' : '이미지'}</Text>
-                                </TouchableOpacity>
-
-                                {/* <View style={{ flex: 12, height: 1 }}></View> */}
-                            </View>
                             {/* 
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 0 }}>
                                 <View style={{ flexDirection: 'row', width: Layout.window.widthFix, alignItems: 'center', justifyContent: 'space-between', marginTop: 5 }}>
@@ -274,34 +226,97 @@ const MenuPage = () => {
 
                             <View style={{ marginVertical: 15, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
 
-                            <View style={styles.notiWrap}>
-                                <FlatList
-                                    style={{ width: '100%' }}
-                                    data={arrData}
-                                    keyExtractor={(item, index) => String(index)}
-                                    onEndReached={() => { if (loadingFlag === false) { m_app_noti(false) } }}
-                                    onEndReachedThreshold={0.8}
-                                    initialNumToRender={5} // 필수 * 없으면 데이터 많을시 앱 죽음(IOS)
-                                    ListEmptyComponent={() => {
-                                        return (<View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
-                                            <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: Colors.baseTextGray }}>조회된 정보가 없어요</Text>
-                                        </View>)
-                                    }}
-                                    ListFooterComponent={() => {
-                                        if (loadingList) {
-                                            return (
-                                                <View style={{ width: Layout.window.width, height: 40, marginBottom: 5, justifyContent: 'center', alignItems: 'center' }}>
-                                                    <ActivityIndicator color='#0000ff' />
-                                                </View>
-                                            )
-                                        } else { return <></>; }
-                                    }}
-                                    renderItem={({ item }) => {
-                                        return <NoticeItem item={item} />
-                                    }}
-                                />
-                            </View>
+                            {/* <View style={styles.notiWrap}> */}
+                            <FlatList
+                                style={{ width: '100%' }}
+                                data={arrData}
+                                keyExtractor={(item, index) => String(index)}
+                                ListHeaderComponent={
+                                    <View style={{ width: Layout.window.width, alignItems: 'center' }}>
+                                        <View style={{ width: Layout.window.widthFix, alignItems: 'center', flexDirection: 'row', marginTop: 0 }}>
+                                            <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'InfoUpdate', params: { isJoin: false, uniq_key: "", easy_type: "" } }); }}>
+                                                <Image style={styles.mainBtnImg} source={require('../img/ic_my.png')} resizeMode='contain' />
+                                                <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>내 정보</Text>
+                                            </TouchableOpacity>
+
+                                            <View style={{ flex: 1, height: 1 }}></View>
+
+                                            <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {navigation.navigate({ name: 'PicList', params: {} });  }}>
+                                                <Image style={styles.mainBtnImg} source={require('../img/ic_album.png')} resizeMode='contain' />
+                                                <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>앨범</Text>
+                                            </TouchableOpacity>
+
+                                            <View style={{ flex: 1, height: 1 }}></View>
+
+                                            <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'AttendChart', params: {} }); }}>
+                                                <Image style={styles.mainBtnImg} source={require('../img/ic_graph.png')} resizeMode='contain' />
+                                                <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>출석률</Text>
+                                            </TouchableOpacity>
+
+                                            <View style={{ flex: 1, height: 1 }}></View>
+
+                                            <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {
+                                                if (MyUtil._isNull(rxLoginInfo.name)) {
+                                                    Alert.alert('', '이름, 프로필 사진 등록 후 사용가능합니다.');
+                                                    navigation.navigate({ name: 'InfoUpdate', params: { isJoin: false, uniq_key: "", easy_type: "" } });
+                                                } else {
+                                                    if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
+                                                        navigation.navigate({ name: 'ChildList', params: {} });
+                                                    } else {
+                                                        navigation.navigate({ name: 'CramList', params: {} });
+                                                    }
+                                                }
+                                            }}>
+                                                <Image style={styles.mainBtnImg} source={rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? require('../img/ic_childrun.png') : require('../img/ic_cram.png')} resizeMode='contain' />
+                                                <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>{rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '자녀 관리' : '학원 관리'}</Text>
+                                            </TouchableOpacity>
+
+                                            <View style={{ flex: 1, height: 1 }}></View>
+
+                                            <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {
+                                                if (rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS) {
+                                                    setIsModalQr(true);
+                                                } else {
+                                                    setIsModalImgQr(true);
+                                                }
+                                            }}>
+                                                <Image style={[{ width: 24, height: 24, marginTop: 2, marginBottom: 4, tintColor: '#ffffff' }]} source={require('../img/ic_qrcode.png')} resizeMode='contain' />
+                                                {/* <Image style={styles.mainBtnImg} source={require('../img/ic_msg.png')} resizeMode='contain' /> */}
+                                                <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>QR {rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS ? '촬영' : '이미지'}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+
+                                        <View style={{ marginVertical: 15, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
+
+                                        <View style={{ width: Layout.window.widthFix, flexDirection:'row',alignItems: 'center', marginTop: 10,marginBottom:10 }}>
+                                            <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsL, color: '#ffffff' }}>학원 공지</Text>
+                                        </View>
+                                    </View>
+                                }
+                                onEndReached={() => { if (loadingFlag === false) { m_app_noti(false); } }}
+                                onEndReachedThreshold={0.8}
+                                initialNumToRender={5} // 필수 * 없으면 데이터 많을시 앱 죽음(IOS)
+                                ListEmptyComponent={() => {
+                                    return (<View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
+                                        <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsM, color: '#dbdbdb' }}>조회된 정보가 없어요</Text>
+                                    </View>)
+                                }}
+                                ListFooterComponent={() => {
+                                    if (loadingList) {
+                                        return (
+                                            <View style={{ width: Layout.window.width, height: 40, marginBottom: 5, justifyContent: 'center', alignItems: 'center' }}>
+                                                <ActivityIndicator color='#0000ff' />
+                                            </View>
+                                        )
+                                    } else { return <></>; }
+                                }}
+                                // contentContainerStyle={styles.notiWrap}
+                                renderItem={({ item }) => {
+                                    return <NoticeItem item={item} />
+                                }}
+                            />
                         </View>
+                        // </View>
                     )
                 }
             </View>
@@ -333,15 +348,15 @@ const styles = StyleSheet.create({
     mainBtnWrap: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 70, height: 70
+        width: 60, height: 60
     },
     mainBtnImg: {
-        width: 36, height: 36
+        width: 30, height: 30
     },
     mainBtnText: {
-        fontSize: Layout.fsS,
+        fontSize: Layout.fsS-1,
         color: '#ffffff',
-        marginTop: 3
+        marginTop: 4
     },
     midBtnWrap: {
         alignItems: 'center',
@@ -384,10 +399,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     notiWrap: {
-        flex: 1,
+        minHeight: 200,
         borderRadius: 16,
         backgroundColor: '#FAFAFA',
         width: Layout.window.widthFix,
+        marginLeft: 15,
         paddingVertical: 5,
         alignItems: 'center',
         marginBottom: 10,

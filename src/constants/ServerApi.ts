@@ -30,6 +30,18 @@ export async function _login(easy_type: string, uniq_key: string): SG.httpReq {
     return await MyUtil._httpReq(REQ_METHODS, data);
 }
 
+export async function m_app_photo(u_id: string, page: string, c_gb:string): SG.httpReq {
+    const REQ_METHODS = "users/m_app_photo";
+
+    const data =
+    {
+        u_id, page,c_gb
+    };
+
+    return await MyUtil._httpReq(REQ_METHODS, data);
+}
+
+
 
 export async function m_app_alarm(u_id: string, page: string): SG.httpReq {
     const REQ_METHODS = "users/m_app_alarm";

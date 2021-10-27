@@ -29,7 +29,7 @@ const Main = () => {
 
 
     useEffect(() => {
-        async function fetchData() { console.log('rxLoginInfo : ' + JSON.stringify(rxLoginInfo)) }
+        async function fetchData() { }
         fetchData();
     }, []);
 
@@ -46,8 +46,53 @@ const Main = () => {
     }, []);
 
 
-    const GetDayItems = useCallback(async (getItem) => {
-        setArrDayItem(getItem);
+    const GetDayItems = useCallback(async (getItem: any) => {
+        let prevSubjNo = '';
+        let prevObj: any = {};
+        let arrProfileImg = [];
+        let arrAttendType = [];
+        const newArray:any = [];
+
+        for (const idx in getItem) {
+            const item = getItem[idx];
+
+            if (prevSubjNo !== '' && (prevSubjNo !== item.subj_no)) {
+                console.log('111 : '+item.subj_no)  
+
+                prevObj.profile_img = arrProfileImg;
+                prevObj.attend_type = arrAttendType;
+                newArray.push(prevObj);
+
+                arrProfileImg = [];
+                arrAttendType = [];
+                prevSubjNo = item.subj_no;
+                prevObj = item;
+
+                arrProfileImg.push(item.profile_img);
+                arrAttendType.push(item.attend_type);
+
+
+            } else {
+                console.log('222 : '+item.subj_no)  
+
+                arrProfileImg.push(item.profile_img);
+                arrAttendType.push(item.attend_type);
+
+                if (prevSubjNo === '') {
+                    prevObj = item;
+                    prevSubjNo = item.subj_no;
+                }
+            }
+
+            if (Number(idx) === (getItem.length - 1)) {
+                prevObj.profile_img = arrProfileImg;
+                prevObj.attend_type = arrAttendType;
+                newArray.push(prevObj);
+            }
+        }
+
+
+        setArrDayItem(newArray);
     }, []);
 
 
@@ -137,14 +182,6 @@ const Main = () => {
                                         </TouchableOpacity>
                                     ) : (
                                         arrDayItem.map((item: any, idx) => {
-                                            let arrCildrenImg = [];
-                                            let arrChildrenState: any = [];
-
-                                            try {
-                                                arrCildrenImg = item.profile_img.split(',');
-                                                arrChildrenState = item.attend_type.split(',');
-                                            } catch (err) { }
-
                                             return (<View key={idx} style={{ marginTop: 15, width: Layout.window.widthFix, height: 70, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: 14, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', paddingHorizontal: 13 }}>
                                                 <View style={{ flex: 1, justifyContent: 'center' }}>
                                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -194,17 +231,17 @@ const Main = () => {
                                                     {
                                                         rxLoginInfo.c_gb_dt === CST.C_BG_PARENTS && (
 
-                                                            arrCildrenImg.map((subItem: any, idx2: number) => (
+                                                            item.profile_img.map((subItem: any, idx2: number) => (
                                                                 <View key={idx2} style={{
-                                                                    width: 46, height: 46, borderRadius: 23, overflow: 'hidden', flexDirection: 'column', borderWidth: 2.5, position: 'absolute', right: idx2 * 20,
-                                                                    borderColor: arrChildrenState[idx2] === CST.ATTEND_BEFORE ? Colors.baseTextMidGray :
-                                                                        arrChildrenState[idx2] === CST.ATTEND_OK ? '#00ed33' :
-                                                                            arrChildrenState[idx2] === CST.ATTEND_TARDY ? '#e6bf00' :
-                                                                                arrChildrenState[idx2] === CST.ATTEND_ABSENT ? '#e60000' : '#ffffff'
+                                                                    width: 46, height: 46, borderRadius: 23, justifyContent: 'center', alignItems: 'center', overflow: 'hidden', flexDirection: 'column', borderWidth: 2.5, position: 'absolute', right: idx2 * 20,
+                                                                    borderColor: item.attend_type[idx2] === CST.ATTEND_BEFORE ? Colors.baseTextMidGray :
+                                                                        item.attend_type[idx2] === CST.ATTEND_OK ? '#00ed33' :
+                                                                            item.attend_type[idx2] === CST.ATTEND_TARDY ? '#e6bf00' :
+                                                                                item.attend_type[idx2] === CST.ATTEND_ABSENT ? '#e60000' : '#ffffff'
                                                                 }}>
                                                                     <Image source={{ uri: Config.SERVER_URL + subItem }} resizeMode='cover'
                                                                         style={{
-                                                                            width: 46, height: 46, borderRadius: 23
+                                                                            width: 46, height: 46
                                                                         }} />
                                                                 </View>
                                                             ))
