@@ -87,7 +87,7 @@ const Login = () => {
                 setLoading(false);
                 MyUtil._consoleLog("apple 로그인 실패 : 토큰 정보가 없습니다");
             }
-        } catch (error:any) {
+        } catch (error: any) {
             setLoading(false);
             if (error.code === appleAuth.Error.CANCELED) {
                 // console.warn('User canceled Apple Sign in.')
@@ -121,10 +121,10 @@ const Login = () => {
             <SafeAreaView style={{ flex: 1, width: Layout.window.width }}>
                 {
                     loading ? (<Loader />) : (
-                        <View style={{ width: Layout.window.width, flex: 1, alignItems: 'center',flexDirection:'column' }}>
+                        <View style={{ width: Layout.window.width, flex: 1, alignItems: 'center', flexDirection: 'column' }}>
 
-                            <View style={[styles.blurShadowWrap, { height: Platform.OS === 'ios' ? 120 : 90 }]}>
-                                <View style={[styles.blurRadiusWrap, { height: Platform.OS === 'ios' ? 120 : 90 }]}>
+                            <View style={[styles.blurShadowWrap, { height: Platform.OS === 'ios' ? 180 : 90 }]}>
+                                <View style={[styles.blurRadiusWrap, { height: Platform.OS === 'ios' ? 180 : 90 }]}>
                                     <BlurView
                                         style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0 }}
                                         blurType="xlight"
@@ -152,6 +152,14 @@ const Login = () => {
                                                 <Image style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 6 }}
                                                     source={require('../img/btn_login_apple.png')}
                                                     resizeMode='contain' />
+                                            </TouchableOpacity>
+                                        )
+                                    }
+                                    {
+                                        Platform.OS === 'ios' && (
+                                            <TouchableOpacity style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 7.5, marginVertical: 5, backgroundColor: '#8fceff', borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}
+                                                onPress={() => { LoginStart("t", '12345'); }}>
+                                                <Text allowFontScaling={false} numberOfLines={1} style={{ color: Colors.defaultText, fontSize: Layout.fsM, fontWeight: 'bold' }}>게스트 로그인</Text>
                                             </TouchableOpacity>
                                         )
                                     }

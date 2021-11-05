@@ -57,7 +57,6 @@ const Main = () => {
             const item = getItem[idx];
 
             if (prevSubjNo !== '' && (prevSubjNo !== item.subj_no)) {
-                console.log('111 : '+item.subj_no)  
 
                 prevObj.profile_img = arrProfileImg;
                 prevObj.attend_type = arrAttendType;
@@ -73,7 +72,6 @@ const Main = () => {
 
 
             } else {
-                console.log('222 : '+item.subj_no)  
 
                 arrProfileImg.push(item.profile_img);
                 arrAttendType.push(item.attend_type);

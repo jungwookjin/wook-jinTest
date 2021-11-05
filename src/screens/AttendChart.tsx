@@ -192,7 +192,7 @@ const AttendChart = () => {
                                     dragDecelerationEnabled={true}
                                     dragDecelerationFrictionCoef={0.99}
                                     keepPositionOnRotation={false}
-                                    onChange={(event) => console.log(event.nativeEvent)}
+                                    // onChange={(event) => console.log(event.nativeEvent)}
                                     chartDescription={{ text: '' }}
                                 // gridBackgroundColor={processColor('#ffffff')}
                                 // ref="chart"
