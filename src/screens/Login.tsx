@@ -58,6 +58,8 @@ const Login = () => {
             })
             .then(async (profile: any) => {
                 await kakaoLogout();
+
+                // LoginStart("k", '2062541628'); // 주원 테스트
                 LoginStart("k", profile.id)
             })
             .catch((errData) => { // reject에 에러 정보 존재

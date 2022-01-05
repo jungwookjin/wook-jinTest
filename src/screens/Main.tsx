@@ -193,25 +193,25 @@ const Main = () => {
                                                 {/* **************************** 학생 **************************** */}
 
                                                 {
-                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type === CST.ATTEND_OK && (
+                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type == CST.ATTEND_OK && (
                                                         <Image style={{ width: 32, height: 32 }} source={require('../img/ic_circle_check.png')} resizeMode='contain' />
                                                     )
                                                 }
 
                                                 {
-                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type === CST.ATTEND_TARDY && (
+                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type == CST.ATTEND_TARDY && (
                                                         <Image style={{ width: 32, height: 32 }} source={require('../img/ic_warning.png')} resizeMode='contain' />
                                                     )
                                                 }
 
                                                 {
-                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type === CST.ATTEND_ABSENT && (
+                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type == CST.ATTEND_ABSENT && (
                                                         <Image style={{ width: 32, height: 32 }} source={require('../img/ic_circle_x.png')} resizeMode='contain' />
                                                     )
                                                 }
 
                                                 {
-                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type === CST.ATTEND_BEFORE && (
+                                                    rxLoginInfo.c_gb_dt === CST.C_BG_STUDENT && item.attend_type == CST.ATTEND_BEFORE && (
                                                         <TouchableOpacity onPress={() => {
                                                             setSelectSubjNo(item.subj_no + '');
                                                             setIsModalQr(true);
@@ -220,7 +220,6 @@ const Main = () => {
                                                         </TouchableOpacity>
                                                     )
                                                 }
-
 
 
                                                 {/* **************************** 학부모 **************************** */}
@@ -232,10 +231,10 @@ const Main = () => {
                                                             item.profile_img.map((subItem: any, idx2: number) => (
                                                                 <View key={idx2} style={{
                                                                     width: 46, height: 46, borderRadius: 23, justifyContent: 'center', alignItems: 'center', overflow: 'hidden', flexDirection: 'column', borderWidth: 2.5, position: 'absolute', right: idx2 * 20,
-                                                                    borderColor: item.attend_type[idx2] === CST.ATTEND_BEFORE ? Colors.baseTextMidGray :
-                                                                        item.attend_type[idx2] === CST.ATTEND_OK ? '#00ed33' :
-                                                                            item.attend_type[idx2] === CST.ATTEND_TARDY ? '#e6bf00' :
-                                                                                item.attend_type[idx2] === CST.ATTEND_ABSENT ? '#e60000' : '#ffffff'
+                                                                    borderColor: item.attend_type[idx2] == CST.ATTEND_BEFORE ? Colors.baseTextMidGray :
+                                                                        item.attend_type[idx2] == CST.ATTEND_OK ? '#00ed33' :
+                                                                            item.attend_type[idx2] == CST.ATTEND_TARDY ? '#e6bf00' :
+                                                                                item.attend_type[idx2] == CST.ATTEND_ABSENT ? '#e60000' : '#ffffff'
                                                                 }}>
                                                                     <Image source={{ uri: Config.SERVER_URL + subItem }} resizeMode='cover'
                                                                         style={{

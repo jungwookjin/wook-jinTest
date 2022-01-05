@@ -1,5 +1,5 @@
 // const BASE_URL = 'http://211.221.7.127:9184/'; // test (정훈 PC)
-// const BASE_URL = 'http://59.20.45.204:8091/';  // test (이사님 pc)
+// const BASE_URL = 'http://218.159.159.57:8091/';  // test (이사님 pc)
 const BASE_URL = 'http://15.165.156.218:3909/'; // AWS
 
 
@@ -17,6 +17,6 @@ export default {
 
 
   // ****************** 공통 사용 코드 
-  APP_VER: '0.0.4',
+  APP_VER: '0.0.5',
   IS_LOG: false
 };

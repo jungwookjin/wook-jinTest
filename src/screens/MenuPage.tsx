@@ -121,6 +121,10 @@ const MenuPage = () => {
         const result = await ServerApi.m_app_child_i(rxLoginInfo.u_id, getCuid, rxLoginInfo.gender);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             Alert.alert('', '자녀가 등록되었습니다.');
+
+            // ** 로그인 갱신
+            const loginInfo = await MyAsyncStorage._getAsyncStorage(Config.AS_KEY_LOGIN_INFO);
+            if (loginInfo !== null) { LoginStart(loginInfo.easy_type, loginInfo.uniq_key); };
         } else {
             MyUtil._alertMsg('m_app_child_i', result.DATA_RESULT);
         }
@@ -149,6 +153,16 @@ const MenuPage = () => {
     }, []);
 
 
+    const LoginStart = useCallback(async (easy_type, uniq_key) => {
+        const result = await ServerApi._login(easy_type, uniq_key);
+        if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+            MyAsyncStorage._writeAsyncStorage(Config.AS_KEY_LOGIN_INFO, { easy_type, uniq_key });
+            dispatch(allActions.setRxLoginInfo(result.DATA_RESULT));
+
+        } else {
+            MyUtil._alertMsg('LoginStart', result.DATA_RESULT);
+        }
+    }, [])
 
     // ******************************************
     if (MyUtil._isNull(rxLoginInfo)) { return <></> }
@@ -241,7 +255,7 @@ const MenuPage = () => {
 
                                             <View style={{ flex: 1, height: 1 }}></View>
 
-                                            <TouchableOpacity style={styles.mainBtnWrap} onPress={() => {navigation.navigate({ name: 'PicList', params: {} });  }}>
+                                            <TouchableOpacity style={styles.mainBtnWrap} onPress={() => { navigation.navigate({ name: 'PicList', params: {} }); }}>
                                                 <Image style={styles.mainBtnImg} source={require('../img/ic_album.png')} resizeMode='contain' />
                                                 <Text allowFontScaling={false} numberOfLines={1} style={styles.mainBtnText}>앨범</Text>
                                             </TouchableOpacity>
@@ -288,7 +302,7 @@ const MenuPage = () => {
 
                                         <View style={{ marginVertical: 15, width: Layout.window.widthFix, height: 1, backgroundColor: '#454B5F' }}></View>
 
-                                        <View style={{ width: Layout.window.widthFix, flexDirection:'row',alignItems: 'center', marginTop: 10,marginBottom:10 }}>
+                                        <View style={{ width: Layout.window.widthFix, flexDirection: 'row', alignItems: 'center', marginTop: 10, marginBottom: 10 }}>
                                             <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsL, color: '#ffffff' }}>학원 공지</Text>
                                         </View>
                                     </View>
@@ -354,7 +368,7 @@ const styles = StyleSheet.create({
         width: 30, height: 30
     },
     mainBtnText: {
-        fontSize: Layout.fsS-1,
+        fontSize: Layout.fsS - 1,
         color: '#ffffff',
         marginTop: 4
     },
