@@ -312,7 +312,7 @@ const InfoUpdate = () => {
 
                                     <View style={styles.ipWrap}>
                                         <View style={styles.menuTitle}>
-                                            <Text allowFontScaling={false} style={styles.menuTitleText}>이름</Text>
+                                            <Text allowFontScaling={false}  style={styles.menuTitleText}>이름</Text>
                                             {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
                                         </View>
 
@@ -322,7 +322,7 @@ const InfoUpdate = () => {
                                             placeholder={`입력해주세요`}
                                             placeholderTextColor={Colors.baseTextLightGray}
                                             value={name}
-                                            multiline={true}
+                                            multiline={false}
                                             onChangeText={(text) => setName(text)} />
                                     </View>
 
@@ -370,7 +370,7 @@ const InfoUpdate = () => {
                                                     editable={false}
                                                     placeholderTextColor={Colors.baseTextLightGray}
                                                     value={gender}
-                                                    multiline={true} />
+                                                    multiline={false} />
                                             </TouchableOpacity>
                                         )
                                     }
@@ -389,7 +389,7 @@ const InfoUpdate = () => {
                                                     placeholder={`숫자만 입력해주세요`}
                                                     placeholderTextColor={Colors.baseTextLightGray}
                                                     value={phone}
-                                                    multiline={true}
+                                                    multiline={false}
                                                     keyboardType='numeric'
                                                     onChangeText={(text) => setPhone(text)} />
                                             </View>
@@ -432,7 +432,7 @@ const InfoUpdate = () => {
                     isVisible={isDateDialog}
                     mode={'date'}
                     is24Hour={true}
-                    // datePickerModeAndroid="spinner"
+                    timePickerModeAndroid="spinner"
                     onConfirm={_datePickerHandler}
                     onCancel={_datePickerHandlerCancel}
                     date={new Date()}
