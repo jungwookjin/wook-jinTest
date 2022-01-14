@@ -161,11 +161,11 @@ const MenuPage = () => {
 
         } else {
             MyUtil._alertMsg('LoginStart', result.DATA_RESULT);
-        }
-    }, [])
+        };
+    }, []);
 
     // ******************************************
-    if (MyUtil._isNull(rxLoginInfo)) { return <></> }
+    if (MyUtil._isNull(rxLoginInfo)) { return <></> };
 
     let profileSource: any = {};
     if (profileImgError) {
@@ -178,9 +178,10 @@ const MenuPage = () => {
                 profileSource.uri = Config.SERVER_URL + rxLoginInfo.profile_img; // 수정시 초기 이미지
             } else {
                 profileSource.uri = "error"; // 추가시 아무것도 안뜨기때문에 에러 유도
-            }
-        }
-    }
+            };
+        };
+    };
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Colors.bgNavy }}>

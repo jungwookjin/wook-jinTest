@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, SafeAreaView, View, Platform, Text, Image, Aler
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native'
 import AutoHeightImage from 'react-native-auto-height-image';
 import { useSelector } from 'react-redux';
+import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import { RootState } from '../components/redux/rootReducer';
 import Loader from "../components/Loader";
 import Colors from "../constants/Colors";
@@ -36,25 +37,34 @@ const Notidetail = () => {
 
                         <View style={styles.notiWrap}>
                             <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} keyboardShouldPersistTaps='handled'>
-                                <View style={{ width: Layout.window.widthFix, alignItems: 'center' }}>
 
-                                    <View style={{ width: '100%', flexDirection: 'row', paddingTop: 10, paddingLeft: 15 }}>
-                                        <Image style={{ width: 20, height: 20 }} source={require('../img/ic_noti2.png')} resizeMode='contain' />
+                                <ReactNativeZoomableView
+                                    style={{ width: Layout.window.widthFix, flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                                    maxZoom={1.5}
+                                    minZoom={1}
+                                    zoomStep={0}
+                                    initialZoom={1}
+                                    bindToBorders={true}>
+                                    <View style={{ width: Layout.window.widthFix, alignItems: 'center' }}>
 
-                                        <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.pastelPurple, marginLeft: 7 }}>{detailItem.reg_date} to {MyUtil._codeToKor(detailItem.target_type, 'target')}</Text>
+                                        <View style={{ width: '100%', flexDirection: 'row', paddingTop: 10, paddingLeft: 15 }}>
+                                            <Image style={{ width: 20, height: 20 }} source={require('../img/ic_noti2.png')} resizeMode='contain' />
+
+                                            <Text allowFontScaling={false} numberOfLines={1} style={{ fontSize: Layout.fsS, color: Colors.pastelPurple, marginLeft: 7 }}>{detailItem.reg_date} to {MyUtil._codeToKor(detailItem.target_type, 'target')}</Text>
+                                        </View>
+
+                                        <Text allowFontScaling={false} style={{ width: '100%', paddingLeft: 15, paddingRight: 15, fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 5, fontWeight: 'bold' }}>{detailItem.title}</Text>
+                                        <Text allowFontScaling={false} style={{ width: '100%', paddingLeft: 15, paddingRight: 15, fontSize: Layout.fsSM, color: Colors.baseTextGray, marginTop: 15, lineHeight: 19 }}>{detailItem.contents}</Text>
+
+                                        <View style={{ width: Layout.window.widthFix - 30, marginTop: 30 }}>
+                                            <AutoHeightImage
+                                                width={Layout.window.widthFix * 4 / 5}
+                                                style={{ borderRadius: 10 }}
+                                                source={{ uri: Config.SERVER_URL + detailItem.file_nm }}
+                                            />
+                                        </View>
                                     </View>
-
-                                    <Text allowFontScaling={false} style={{ width: '100%', paddingLeft: 15, paddingRight: 15, fontSize: Layout.fsM, color: Colors.defaultText, marginTop: 5, fontWeight: 'bold' }}>{detailItem.title}</Text>
-                                    <Text allowFontScaling={false} style={{ width: '100%', paddingLeft: 15, paddingRight: 15, fontSize: Layout.fsSM, color: Colors.baseTextGray, marginTop: 15, lineHeight: 19 }}>{detailItem.contents}</Text>
-
-                                    <View style={{ width: Layout.window.widthFix - 30, marginTop: 30 }}>
-                                        <AutoHeightImage
-                                            width={Layout.window.widthFix * 4 / 5}
-                                            style={{borderRadius:10}}
-                                            source={{ uri: Config.SERVER_URL + detailItem.file_nm }}
-                                        />
-                                    </View>
-                                </View>
+                                </ReactNativeZoomableView>
                             </ScrollView>
                         </View>
                     </View>

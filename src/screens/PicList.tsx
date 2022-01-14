@@ -73,6 +73,7 @@ const PicList = () => {
                     newArray = [...arrPrev, ...result.DATA_RESULT.QUERY_DATA];
                 }
             }
+
         } else {
             MyUtil._alertMsg('m_app_photo', result.DATA_RESULT);
         }

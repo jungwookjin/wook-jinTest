@@ -6,6 +6,7 @@ import FastImage from 'react-native-fast-image'
 import Modal from 'react-native-modal';
 import Layout from '../constants/Layout';
 import Config from "../constants/Config";
+import * as MyUtil from "../constants/MyUtil";
 
 
 export default class DialogPhoto extends React.Component {
@@ -64,12 +65,14 @@ export default class DialogPhoto extends React.Component {
             profileSource = require('../img/default_img.png');
         } else {
             if (arrAddImage.length > 0) {
-                profileSource.uri = Config.SERVER_URL +arrAddImage[imgIdx].file_nm
+                profileSource.uri = Config.SERVER_URL + arrAddImage[imgIdx].file_nm
 
             } else {
                 profileSource = require('../img/default_img.png');
             }
         }
+
+        if (MyUtil._isNull(arrAddImage)) { return <></> }
 
         return (
             <Modal
@@ -85,7 +88,7 @@ export default class DialogPhoto extends React.Component {
                 <View style={{ flex: 1, width: Layout.window.width, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>
                     <View style={{ width: Layout.window.width, height: Layout.window.height - 120, overflow: 'hidden', alignItems: 'center', justifyContent: 'center' }}>
                         <ReactNativeZoomableView
-                            style={{ width: Layout.window.width, height: Layout.window.height - 120, alignItems: 'center', justifyContent: 'center' }}
+                            style={{ width: Layout.window.width, flex: 1, alignItems: 'center', justifyContent: 'center' }}
                             maxZoom={1.5}
                             minZoom={1}
                             zoomStep={0}
@@ -124,6 +127,11 @@ export default class DialogPhoto extends React.Component {
                                 style={{ width: 50, height: 50, opacity: 0.4 }}
                                 resizeMode='cover' />
                         </TouchableOpacity>
+
+                        <View style={{ width: Layout.window.width, paddingVertical: 10, backgroundColor: 'rgba(0,0,0,0.4)' }}>
+                            <Text allowFontScaling={false} style={{ fontSize: Layout.fsL, lineHeight: Layout.fsL + 4, fontWeight: 'bold', color: '#ffffff', width: Layout.window.width, paddingHorizontal: 15 }}>{arrAddImage[imgIdx].title}</Text>
+                            <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, lineHeight: Layout.fsM + 4, marginTop: 3, color: '#ffffff', width: Layout.window.width, paddingHorizontal: 15 }}>{arrAddImage[imgIdx].contents}</Text>
+                        </View>
                     </View>
 
 
