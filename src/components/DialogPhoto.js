@@ -78,11 +78,14 @@ export default class DialogPhoto extends React.Component {
             <Modal
                 testID={'modal'}
                 isVisible={isModalOpen}
-                onSwipeComplete={({ swipingDirection }) => { _modalCb(false, {}) }}
+                onSwipeComplete={({ swipingDirection }) => {
+                    this.state.imgIdx = -1;
+                    _modalCb(false, {});
+                }}
                 style={styles.view}
                 backdropOpacity={0.8}
-                onBackButtonPress={() => { _modalCb(false, {}) }}
-                onBackdropPress={() => { _modalCb(false, {}) }}>
+                onBackButtonPress={() => { this.state.imgIdx = -1; _modalCb(false, {}); }}
+                onBackdropPress={() => { this.state.imgIdx = -1; _modalCb(false, {}); }}>
 
 
                 <View style={{ flex: 1, width: Layout.window.width, paddingLeft: 0, paddingRight: 0, paddingBottom: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: '#000000' }}>

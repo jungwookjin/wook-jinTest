@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useAndroidBackHandler } from "react-navigation-backhandler";
 import DialogPhoto from "../components/DialogPhoto";
 import { RootState } from '../components/redux/rootReducer';
+import FastImage from 'react-native-fast-image'
 import * as ITF from '../constants/Interface';
 import * as ServerApi from "../constants/ServerApi";
 import * as MyUtil from '../constants/MyUtil';
@@ -131,11 +132,12 @@ const PicList = () => {
                                         )
                                     } else { return <></>; }
                                 }}
-                                renderItem={({ item,index }) => {
+                                renderItem={({ item, index }) => {
                                     return <TouchableOpacity style={{ width: BOX_SIZE, height: BOX_SIZE, marginHorizontal: 4, marginVertical: 4, backgroundColor: '#263154', borderRadius: 5, overflow: 'hidden' }}
                                         onPress={() => { _dialogShow(index); }}>
-                                        <Image source={{ uri: Config.SERVER_URL + item.file_nm }} resizeMode='cover'
-                                            style={{ width: BOX_SIZE, height: BOX_SIZE, overflow: 'hidden' }} />
+                                        <FastImage source={{ uri: Config.SERVER_URL + item.file_nm }}
+                                            style={{ width: BOX_SIZE, height: BOX_SIZE, overflow: 'hidden' }}
+                                            resizeMode='cover'></FastImage>
                                     </TouchableOpacity>
                                 }}
                             />
