@@ -131,7 +131,7 @@ export default class DialogPhoto extends React.Component {
                                 resizeMode='cover' />
                         </TouchableOpacity>
 
-                        <View style={{ width: Layout.window.width, paddingVertical: 10, backgroundColor: 'rgba(0,0,0,0.4)' }}>
+                        <View style={{ width: Layout.window.width, paddingVertical: 10, backgroundColor: 'rgba(0,0,0,0.4)',position:'absolute',bottom:0 }}>
                             <Text allowFontScaling={false} style={{ fontSize: Layout.fsL, lineHeight: Layout.fsL + 4, fontWeight: 'bold', color: '#ffffff', width: Layout.window.width, paddingHorizontal: 15 }}>{arrAddImage[imgIdx].title}</Text>
                             <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, lineHeight: Layout.fsM + 4, marginTop: 3, color: '#ffffff', width: Layout.window.width, paddingHorizontal: 15 }}>{arrAddImage[imgIdx].contents}</Text>
                         </View>
@@ -143,7 +143,7 @@ export default class DialogPhoto extends React.Component {
                             this.state.imgIdx = -1;
                             _modalCb(false, "", "")
                         }}
-                        style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 30, left: 0 }}>
+                        style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 45, left: 0 }}>
 
                         <Image
                             source={require('../img/ic_x.png')}
