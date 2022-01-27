@@ -130,7 +130,7 @@ const PicList = () => {
                                                 <ActivityIndicator color='#0000ff' />
                                             </View>
                                         )
-                                    } else { return <></>; }
+                                    } else { return <View style={{width:1,height:30}}></View>; }
                                 }}
                                 renderItem={({ item, index }) => {
                                     return <TouchableOpacity style={{ width: BOX_SIZE, height: BOX_SIZE, marginHorizontal: 4, marginVertical: 4, backgroundColor: '#263154', borderRadius: 5, overflow: 'hidden' }}
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
     notiWrap: {
         width: '100%',
         alignItems: 'center',
+        flex:1,
     },
 });
 

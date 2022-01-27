@@ -17,6 +17,6 @@ export default {
 
 
   // ****************** 공통 사용 코드 
-  APP_VER: '0.3.15',
+  APP_VER: '0.3.17',
   IS_LOG: false
 };

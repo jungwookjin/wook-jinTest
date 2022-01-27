@@ -39,13 +39,13 @@ const Notidetail = () => {
                             <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} keyboardShouldPersistTaps='handled'>
 
                                 <ReactNativeZoomableView
-                                    style={{ width: Layout.window.widthFix, flex: 1, alignItems: 'center', justifyContent: 'center' }}
+                                    style={{ width: Layout.window.widthFix, flex: 1, alignItems: 'center'}}
                                     maxZoom={1.5}
                                     minZoom={1}
                                     zoomStep={0}
                                     initialZoom={1}
                                     bindToBorders={true}>
-                                    <View style={{ width: Layout.window.widthFix, alignItems: 'center' }}>
+                                    <View style={{ width: Layout.window.widthFix, alignItems: 'center',justifyContent:'flex-start' ,flex:1}}>
 
                                         <View style={{ width: '100%', flexDirection: 'row', paddingTop: 10, paddingLeft: 15 }}>
                                             <Image style={{ width: 20, height: 20 }} source={require('../img/ic_noti2.png')} resizeMode='contain' />
