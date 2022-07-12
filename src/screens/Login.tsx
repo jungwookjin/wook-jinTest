@@ -125,8 +125,8 @@ const Login = () => {
                     loading ? (<Loader />) : (
                         <View style={{ width: Layout.window.width, flex: 1, alignItems: 'center', flexDirection: 'column' }}>
 
-                            <View style={[styles.blurShadowWrap, { height: Platform.OS === 'ios' ? 180 : 90 }]}>
-                                <View style={[styles.blurRadiusWrap, { height: Platform.OS === 'ios' ? 180 : 90 }]}>
+                            <View style={[styles.blurShadowWrap, { height: Platform.OS === 'ios' ? 180 : 150 }]}>
+                                <View style={[styles.blurRadiusWrap, { height: Platform.OS === 'ios' ? 180 : 150 }]}>
                                     <BlurView
                                         style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0 }}
                                         blurType="xlight"
@@ -157,14 +157,12 @@ const Login = () => {
                                             </TouchableOpacity>
                                         )
                                     }
-                                    {
-                                        Platform.OS === 'ios' && (
-                                            <TouchableOpacity style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 7.5, marginVertical: 5, backgroundColor: '#8fceff', borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}
-                                                onPress={() => { LoginStart("t", '12345'); }}>
-                                                <Text allowFontScaling={false} numberOfLines={1} style={{ color: Colors.defaultText, fontSize: Layout.fsM, fontWeight: 'bold' }}>게스트 로그인</Text>
-                                            </TouchableOpacity>
-                                        )
-                                    }
+
+                                    <TouchableOpacity style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 7.5, marginVertical: 5, backgroundColor: '#8fceff', borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}
+                                        onPress={() => { LoginStart("t", '12345'); }}>
+                                        <Text allowFontScaling={false} numberOfLines={1} style={{ color: Colors.defaultText, fontSize: Layout.fsM, fontWeight: 'bold' }}>게스트 로그인</Text>
+                                    </TouchableOpacity>
+
                                 </View>
                             </View>
                         </View>

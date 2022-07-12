@@ -1,11 +1,12 @@
 import React, { useEffect, useCallback, useRef } from 'react';
-import { StatusBar, LogBox } from 'react-native';
+import { StatusBar, LogBox, Platform } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import Navigation from './Navigation'
 import messaging from '@react-native-firebase/messaging';
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
-import PushNotification from 'react-native-push-notification';
-import * as MyUtil from "./constants/MyUtil";
-import Colors from "./constants/Colors";
+import notifee, { EventType } from '@notifee/react-native';
+import PushNoti from "./constants/PushNoti";
+import * as MyAsyncStorage from "./constants/MyAsyncStorage";
+import Config from "./constants/Config";
 
 // ##### 리덕스 관련 ######
 import { Provider } from 'react-redux';
@@ -14,123 +15,100 @@ import rootReducer from "./components/redux/rootReducer";
 let store = createStore(rootReducer); // Render the app container component with the provider around it
 // ##### 리덕스 관련 END
 
-let msgId = ""
-
 LogBox.ignoreAllLogs(); // 로그박스 안뜨도록 변경
 
 // ********* FCM : 앱이 백그라운드&종료 상태 ********* //
+// *** data만 보내야됨.
+// ios는 저 함수가 첨에 안타는줄 알았어요.
+// notification이랑 data 같이 보내면 안타는것 같더라구요.
+// 저 함수가 안드만 타는줄 알고 이리저리 테스트 해보다가 data message부만 보내보니 잘 들어왔어요.
+// firebase랑 notifee랑 분리되어있고, notifee로 notification을 띄우다 보니message().onNotificationOpenedApp
+// message().getInitialNotification은 사용못해여
 messaging().setBackgroundMessageHandler(async (remoteMessage: any) => {
-  MyUtil._consoleLog('********** NOTI 백그라운드&종료 상태 - json : ' + JSON.stringify(remoteMessage));
+  console.log('********** NOTI 백그라운드&종료 상태 - json : ' + JSON.stringify(remoteMessage));
+  let remoteMsg = '';
+  try {
+    remoteMsg = remoteMessage?.data?.p_type;
+    console.log('********** NOTI 백그라운드&종료 상태 - remoteMsg : ' + remoteMsg);
+    MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, remoteMsg);
+  } catch (error) {
+    MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, null);
+    console.log('setBackgroundMessageHandler : ' + error)
+  };
 });
 
-PushNotification.configure({
-  onRegister: function (token: any) { console.log("TOKEN:", token); },
-  onNotification: function (notification: any) {
-    MyUtil._consoleLog("onNotification : " + JSON.stringify(notification))
-    notification.finish(PushNotificationIOS.FetchResult.NoData);
-  },
-  onAction: function (notification: any) {
-    console.log("ACTION:", notification.action);
-    console.log("NOTIFICATION:", notification);
-  },
-  onRegistrationError: function (err: any) { console.error(err.message, err); },
-  permissions: { alert: true, badge: true, sound: true, },
-  popInitialNotification: true,
-  requestPermissions: true,
-});
-
-PushNotification.createChannel(
-  {
-    channelId: "default-channel-id", // (required)
-    channelName: `Default channel`, // (required)
-    channelDescription: "A default channel", // (optional) default: undefined.
-    soundName: "default", // (optional) See `soundName` parameter of `localNotification` function
-    importance: 4, // (optional) default: 4. Int value of the Android notification importance
-    vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-  },
-  (created: any) => console.log(`createChannel 'default-channel-id' returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-);
-
-PushNotification.getChannels(function (channels: any) {
-  console.log(channels);
-});
 
 const App = () => {
+  const navigationRef: any = useRef(null);
+  const routeNameRef = useRef();
 
   useEffect(() => {
-    messaging().requestPermission()
-      .then(() => { })
-      .catch((error: any) => { MyUtil._consoleLog("*********************** _checkPermission 에러!!!! : " + error); });
+    // ************************************** FCM 노티
+    const authStatus = messaging().hasPermission();
+    // if (authStatus == messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL) { Notifications.registerRemoteNotifications(); };
 
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      PushNoti.displayNoti(remoteMessage);
+    });
 
-    // ********* FCM : 앱이 포그라운드 상태 메시지를 '받으면' 발생되는 이벤트 ********* //
-    const unsubOnMessgae = messaging().onMessage(async (remoteMessage: any) => {
-      MyUtil._consoleLog('********** NOTI 포그라운드 노티 리시브 - json 1111 : ' + JSON.stringify(remoteMessage.messageId));
-      // MyUtil._consoleLog('********** NOTI 포그라운드 노티 리시브 - json : ' + JSON.stringify(remoteMessage));
+    const unsubscribe2 = notifee.onForegroundEvent(({ type, detail }) => {
+      console.log('*********** User pressed onForegroundEvent : ');
+      switch (type) {
+        case EventType.DISMISSED:
+          break;
+        case EventType.PRESS:
+          console.log('User pressed notification : ' + detail.notification?.data);
+          console.log('User pressed notification : ' + JSON.stringify(detail.notification?.data?.p_type));
 
-      if (String(remoteMessage.messageId) !== String(msgId)) {
-        MyUtil._consoleLog('********** NOTI 포그라운드 노티 리시브 - json 2222 : ' + JSON.stringify(remoteMessage.messageId));
-        msgId = String(remoteMessage.messageId);
-        onNotif(remoteMessage)
+          let remoteMsg: any = '';
+          try {
+            if (Platform.OS === 'android') {
+              remoteMsg = detail.notification?.data?.p_type;
+              console.log('User pressed notification : ' + remoteMsg);
+            }
+            MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, remoteMsg);
+
+            if (navigationRef) {
+              navigationRef.current.navigate('Intro', {});
+            } else {
+              console.log('************************  navigationRef 없음 ')
+            }
+          } catch (error) {
+            MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, null);
+            console.log('onForegroundEvent : ' + error)
+          };
+          break;
       }
     });
 
     return () => {
-      unsubOnMessgae;
+      unsubscribe;
+      unsubscribe2;
     };
-  }, [])
+  }, []);
 
 
-  const onNotif = async (notif: any) => {
-    // MyUtil._consoleLog("********* " + MyUtil.isChatIng + " onNotif(notif) : " + JSON.stringify(notif))
-
-    // @userInteraction - true: 클릭했을때 / false: 푸시받았을때
-    // --------------------------------- 푸시 클릭 ---------------------------------- //
-    if (notif.userInteraction) {
-      if (notif.foreground && notif.data.chat_yn === 'y') {
-        MyUtil._consoleLog("********* onNotif(클릭) : " + JSON.stringify(notif))
-        // MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_CHAT, null);
-      }
-
-      // --------------------------------- 푸시 받음 ---------------------------------- //
-    } else {
-      // if (!MyUtil.isChatIng) {
-      MyUtil._consoleLog("********* onNotif(title) : " + JSON.stringify(notif.data.title))
-
-      let bodyText = ""
-      if (MyUtil._isNull(notif.notification.body)) {
-        bodyText = "";
-      } else {
-        bodyText = notif.notification.body;
-      }
-
-
-      PushNotification.localNotification({
-        /* Android Only Properties */
-        channelId: 'default-channel-id',
-        autoCancel: true,
-        vibrate: true,
-        ongoing: false,
-        visibility: "private",
-        group: "msg",
-
-        /* iOS and Android properties */
-        title: notif.data.title,
-        message: bodyText,
-        // userInfo: notif.j_data,
-        userInfo: { id: '001' },
-        playSound: true,
-      });
-      // }
-    }
-  }
 
 
   return (
     <>
       <Provider store={store}>
         <StatusBar barStyle="dark-content" backgroundColor={'#ffffff'} />
-        <Navigation />
+        <NavigationContainer ref={navigationRef}
+          onReady={() => (routeNameRef.current = navigationRef.current.getCurrentRoute().name)}
+          onStateChange={async (state) => {
+            const previousRouteName = routeNameRef.current;
+            const currentRouteName = navigationRef.current.getCurrentRoute().name;
+
+            if (previousRouteName !== currentRouteName) {
+
+            };
+
+            // Save the current route name for later comparison
+            routeNameRef.current = currentRouteName;
+          }}>
+          <Navigation />
+        </NavigationContainer>
       </Provider>
     </>
   );

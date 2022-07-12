@@ -43,7 +43,7 @@ export async function _httpReq(methodName: string, data: any) {
         }
 
 
-    } catch (error) {
+    } catch (error:any) {
         _consoleLog("============ <<<<<< " + methodName + "() 네트워크 error : " + error);
         Alert.alert("", `네트워크 환경이 불안정합니다. 앱을 재시작해주세요.\n\n${methodName}\n(${error.message})`);
 
@@ -89,7 +89,7 @@ export async function _httpGetReq(reqURL: string) {
         }
 
 
-    } catch (error) {
+    } catch (error:any) {
         _consoleLog("============ <<<<<< " + "() 네트워크 error : " + error);
         Alert.alert("", `네트워크 환경이 불안정합니다. 앱을 재시작해주세요.\n\n(${error.message})`);
 

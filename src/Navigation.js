@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView } from "react-native";
-import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
@@ -20,6 +20,7 @@ import InfoUpdate from './screens/InfoUpdate';
 import Notidetail from './screens/Notidetail';
 import ChildList from './screens/ChildList';
 import PicList from './screens/PicList';
+import Intro from './screens/Intro';
 
 
 
@@ -52,81 +53,84 @@ const CustomHeader = () => {
 
 function Navigator() {
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Login"
-                    component={Login}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
-                />
-                <Stack.Screen
-                    name="Main"
-                    component={Main}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
-                />
-                <Stack.Screen
-                    name="MenuPage"
-                    component={MenuPage}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, headerShown: false, gestureEnabled: false }}
-                />
-                <Stack.Screen
-                    name="Notidetail"
-                    component={Notidetail}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
-                    initialParams={{
-                        detailItem: { reg_date: "", target_type: "", title: "", contents: "", file_nm: "" }
-                    }}
-                />
-                <Stack.Screen
-                    name="InfoUpdate"
-                    component={InfoUpdate}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                    initialParams={{ isJoin: false, uniq_key: "", easy_type: "" }}
-                />
-                <Stack.Screen
-                    name="CramList"
-                    component={CramList}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                />
-                <Stack.Screen
-                    name="CramListParents"
-                    component={CramListParents}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                    initialParams={{ arrData: [] }}
-                />
-                <Stack.Screen
-                    name="CramDetail"
-                    component={CramDetail}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                    initialParams={{ biz_no: "" }}
-                />
-                <Stack.Screen
-                    name="AlarmList"
-                    component={AlarmList}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                />
-                <Stack.Screen
-                    name="MyInfo"
-                    component={MyInfo}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                />
-                <Stack.Screen
-                    name="AttendChart"
-                    component={AttendChart}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                />
-                <Stack.Screen
-                    name="ChildList"
-                    component={ChildList}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                />
-                <Stack.Screen
-                    name="PicList"
-                    component={PicList}
-                    options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Intro"
+                component={Intro}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
+            />
+            <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
+            />
+            <Stack.Screen
+                name="Main"
+                component={Main}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
+            />
+            <Stack.Screen
+                name="MenuPage"
+                component={MenuPage}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS, headerShown: false, gestureEnabled: false }}
+            />
+            <Stack.Screen
+                name="Notidetail"
+                component={Notidetail}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false, gestureEnabled: false }}
+                initialParams={{
+                    detailItem: { reg_date: "", target_type: "", title: "", contents: "", file_nm: "" }
+                }}
+            />
+            <Stack.Screen
+                name="InfoUpdate"
+                component={InfoUpdate}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                initialParams={{ isJoin: false, uniq_key: "", easy_type: "" }}
+            />
+            <Stack.Screen
+                name="CramList"
+                component={CramList}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+            />
+            <Stack.Screen
+                name="CramListParents"
+                component={CramListParents}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                initialParams={{ arrData: [] }}
+            />
+            <Stack.Screen
+                name="CramDetail"
+                component={CramDetail}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+                initialParams={{ biz_no: "" }}
+            />
+            <Stack.Screen
+                name="AlarmList"
+                component={AlarmList}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+            />
+            <Stack.Screen
+                name="MyInfo"
+                component={MyInfo}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+            />
+            <Stack.Screen
+                name="AttendChart"
+                component={AttendChart}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+            />
+            <Stack.Screen
+                name="ChildList"
+                component={ChildList}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+            />
+            <Stack.Screen
+                name="PicList"
+                component={PicList}
+                options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS, headerShown: false }}
+            />
+        </Stack.Navigator>
     );
 }
 

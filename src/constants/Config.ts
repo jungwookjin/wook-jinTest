@@ -14,9 +14,12 @@ export default {
 
   // ***************** 어싱크 키
   AS_KEY_LOGIN_INFO: 'as_key_login_info', 
+  AS_BG_SERVICE_BACK: 'as_bg_service_background',
+  AS_BG_SERVICE_DEEP_LINK: 'as_bg_service_deep_link',
+
 
 
   // ****************** 공통 사용 코드 
-  APP_VER: '0.3.17',
-  IS_LOG: false
+  APP_VER: '0.4.01',
+  IS_LOG: true
 };

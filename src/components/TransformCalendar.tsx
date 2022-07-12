@@ -112,8 +112,8 @@ const TransformCalendar = ({ GetDayItems }: any) => {
                 const startNo = (weekNo - 1) * 7;
                 const endNo = startNo + 6;
                 setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo });
-            }
-        }
+            };
+        };
 
         if (!isWeekCal) { // 변경됐을때만 실행하면 더 좋을듯
             Animated.timing(animHeight, {
@@ -121,7 +121,7 @@ const TransformCalendar = ({ GetDayItems }: any) => {
                 duration: 300,
                 useNativeDriver: false,
             }).start();
-        }
+        };
 
         setLoading(false);
         setArrCalData(calData);
@@ -159,8 +159,8 @@ const TransformCalendar = ({ GetDayItems }: any) => {
             const startNo = (weekNo - 1) * 7;
             const endNo = startNo + 6;
             setViewWeekNo({ weekNo, startNo, endNo, maxWeekNo: viewWeekNo.maxWeekNo });
-        }
-    }, [viewWeekNo])
+        };
+    }, [viewWeekNo]);
 
 
     const MonthPrev = useCallback(async (getViewDate) => {

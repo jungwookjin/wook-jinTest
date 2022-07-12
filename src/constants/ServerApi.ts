@@ -1,6 +1,5 @@
 import * as MyUtil from "./MyUtil";
 import * as SG from "./Signature";
-import Config from "./Config";
 import messaging from '@react-native-firebase/messaging';
 import { Alert } from "react-native";
 
