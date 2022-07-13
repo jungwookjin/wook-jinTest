@@ -4,6 +4,8 @@
 
 import { AppRegistry } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import * as MyAsyncStorage from "./src/constants/MyAsyncStorage";
+import Config from "./src/constants/Config";
 import App from './src/App';
 import { name as appName } from './app.json';
 

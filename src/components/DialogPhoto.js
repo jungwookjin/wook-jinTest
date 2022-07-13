@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { StyleSheet, View, Platform, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Platform, Text, TouchableOpacity, Image,ScrollView } from 'react-native';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import FastImage from 'react-native-fast-image'
 import Modal from 'react-native-modal';
@@ -131,9 +131,11 @@ export default class DialogPhoto extends React.Component {
                                 resizeMode='cover' />
                         </TouchableOpacity>
 
-                        <View style={{ width: Layout.window.width, paddingVertical: 10, backgroundColor: 'rgba(0,0,0,0.4)', position: 'absolute', bottom: 0 }}>
-                            <Text allowFontScaling={false} style={{ fontSize: Layout.fsL, lineHeight: Layout.fsL + 4, fontWeight: 'bold', color: '#ffffff', width: Layout.window.width, paddingHorizontal: 15 }}>{arrAddImage[imgIdx].title}</Text>
-                            <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, lineHeight: Layout.fsM + 4, marginTop: 3, color: '#ffffff', width: Layout.window.width, paddingHorizontal: 15 }}>{arrAddImage[imgIdx].contents}</Text>
+                        <View style={{ width: Layout.window.width, backgroundColor: 'rgba(0,0,0,0.4)', position: 'absolute', bottom: 0 ,maxHeight:200}}>
+                            <ScrollView contentContainerStyle={{ alignItems: 'center',paddingVertical:20 }} style={{}} keyboardShouldPersistTaps='handled'>
+                                <Text allowFontScaling={false} style={{ fontSize: Layout.fsL, lineHeight: Layout.fsL + 4, fontWeight: 'bold', color: '#ffffff', width: Layout.window.width, paddingHorizontal: 15 }}>{arrAddImage[imgIdx].title}</Text>
+                                <Text allowFontScaling={false} style={{ fontSize: Layout.fsM, lineHeight: Layout.fsM + 4, marginTop: 8, color: '#ffffff', width: Layout.window.width, paddingHorizontal: 15 }}>{arrAddImage[imgIdx].contents}</Text>
+                            </ScrollView>
                         </View>
                     </View>
 
