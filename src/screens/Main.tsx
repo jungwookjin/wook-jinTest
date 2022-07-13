@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, TouchableOpacity, Platform, Alert, Linking } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import messaging from '@react-native-firebase/messaging';
 import ModalQrCode from "../components/ModalQrCode";
 import { RootState } from '../components/redux/rootReducer';
 import * as MyUtil from '../constants/MyUtil';
@@ -29,7 +30,21 @@ const Main = () => {
 
 
     useEffect(() => {
-        async function fetchData() { }
+        async function fetchData() {
+            // ** 알람 권한 체크
+            let enabled = false;
+            try {
+                const authStatus = await messaging().requestPermission();
+                enabled = authStatus === messaging.AuthorizationStatus.AUTHORIZED || authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+            } catch (error) { MyUtil._consoleLog('************* msgPermission error : ' + JSON.stringify(error)); };
+
+            if (!enabled) {
+                Alert.alert("", "알람 기능 사용을 위해 '알림권한'이 필요합니다.\n\n설정에서 알림을 허용해주세요.", [
+                    { text: '취소', onPress: () => { }, style: 'cancel', },
+                    { text: '설정', onPress: async () => { Linking.openSettings(); } },
+                ], { cancelable: false });
+            };
+        }
         fetchData();
     }, []);
 
@@ -51,7 +66,7 @@ const Main = () => {
         let prevObj: any = {};
         let arrProfileImg = [];
         let arrAttendType = [];
-        const newArray:any = [];
+        const newArray: any = [];
 
         for (const idx in getItem) {
             const item = getItem[idx];

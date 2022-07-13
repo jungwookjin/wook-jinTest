@@ -6,7 +6,6 @@ platform :ios, '11.0'
 target 'rnSmanager' do
   config = use_native_modules!
 
-  pod 'RNCharts', :path => '../node_modules/react-native-charts-wrapper'
 
   permissions_path = '../node_modules/react-native-permissions/ios'
 pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
