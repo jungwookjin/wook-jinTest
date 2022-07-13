@@ -18,6 +18,7 @@ let store = createStore(rootReducer); // Render the app container component with
 LogBox.ignoreAllLogs(); // 로그박스 안뜨도록 변경
 
 
+
 const App = () => {
   const navigationRef: any = useRef(null);
   const routeNameRef = useRef();
@@ -31,35 +32,10 @@ const App = () => {
       PushNoti.displayNoti(remoteMessage);
     });
 
-    const unsubscribe2 = notifee.onForegroundEvent(({ type, detail }) => {
-      console.log('*********** User pressed onForegroundEvent : ');
-      switch (type) {
-        case EventType.DISMISSED:
-          break;
-        case EventType.PRESS:
-          console.log('User pressed notification : ' + detail.notification?.data);
-          console.log('User pressed notification : ' + JSON.stringify(detail.notification?.data?.p_type));
+    const unsubscribe2 = notifee.onForegroundEvent(notiEvent);
 
-          let remoteMsg: any = '';
-          try {
-            if (Platform.OS === 'android') {
-              remoteMsg = detail.notification?.data?.p_type;
-              console.log('User pressed notification : ' + remoteMsg);
-            }
-            MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, remoteMsg);
 
-            if (navigationRef) {
-              navigationRef.current.navigate('Intro', {});
-            } else {
-              console.log('************************  navigationRef 없음 ')
-            }
-          } catch (error) {
-            MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, null);
-            console.log('onForegroundEvent : ' + error)
-          };
-          break;
-      }
-    });
+    
 
     return () => {
       unsubscribe;
@@ -68,6 +44,35 @@ const App = () => {
   }, []);
 
 
+  const notiEvent = ({ type, detail }: any) => {
+    console.log('*********** User pressed onForegroundEvent : ');
+    switch (type) {
+      case EventType.DISMISSED:
+        break;
+      case EventType.PRESS:
+        console.log('User pressed notification : ' + detail.notification?.data);
+        console.log('User pressed notification : ' + JSON.stringify(detail.notification?.data?.p_type));
+
+        let remoteMsg: any = '';
+        try {
+          if (Platform.OS === 'android') {
+            remoteMsg = detail.notification?.data?.p_type;
+            console.log('User pressed notification : ' + remoteMsg);
+          }
+          MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, remoteMsg);
+
+          if (navigationRef) {
+            navigationRef.current.navigate('Intro', {});
+          } else {
+            console.log('************************  navigationRef 없음 ')
+          }
+        } catch (error) {
+          MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, null);
+          console.log('onForegroundEvent : ' + error)
+        };
+        break;
+    }
+  }
 
 
   return (

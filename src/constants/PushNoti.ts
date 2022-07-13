@@ -50,8 +50,11 @@ const displayNotification = async (message: any) => {
             channelId: channelAnoucement,
             smallIcon: 'ic_launcher',
             pressAction: {
-                id: 'defaultId',
-                launchActivity: 'smanager://open',
+                id: 'default',
+                launchActivity: 'default',
+                // id: 'defaultId',
+                // launchActivity: 'com.rnsmanager.MainActivity',
+                // launchActivity: 'smanager://open',
                 launchActivityFlags: [AndroidLaunchActivityFlag.SINGLE_TOP],
                 // id: 'rnthreephone://open',
                 // launchActivity: 'com.rnthreephone.MainActivity', 

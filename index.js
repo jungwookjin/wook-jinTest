@@ -2,8 +2,9 @@
  * @format
  */
 
-import { AppRegistry } from 'react-native';
+import { AppRegistry, Linking ,Alert} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import notifee, { EventType } from '@notifee/react-native';
 import * as MyAsyncStorage from "./src/constants/MyAsyncStorage";
 import Config from "./src/constants/Config";
 import App from './src/App';
@@ -41,5 +42,44 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
     };
 });
 
+
+
+notifee.onBackgroundEvent(async ({ type, detail }) => {
+    // const { notification, pressAction }:any = detail;
+
+    switch (type) {
+        case EventType.DISMISSED:
+            break;
+        case EventType.PRESS:
+            console.log('User pressed onBackgroundEvent : ' + detail.notification?.data);
+            console.log('User pressed onBackgroundEvent : ' + JSON.stringify(detail.notification?.data?.p_type));
+
+            let remoteMsg = '';
+            try {
+                if (Platform.OS === 'android') {
+                    remoteMsg = detail.notification?.data?.p_type;
+                    console.log('User pressed onBackgroundEvent : ' + remoteMsg);
+                }
+                MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, remoteMsg);
+
+
+                // ***************************************************************
+                // ****** OPEN 하는 이벤트는 PushNoti.ts ******
+                // pressAction 에 정의됨.
+                // ***************************************************************
+
+                
+                // 최초 실행 시에 Universal link 또는 URL scheme요청이 있었을 때 여기서 찾을 수 있음 
+                // Linking.getInitialURL().then(value => {
+                //     Alert.alert('getInitialURL', value);
+                // })
+
+            } catch (error) {
+                MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, null);
+                console.log('onForegroundEvent : ' + error)
+            };
+            break;
+    }
+});
 
 AppRegistry.registerComponent(appName, () => App);
