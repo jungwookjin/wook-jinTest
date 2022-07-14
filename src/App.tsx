@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Navigation from './Navigation'
 import messaging from '@react-native-firebase/messaging';
 import notifee, { EventType } from '@notifee/react-native';
+import { navigationRef, isReadyRef, RootNavnNvigate } from './components/RootNavigation';
 import PushNoti from "./constants/PushNoti";
 import * as MyAsyncStorage from "./constants/MyAsyncStorage";
 import Config from "./constants/Config";
@@ -20,7 +21,6 @@ LogBox.ignoreAllLogs(); // 로그박스 안뜨도록 변경
 
 
 const App = () => {
-  const navigationRef: any = useRef(null);
   const routeNameRef = useRef();
 
   useEffect(() => {
@@ -34,10 +34,18 @@ const App = () => {
 
     const unsubscribe2 = notifee.onForegroundEvent(notiEvent);
 
+    async function fetchData() {
+      try {
+        if (Platform.OS === 'ios') {
+          await messaging().registerDeviceForRemoteMessages();
+        };
+      } catch (error) { };
+    };
 
-    
+    fetchData();
 
     return () => {
+      isReadyRef.current = false;
       unsubscribe;
       unsubscribe2;
     };
@@ -55,41 +63,42 @@ const App = () => {
 
         let remoteMsg: any = '';
         try {
-          if (Platform.OS === 'android') {
-            remoteMsg = detail.notification?.data?.p_type;
-            console.log('User pressed notification : ' + remoteMsg);
-          }
+          remoteMsg = detail.notification?.data?.p_type;
+
+          console.log('User pressed notification remoteMsg : ' + remoteMsg);
           MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, remoteMsg);
 
-          if (navigationRef) {
-            navigationRef.current.navigate('Intro', {});
-          } else {
-            console.log('************************  navigationRef 없음 ')
-          }
+          RootNavnNvigate('Intro', {});
         } catch (error) {
           MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, null);
           console.log('onForegroundEvent : ' + error)
         };
         break;
-    }
-  }
+    };
+  };
 
 
   return (
     <>
       <Provider store={store}>
         <StatusBar barStyle="dark-content" backgroundColor={'#ffffff'} />
-        <NavigationContainer ref={navigationRef}
-          onReady={() => (routeNameRef.current = navigationRef.current.getCurrentRoute().name)}
+        <NavigationContainer
+          ref={navigationRef}
+          onReady={() => {
+            isReadyRef.current = true;
+            routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+          }}
           onStateChange={async (state) => {
             const previousRouteName = routeNameRef.current;
             const currentRouteName = navigationRef.current.getCurrentRoute().name;
 
             if (previousRouteName !== currentRouteName) {
-
+              // await analytics().logScreenView({
+              //   screen_name: ('screen_' + (currentRouteName)),
+              //   screen_class: ('screen_' + (currentRouteName))
+              // });
             };
 
-            // Save the current route name for later comparison
             routeNameRef.current = currentRouteName;
           }}>
           <Navigation />

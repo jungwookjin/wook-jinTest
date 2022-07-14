@@ -33,15 +33,16 @@ static void InitializeFlipper(UIApplication *application) {
   InitializeFlipper(application);
 #endif
 
-  if ([FIRApp defaultApp] == nil) {
-    [FIRApp configure];
-  }
-  
+
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"rnSmanager"
                                             initialProperties:nil];
-
+ 
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
+  
   if (@available(iOS 13.0, *)) {
       rootView.backgroundColor = [UIColor systemBackgroundColor];
   } else {
