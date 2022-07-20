@@ -1,11 +1,11 @@
 import axios from "axios";
 import { Alert, Platform, StatusBar, PermissionsAndroid } from "react-native";
+import { Buffer } from "buffer";
 import * as MyAsyncStorage from "./MyAsyncStorage";
 import * as ServerApi from "./ServerApi";
 import allActions from "../components/redux/allActions";
 import CST from '../constants/constants';
 import Config from "./Config";
-import Layout from "./Layout";
 
 export async function _httpReq(methodName: string, data: any) {
     let result = "";
@@ -43,7 +43,7 @@ export async function _httpReq(methodName: string, data: any) {
         }
 
 
-    } catch (error:any) {
+    } catch (error: any) {
         _consoleLog("============ <<<<<< " + methodName + "() 네트워크 error : " + error);
         Alert.alert("", `네트워크 환경이 불안정합니다. 앱을 재시작해주세요.\n\n${methodName}\n(${error.message})`);
 
@@ -89,7 +89,7 @@ export async function _httpGetReq(reqURL: string) {
         }
 
 
-    } catch (error:any) {
+    } catch (error: any) {
         _consoleLog("============ <<<<<< " + "() 네트워크 error : " + error);
         Alert.alert("", `네트워크 환경이 불안정합니다. 앱을 재시작해주세요.\n\n(${error.message})`);
 
@@ -160,6 +160,60 @@ export function _dateFormat(date: Date) {
 }
 
 
+export async function getVimeoInfo(query: any) {
+    let result = "";
+    const reqQuery = "https://api.vimeo.com" + query;
+    _consoleLog("============ >>>>>> getVimeoInfo () 요청 - " + reqQuery);
+    
+
+    try {
+        var basicToken = Buffer.from(Config.VIMEO_C_ID + ':' + Config.VIMEO_C_SECRET);
+        var myBasic = 'Basic ' + basicToken.toString('base64');
+
+        console.log('myBasic : '+myBasic)
+        console.log('reqQuery : '+reqQuery)
+
+        let response: any = await axios({
+            method: 'get',
+            url: reqQuery,
+            headers: {
+                // Accept: 'application/vnd.vimeo.*+json;version=3.4',
+                // 'User-Agent': 'Vimeo.js/2.1.1',
+                Accept: 'application/vnd.vimeo.*+json;version=3.4',
+                Authorization:myBasic
+            },
+        });
+
+        let responseOK = response && response.status === 200;
+        if (responseOK) {
+            result = response.data;
+            _consoleLog("============ <<<<<< () 정상 result : " + JSON.stringify(result));
+
+            console.log('JSON.stringify(result) : '+JSON.stringify(result))
+            return {
+                IS_SUCCESS: true,
+                DATA_RESULT: result
+            };
+
+        } else {
+            result = response.error;
+            _consoleLog("============ <<<<<< () 응답 status error : " + result);
+            return {
+                IS_SUCCESS: false,
+                DATA_RESULT: result
+            };
+        };
+
+
+    } catch (error) {
+        _consoleLog("============ <<<<<< () 네트워크 error : " + error);
+
+        return {
+            IS_SUCCESS: false,
+            DATA_RESULT: error
+        };
+    };
+};
 // export function getNotchHight() {
 //     let notchHeight = 0;
 //     if (Platform.OS == 'ios') {

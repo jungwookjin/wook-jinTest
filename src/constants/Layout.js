@@ -7,6 +7,7 @@ const bottomNaviHeight = 56;
 const mainBannerHeight = (width-30) * (3 / 4);
 const mainAdBannerHeight = width * (1 / 5);
 const widthFix = width - 30;
+const modalHeight = height - 130;
 
 const baseFs = 9;
 const fsXXS = baseFs;
@@ -35,7 +36,8 @@ export default {
     bottomNaviHeight,
     mainBannerHeight,
     widthFix,
-    mainAdBannerHeight
+    mainAdBannerHeight,
+    modalHeight
   },
   fsXXS,
   fsXS,

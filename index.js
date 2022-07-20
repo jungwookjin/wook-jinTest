@@ -56,8 +56,9 @@ notifee.onBackgroundEvent(async ({ type, detail }) => {
 
             let remoteMsg = '';
             try {
-                remoteMsg = detail.notification?.data?.p_type;
                 console.log('User pressed onBackgroundEvent : ' + remoteMsg);
+
+                remoteMsg = detail.notification?.data?.p_type;
                 MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, remoteMsg);
 
                 RootNavnNvigate('Intro', {});
@@ -75,7 +76,7 @@ notifee.onBackgroundEvent(async ({ type, detail }) => {
 
             } catch (error) {
                 MyAsyncStorage._writeAsyncStorage(Config.AS_BG_SERVICE_BACK, null);
-                console.log('onForegroundEvent : ' + error)
+                console.log('onForegroundEvent : ' + error);
             };
             break;
     }

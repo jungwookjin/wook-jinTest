@@ -65,8 +65,10 @@ const InfoUpdate = () => {
         if (isJoin) {
             if (MyUtil._isNull(uniq_key)) { return Alert.alert('', '잘못된 접근입니다! (uniq_key null)') }
             if (MyUtil._isNull(easy_type)) { return Alert.alert('', '잘못된 접근입니다! (easy_type null)') }
-            if (Platform.OS === 'android') { if (MyUtil._isNull(getProfileImg)) { return Alert.alert('', '사진을 등록해주세요!') } }
             if (MyUtil._isNull(getGbType)) { return Alert.alert('', '가입 유형을 선택해주세요!') }
+            if(getGbType !== '학부모'){
+                if (Platform.OS === 'android') { if (MyUtil._isNull(getProfileImg)) { return Alert.alert('', '사진을 등록해주세요!') } }
+            }
         }
         if (Platform.OS === 'android') {
             if (MyUtil._isNull(getName)) { return Alert.alert('', '이름을 입력해주세요!') }
@@ -147,7 +149,7 @@ const InfoUpdate = () => {
             if (isOk) {
                 if (!(await MyUtil._checkCameraPermission())) {
                     return Alert.alert("권한 필요", "허용되지 않은 권한이 있습니다.\n설정에서 모든 권한을 허용해주세요.");
-                }
+                };
 
                 if (jData.isCamera) {
                     ImagePicker.openCamera({
@@ -274,12 +276,12 @@ const InfoUpdate = () => {
                                 <ScrollView style={{ flex: 1, width: Layout.window.width }} contentContainerStyle={{ flexGrow: 1, alignItems: 'center' }} keyboardShouldPersistTaps='handled'>
 
                                     <TouchableOpacity style={{ width: 120, height: 120, marginTop: 10, marginBottom: 25 }}
-                                        onPress={() => { setIsModalBottom(true) }}>
+                                        onPress={() => { setIsModalBottom(true); }}>
                                         <Image
                                             style={{ width: 120, height: 120, borderRadius: 60 }}
                                             source={profileSource}
                                             resizeMode='cover'
-                                            onError={() => { setProfileImgError(true) }} />
+                                            onError={() => { setProfileImgError(true); }} />
                                         <Image
                                             style={{ width: 36, height: 36, borderRadius: 18, position: 'absolute', bottom: 8, right: 6 }}
                                             source={require('../img/btn_circle_camera.png')}
@@ -289,8 +291,8 @@ const InfoUpdate = () => {
                                     {
                                         isJoin && (
                                             <TouchableOpacity style={styles.ipWrap} onPress={() => {
-                                                setArrMenuName(['학부모', '학생'])
-                                                setIsModalSelect(true)
+                                                setArrMenuName(['학부모', '학생']);
+                                                setIsModalSelect(true);
                                             }}>
                                                 <View style={styles.menuTitle}>
                                                     <Text allowFontScaling={false} style={styles.menuTitleText}>가입 유형</Text>
@@ -330,7 +332,7 @@ const InfoUpdate = () => {
                                         (isJoin && Platform.OS === 'ios') ? (
                                             <></>
                                         ) : (
-                                            <TouchableOpacity style={styles.ipWrap} onPress={() => { setIsDateDialog(true) }}>
+                                            <TouchableOpacity style={styles.ipWrap} onPress={() => { setIsDateDialog(true); }}>
                                                 <View style={styles.menuTitle}>
                                                     <Text allowFontScaling={false} style={styles.menuTitleText}>생년월일</Text>
                                                     {/* <Text allowFontScaling={false} style={[styles.menuTitleText, { color: '#ff0000' }]}> *</Text> */}
@@ -354,8 +356,8 @@ const InfoUpdate = () => {
                                             <></>
                                         ) : (
                                             <TouchableOpacity style={styles.ipWrap} onPress={() => {
-                                                setArrMenuName(['남자', '여자'])
-                                                setIsModalSelect(true)
+                                                setArrMenuName(['남자', '여자']);
+                                                setIsModalSelect(true);
                                             }}>
                                                 <View style={styles.menuTitle}>
                                                     <Text allowFontScaling={false} style={styles.menuTitleText}>성별</Text>

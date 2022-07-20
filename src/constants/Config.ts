@@ -18,8 +18,14 @@ export default {
   AS_BG_SERVICE_DEEP_LINK: 'as_bg_service_deep_link',
 
 
+  // ***************** 비메오 키
+  VIMEO_C_ID: '955473a3d6345ce1860dea6ee6c1b3f5e4d039e3',
+  VIMEO_C_SECRET: 'IKPP5OuRZyPPxYIijFbUPGB1wjHznpnuU9isLRWD6rwdQnios6d0nrKws2JB2mCJ5ZpnWYATpvTjcw4BdM/STQsGO/k75XNDP0s2UA97rR+WW1J8yzL5RCpQ0Nv+cXgP',
+  VIMEO_C_A_TOKEN: 'be46eee993b2a2e6ae8866916579c191',
+
+
 
   // ****************** 공통 사용 코드 
-  APP_VER: '0.4.01',
+  APP_VER: '0.4.03',
   IS_LOG: false
 };

@@ -3,6 +3,11 @@ import * as SG from "./Signature";
 import messaging from '@react-native-firebase/messaging';
 import { Alert } from "react-native";
 
+
+export async function getVimeoInfo(data: any) {
+    return await MyUtil.getVimeoInfo(data);
+};
+
 export async function _login(easy_type: string, uniq_key: string): SG.httpReq {
     const REQ_METHODS = "users/login";
     let fcmToken = ""
