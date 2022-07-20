@@ -1,6 +1,5 @@
 import axios from "axios";
 import { Alert, Platform, StatusBar, PermissionsAndroid } from "react-native";
-import { Buffer } from "buffer";
 import * as MyAsyncStorage from "./MyAsyncStorage";
 import * as ServerApi from "./ServerApi";
 import allActions from "../components/redux/allActions";
