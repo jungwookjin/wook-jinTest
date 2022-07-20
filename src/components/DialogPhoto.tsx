@@ -23,7 +23,10 @@ const DialogPhoto = ({ _modalCb, isModalOpen, arrAddImage, dialogImgIdx, imgType
         async function fetchData() {
 
 
-            const result = await ServerApi.getVimeoInfo('/videos/731614737');
+            const result:any = await ServerApi.getVimeoInfo('/videos/731614737');
+            console.log('썸네일 : '+result.DATA_RESULT.pictures.base_link)
+            console.log('영상 URL : '+result.DATA_RESULT.files[0].link)
+
 
 
             // client.request({ method: 'GET', path: '/videos/731614737' }, function (error, body, status_code, headers) {

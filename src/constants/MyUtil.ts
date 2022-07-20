@@ -164,14 +164,18 @@ export async function getVimeoInfo(query: any) {
     let result = "";
     const reqQuery = "https://api.vimeo.com" + query;
     _consoleLog("============ >>>>>> getVimeoInfo () 요청 - " + reqQuery);
-    
+
 
     try {
-        var basicToken = Buffer.from(Config.VIMEO_C_ID + ':' + Config.VIMEO_C_SECRET);
-        var myBasic = 'Basic ' + basicToken.toString('base64');
+        // ** 키 방식
+        // var basicToken = Buffer.from(Config.VIMEO_C_ID + ':' + Config.VIMEO_C_SECRET);
+        // var myAuth = 'Basic ' + basicToken.toString('base64');
 
-        console.log('myBasic : '+myBasic)
-        console.log('reqQuery : '+reqQuery)
+        // ** 토큰 방식 ( 권한 더 많음 )
+        var myAuth = 'Bearer ' + Config.VIMEO_C_A_TOKEN;
+
+        // console.log('myBasic : ' + myAuth)
+        // console.log('reqQuery : ' + reqQuery)
 
         let response: any = await axios({
             method: 'get',
@@ -180,7 +184,7 @@ export async function getVimeoInfo(query: any) {
                 // Accept: 'application/vnd.vimeo.*+json;version=3.4',
                 // 'User-Agent': 'Vimeo.js/2.1.1',
                 Accept: 'application/vnd.vimeo.*+json;version=3.4',
-                Authorization:myBasic
+                Authorization: myAuth
             },
         });
 
@@ -189,7 +193,7 @@ export async function getVimeoInfo(query: any) {
             result = response.data;
             _consoleLog("============ <<<<<< () 정상 result : " + JSON.stringify(result));
 
-            console.log('JSON.stringify(result) : '+JSON.stringify(result))
+            // console.log('JSON.stringify(result) : ' + JSON.stringify(result))
             return {
                 IS_SUCCESS: true,
                 DATA_RESULT: result
