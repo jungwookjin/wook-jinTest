@@ -1,9 +1,10 @@
 PODS:
-  - Alamofire (5.6.1)
+  - Alamofire (5.8.0)
   - boost-for-react-native (1.63.0)
-  - Charts (3.6.0):
-    - Charts/Core (= 3.6.0)
-  - Charts/Core (3.6.0)
+  - Charts (4.1.0):
+    - Charts/Core (= 4.1.0)
+  - Charts/Core (4.1.0):
+    - SwiftAlgorithms (~> 1.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.64.0)
@@ -111,95 +112,72 @@ PODS:
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
   - glog (0.3.5)
-  - GoogleDataTransport (9.1.4):
+  - GoogleDataTransport (9.2.5):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/AppDelegateSwizzler (7.7.0):
+  - GoogleUtilities/AppDelegateSwizzler (7.11.5):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.7.0):
+  - GoogleUtilities/Environment (7.11.5):
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.7.0):
+  - GoogleUtilities/Logger (7.11.5):
     - GoogleUtilities/Environment
-  - GoogleUtilities/Network (7.7.0):
+  - GoogleUtilities/Network (7.11.5):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.7.0)"
-  - GoogleUtilities/Reachability (7.7.0):
+  - "GoogleUtilities/NSData+zlib (7.11.5)"
+  - GoogleUtilities/Reachability (7.11.5):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.7.0):
+  - GoogleUtilities/UserDefaults (7.11.5):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.7.2)
-  - kakao-login (3.4.3):
-    - KakaoSDK (~> 2.4.0)
-    - KakaoSDKAuth (~> 2.4.0)
-    - KakaoSDKCommon (~> 2.4.0)
-    - KakaoSDKTalk (~> 2.4.0)
-    - KakaoSDKUser (~> 2.4.0)
+  - kakao-login (5.3.0):
+    - KakaoSDKAuth (= 2.11.1)
+    - KakaoSDKCommon (= 2.11.1)
+    - KakaoSDKUser (= 2.11.1)
     - React
-  - KakaoSDK (2.4.1):
-    - KakaoSDKAuth (= 2.4.1)
-    - KakaoSDKCommon (= 2.4.1)
-    - KakaoSDKLink (= 2.4.1)
-    - KakaoSDKNavi (= 2.4.1)
-    - KakaoSDKStory (= 2.4.1)
-    - KakaoSDKTalk (= 2.4.1)
-    - KakaoSDKTemplate (= 2.4.1)
-    - KakaoSDKUser (= 2.4.1)
-  - KakaoSDKAuth (2.4.1):
-    - KakaoSDKCommon (= 2.4.1)
-  - KakaoSDKCommon (2.4.1):
-    - KakaoSDKCommon/Common (= 2.4.1)
-    - KakaoSDKCommon/Network (= 2.4.1)
-  - KakaoSDKCommon/Common (2.4.1)
-  - KakaoSDKCommon/Network (2.4.1):
+  - KakaoSDKAuth (2.11.1):
+    - KakaoSDKCommon (= 2.11.1)
+  - KakaoSDKCommon (2.11.1):
+    - KakaoSDKCommon/Common (= 2.11.1)
+    - KakaoSDKCommon/Network (= 2.11.1)
+  - KakaoSDKCommon/Common (2.11.1)
+  - KakaoSDKCommon/Network (2.11.1):
     - Alamofire (~> 5.1)
-    - KakaoSDKCommon/Common (= 2.4.1)
-  - KakaoSDKLink (2.4.1):
-    - KakaoSDKCommon (= 2.4.1)
-    - KakaoSDKTemplate (= 2.4.1)
-  - KakaoSDKNavi (2.4.1):
-    - KakaoSDKCommon/Common (= 2.4.1)
-  - KakaoSDKStory (2.4.1):
-    - KakaoSDKAuth (= 2.4.1)
-    - KakaoSDKCommon (= 2.4.1)
-  - KakaoSDKTalk (2.4.1):
-    - KakaoSDKAuth (= 2.4.1)
-    - KakaoSDKCommon (= 2.4.1)
-    - KakaoSDKTemplate (= 2.4.1)
-  - KakaoSDKTemplate (2.4.1):
-    - KakaoSDKCommon/Common (= 2.4.1)
-  - KakaoSDKUser (2.4.1):
-    - KakaoSDKAuth (= 2.4.1)
-    - KakaoSDKCommon (= 2.4.1)
+    - KakaoSDKCommon/Common (= 2.11.1)
+  - KakaoSDKUser (2.11.1):
+    - KakaoSDKAuth (= 2.11.1)
   - libevent (2.1.12)
-  - libwebp (1.2.1):
-    - libwebp/demux (= 1.2.1)
-    - libwebp/mux (= 1.2.1)
-    - libwebp/webp (= 1.2.1)
-  - libwebp/demux (1.2.1):
+  - libwebp (1.3.1):
+    - libwebp/demux (= 1.3.1)
+    - libwebp/mux (= 1.3.1)
+    - libwebp/sharpyuv (= 1.3.1)
+    - libwebp/webp (= 1.3.1)
+  - libwebp/demux (1.3.1):
     - libwebp/webp
-  - libwebp/mux (1.2.1):
+  - libwebp/mux (1.3.1):
     - libwebp/demux
-  - libwebp/webp (1.2.1)
+  - libwebp/sharpyuv (1.3.1)
+  - libwebp/webp (1.3.1):
+    - libwebp/sharpyuv
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - OpenSSL-Universal (1.1.180)
-  - Permission-Camera (3.4.0):
+  - Permission-Camera (3.9.0):
     - RNPermissions
-  - Permission-MediaLibrary (3.4.0):
+  - Permission-MediaLibrary (3.9.0):
     - RNPermissions
-  - Permission-PhotoLibrary (3.4.0):
+  - Permission-PhotoLibrary (3.9.0):
     - RNPermissions
-  - Permission-PhotoLibraryAddOnly (3.4.0):
+  - Permission-PhotoLibraryAddOnly (3.9.0):
     - RNPermissions
-  - PromisesObjC (2.1.1)
+  - PromisesObjC (2.3.1)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -403,11 +381,16 @@ PODS:
     - React-Core
   - react-native-camera/RN (3.44.3):
     - React-Core
-  - react-native-charts-wrapper (0.5.9):
-    - Charts (= 3.6.0)
+  - react-native-charts-wrapper (0.5.11):
+    - Charts (= 4.1.0)
     - React
     - SwiftyJSON (= 5.0)
   - react-native-safe-area-context (3.4.1):
+    - React-Core
+  - react-native-video (5.2.1):
+    - React-Core
+    - react-native-video/Video (= 5.2.1)
+  - react-native-video/Video (5.2.1):
     - React-Core
   - React-perflogger (0.64.0)
   - React-RCTActionSheet (0.64.0):
@@ -473,7 +456,7 @@ PODS:
     - React-cxxreact (= 0.64.0)
     - React-jsi (= 0.64.0)
     - React-perflogger (= 0.64.0)
-  - RNAppleAuthentication (2.2.1):
+  - RNAppleAuthentication (2.2.2):
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
@@ -481,18 +464,18 @@ PODS:
     - React
   - RNDateTimePicker (3.5.2):
     - React-Core
-  - RNFastImage (8.5.11):
+  - RNFastImage (8.6.3):
     - React-Core
     - SDWebImage (~> 5.11.1)
     - SDWebImageWebPCoder (~> 0.8.4)
-  - RNFBApp (14.11.1):
+  - RNFBApp (14.12.0):
     - Firebase/CoreOnly (= 8.15.0)
     - React-Core
-  - RNFBAuth (14.11.1):
+  - RNFBAuth (14.12.0):
     - Firebase/Auth (= 8.15.0)
     - React-Core
     - RNFBApp
-  - RNFBMessaging (14.11.1):
+  - RNFBMessaging (14.12.0):
     - Firebase/Messaging (= 8.15.0)
     - React-Core
     - RNFBApp
@@ -507,16 +490,16 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNNotifee (5.4.1):
+  - RNNotifee (5.7.0):
     - React-Core
-    - RNNotifee/NotifeeCore (= 5.4.1)
-  - RNNotifee/NotifeeCore (5.4.1):
+    - RNNotifee/NotifeeCore (= 5.7.0)
+  - RNNotifee/NotifeeCore (5.7.0):
     - React-Core
-  - RNPermissions (3.4.0):
+  - RNPermissions (3.9.0):
     - React-Core
   - RNScreens (2.18.1):
     - React-Core
-  - RNSVG (12.3.0):
+  - RNSVG (12.5.1):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -524,6 +507,7 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - SwiftAlgorithms (1.0.0)
   - SwiftyJSON (5.0.0)
   - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
@@ -576,6 +560,7 @@ DEPENDENCIES:
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-charts-wrapper (from `../node_modules/react-native-charts-wrapper`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -628,14 +613,8 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - GTMSessionFetcher
-    - KakaoSDK
     - KakaoSDKAuth
     - KakaoSDKCommon
-    - KakaoSDKLink
-    - KakaoSDKNavi
-    - KakaoSDKStory
-    - KakaoSDKTalk
-    - KakaoSDKTemplate
     - KakaoSDKUser
     - libevent
     - libwebp
@@ -644,6 +623,7 @@ SPEC REPOS:
     - PromisesObjC
     - SDWebImage
     - SDWebImageWebPCoder
+    - SwiftAlgorithms
     - SwiftyJSON
     - TOCropViewController
     - YogaKit
@@ -697,6 +677,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-charts-wrapper"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -753,13 +735,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  Alamofire: 87bd8c952f9a4454320fce00d9cc3de57bcadaf5
+  Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
+  Charts: ce0768268078eee0336f122c3c4ca248e4e204c5
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: 49cbe4b43e445b06bf29199b6ad2057649e4c8f5
-  FBReactNativeSpec: 48efd804129156b73dca4cd16a32b53ce509c24c
+  FBReactNativeSpec: da7a15f5d368b0759996bd3543ac87c56fe37dce
   Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
   FirebaseAuth: 3e73bf8abf4fbb40f8b421f361f4cc48ee57388c
   FirebaseCore: 5743c5785c074a794d35f2fff7ecc254a91e08b1
@@ -776,28 +758,22 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: f1d0691c5997724a37b4912d208a5abbe8a751c0
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
-  GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
-  GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
+  GoogleDataTransport: 54dee9d48d14580407f8f5fbf2f496e92437a2f2
+  GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
-  kakao-login: f5633a612ae8af34edacf4f9d8bed87964a18117
-  KakaoSDK: 1e80d6877c0eac6a310f93c73fb15ca56c05f2bd
-  KakaoSDKAuth: fcba1c9ede431683f5bdd84c835a96981cb115a5
-  KakaoSDKCommon: 0912aa0c7db051ae8dc07a35395cf644f7728f95
-  KakaoSDKLink: fe6f2ca19092836f8af2a9d7fabe60fd67740104
-  KakaoSDKNavi: c138bce799ebdac6811b56453de5326e49ca5925
-  KakaoSDKStory: cb33db9a04c7c44746b3662991234f52ab61961a
-  KakaoSDKTalk: 749828662e4ac7a9f17bb1664b58526da289d18c
-  KakaoSDKTemplate: 8bb288765bfc0195631da809b2d707f09495acdf
-  KakaoSDKUser: 11955811d99d1ff1f1dfd5428afe69937e31ccef
+  kakao-login: 3d7afeb8d49d4fa9a3ee579edb1b68c65bf20dac
+  KakaoSDKAuth: bb2dfa7be30daa8403c9cfc8001aa6fde7a5b779
+  KakaoSDKCommon: 555e1bb46595b842ded01cf7888cc17bbae4e113
+  KakaoSDKUser: 08c0a4f40bebdebdf948a9e3d0e44ed5c2754f99
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
+  libwebp: 33dc822fbbf4503668d09f7885bbfedc76c45e96
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
-  Permission-Camera: 40f43388fa8a648dc6ced73f145ef329ab3ff3fe
-  Permission-MediaLibrary: 4fd3aedd310d6a91b05d41ba082470434ae95706
-  Permission-PhotoLibrary: 71df5d922b3d9f1217bd2f992edceada0f439976
-  Permission-PhotoLibraryAddOnly: 2b299e09f14efe2c7aea380e6c7d0d8046c58aa6
-  PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  Permission-Camera: 5c332b27becccf9d5467210aa6cf25f4572dca4a
+  Permission-MediaLibrary: 6f405985856eef7b5c849294176c12bac0f2bb8b
+  Permission-PhotoLibrary: 2f51b28d8e47bf02ca7fb1fd5e08bebfb194767d
+  Permission-PhotoLibraryAddOnly: 3fc6449c0add1ca66f45b4f7cfa958c8bf549ef4
+  PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: 2f8cb5b7533219bf4218a045f92768129cf7050a
   RCTTypeSafety: 512728b73549e72ad7330b92f3d42936f2a4de5b
@@ -811,8 +787,9 @@ SPEC CHECKSUMS:
   React-jsinspector: 0ae35a37b20d5e031eb020a69cc5afdbd6406301
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-camera: b8cc03e2feec0c04403d0998e37cf519d8fd4c6f
-  react-native-charts-wrapper: e10915b5d42f50683649ffc96d17d28a81322c53
+  react-native-charts-wrapper: 4461b72f48e737a490e968bf2468cc0fd2281681
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
+  react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253
   React-perflogger: 9c547d8f06b9bf00cb447f2b75e8d7f19b7e02af
   React-RCTActionSheet: 3080b6e12e0e1a5b313c8c0050699b5c794a1b11
   React-RCTAnimation: 3f96f21a497ae7dabf4d2f150ee43f906aaf516f
@@ -825,27 +802,28 @@ SPEC CHECKSUMS:
   React-RCTVibration: 0fd6b21751a33cb72fce1a4a33ab9678416d307a
   React-runtimeexecutor: cad74a1eaa53ee6e7a3620231939d8fe2c6afcf0
   ReactCommon: cfe2b7fd20e0dbd2d1185cd7d8f99633fbc5ff05
-  RNAppleAuthentication: dab41edef916715148ce94a7dd04041a01590ddc
+  RNAppleAuthentication: 0571c08da8c327ae2afc0261b48b4a515b0286a6
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
-  RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
-  RNFBApp: 9646e09d041ea159b84584865212e4cf33acd179
-  RNFBAuth: af943e3ba071b5f4d18896c31e6cba3a77b1fa08
-  RNFBMessaging: 3e2682ea5e15fe86da24d16d16019395a881f33c
+  RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
+  RNFBApp: e4439717c23252458da2b41b81b4b475c86f90c4
+  RNFBAuth: 50ac123123b27241927e639c0ac9c8af17f05aa1
+  RNFBMessaging: 40dac204b4197a2661dec5be964780c6ec39bf65
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNImageCropPicker: 73891a709e6fd8a47d32104d942757971f220aee
-  RNNotifee: 8987e7408112281695a32c81b5d15c48e9540745
-  RNPermissions: eac721f71748c4472d6e876038270b75397d6ee7
+  RNNotifee: 5155e0a5e0a97d0c839030d8192783cd63053999
+  RNPermissions: 2e68b2e82a93ad09327dee8822846fead91ca3ad
   RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
-  RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
+  RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 8c8436d4171c87504c648ae23b1d81242bdf3bbf
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 47314fc6bc575dd981bffbcd170eac2033c19a0c
+PODFILE CHECKSUM: 1b70bd048fa3b6e71ea0c189ecf55c37c3ac475e
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.12.1

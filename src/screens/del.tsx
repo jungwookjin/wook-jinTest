@@ -3,7 +3,6 @@ import { StyleSheet, ScrollView, SafeAreaView, View, TextInput, Text, Image, Ale
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux'
 import { RootState } from '../components/redux/rootReducer'
-import * as ITF from '../constants/Interface'
 import Loader from "../components/Loader"
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";

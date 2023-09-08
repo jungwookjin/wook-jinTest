@@ -1,11 +1,17 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '11.0'
+# 없는 경우에는 package.json의 sdkVersions.ios.kakao를 따릅니다.
+$KakaoSDKVersion="2.11.1"
+
+platform :ios, '12.0'
 
 target 'rnSmanager' do
   config = use_native_modules!
 
+  # 카카오 로그인 에러 대응
+  # https://github.com/crossplatformkorea/react-native-kakao-login/issues/326
+  # pod 'Alamofire', '~> 5.5'
 
   permissions_path = '../node_modules/react-native-permissions/ios'
 pod 'Permission-Camera', :path => "#{permissions_path}/Camera"

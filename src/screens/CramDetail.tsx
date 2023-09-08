@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, TouchableOpacity, Image, Linking } from "react-native";
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../components/redux/rootReducer';
 import * as MyUtil from '../constants/MyUtil';
-import * as ITF from '../constants/Interface';
 import * as SG from '../constants/Signature';
 import * as ServerApi from "../constants/ServerApi";
 import Loader from "../components/Loader";
@@ -34,7 +33,7 @@ const CramDetail = () => {
     }, []);
 
     const m_app_biz_subj_list = useCallback(async () => {
-        const result = await ServerApi.m_app_biz_subj_list(biz_no, rxLoginInfo.u_id,rxLoginInfo.c_gb_dt);
+        const result = await ServerApi.m_app_biz_subj_list(biz_no, rxLoginInfo.u_id, rxLoginInfo.c_gb_dt);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
             setServerData(result.DATA_RESULT);
         } else {

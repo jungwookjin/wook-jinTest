@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, SafeAreaView, View, ImageBackground, Text, Image, Linking, TouchableOpacity } from "react-native";
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { RootState } from '../components/redux/rootReducer';
-import * as ServerApi from "../constants/ServerApi";
 import * as MyUtil from "../constants/MyUtil";
 import * as SG from '../constants/Signature';
 import Loader from "../components/Loader"
 import Colors from "../constants/Colors";
 import Layout from "../constants/Layout";
 import CustomHeader from "../components/CustomHeader";
-import CST from '../constants/constants';
 import Config from "../constants/Config";
 
 

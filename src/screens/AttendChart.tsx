@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, ScrollView, SafeAreaView, View, Text, Image, Alert, TouchableOpacity, processColor } from "react-native";
+import { StyleSheet, ScrollView, SafeAreaView, View, Text, processColor } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { LineChart } from "react-native-charts-wrapper";
 import { RootState } from '../components/redux/rootReducer';
-import * as ITF from '../constants/Interface';
 import * as ServerApi from "../constants/ServerApi";
 import * as MyUtil from '../constants/MyUtil';
 import Loader from "../components/Loader";
@@ -104,7 +103,7 @@ const AttendChart = () => {
             let serverData: any = [];
             let idx = 0;
             for (const child of rxLoginInfo.children) {
-                idx = idx+1;
+                idx = idx + 1;
                 result = await ServerApi.m_app_my_attend(child.u_id, getMonYear, '');
 
                 if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
