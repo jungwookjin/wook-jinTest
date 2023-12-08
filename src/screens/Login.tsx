@@ -83,6 +83,7 @@ const Login = () => {
                 const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
                 const userCredential = await auth().signInWithCredential(appleCredential);
 
+                
                 // ** 로그인
                 LoginStart("a", userCredential.user.uid);
             } else {
@@ -103,18 +104,24 @@ const Login = () => {
     const LoginStart = useCallback(async (easy_type, uniq_key) => {
         const result = await ServerApi._login(easy_type, uniq_key);
         if (result.IS_SUCCESS === true && result.DATA_RESULT.RSP_CODE === CST.DB_SUCSESS) {
+            console.log('로그인 성공');
+
             MyAsyncStorage._writeAsyncStorage(Config.AS_KEY_LOGIN_INFO, { easy_type, uniq_key });
             dispatch(allActions.setRxLoginInfo(result.DATA_RESULT));
             navigation.reset({ index: 0, routes: [{ name: 'Main', params: {} }] });
+            
 
         } else if (result.DATA_RESULT.RSP_CODE === CST.DB_USER_NONE) {
             navigation.navigate({ name: 'InfoUpdate', params: { isJoin: true, easy_type: easy_type, uniq_key: uniq_key } });
+            
 
         } else {
             MyUtil._alertMsg('LoginStart', result.DATA_RESULT);
         }
     }, [])
 
+
+    
 
 
     return (
@@ -160,7 +167,7 @@ const Login = () => {
 
                                     <TouchableOpacity style={{ width: Layout.window.width - 90, height: (Layout.window.width - 90) / 7.5, marginVertical: 5, backgroundColor: '#8fceff', borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}
                                         onPress={() => { LoginStart("t", '12345'); }}>
-                                        <Text allowFontScaling={false} numberOfLines={1} style={{ color: Colors.defaultText, fontSize: Layout.fsM, fontWeight: 'bold' }}>게스트 로그인</Text>
+                                        <Text allowFontScaling={false} numberOfLines={1} style={{ color: Colors.defaultText, fontSize: Layout.fsM, fontWeight: 'bold' }}>게스트 로그인23</Text>
                                     </TouchableOpacity>
 
                                 </View>
